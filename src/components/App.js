@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import Dashboard from './dashboard/Dashboard';
 import Cocktails from './cocktails/Cocktails';
 import Bar from './bar/Bar';
@@ -9,16 +9,50 @@ import Login from './login/Login';
 
 class App extends Component {
 
+  state = {
+    isAuthenticated: true
+  }
+
+  isAuthenticated() {
+    // TODO: Check sessionStorage or localStorage for authentication
+    return this.state.isAuthenticated
+  }
+
   render() {
     return (
       <>
-      <NavBar />
+      { this.isAuthenticated()
+      ? <NavBar /> : null }
+
       <Switch>
-        <Route path="/login" component={Login} />
-        <Route exact path="/" component={Dashboard} />
-        <Route path="/cocktails" component={Cocktails} />
-        <Route path="/bar" component={Bar} />
-        <Route path="/shopping-list" component={ShoppingList} />
+        <Route exact path="/" render={() => {
+          if(this.isAuthenticated())
+            return <Dashboard />
+            return <Redirect to="/login" />
+        }} />
+
+        <Route path="/cocktails" render={() => {
+          if(this.isAuthenticated())
+            return <Cocktails />
+            return <Redirect to="/login" />
+          }} />
+
+        <Route path="/bar" render={() => {
+          if(this.isAuthenticated())
+          return <Bar />
+          return <Redirect to="/login" />
+          }} />
+
+        <Route path="/shopping-list" render={() => {
+          if(this.isAuthenticated())
+          return <ShoppingList />
+          return <Redirect to="/login" />
+        }} />
+        <Route path="/login" render={() => {
+          if(!this.isAuthenticated())
+          return <Login />
+          return <Redirect to="/" />
+          }} />
       </Switch>
       </>
     );
