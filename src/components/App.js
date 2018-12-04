@@ -10,7 +10,6 @@ class App extends Component {
   }
 
   isAuthenticated() {
-    this.authenticate()
     return this.state.isAuthenticated
   }
 
