@@ -17,6 +17,15 @@ class LoginForm extends Component {
       <Form className="login-form" onSubmit={e => this.props.submitLogin(e)}>
         <h1 className="text-primary mb-3 font-weight-bold login-logo">Barkeeper</h1>
         <h6 className="mb-3 mt-5 text-success">Please sign in</h6>
+        { this.props.registerSuccess
+          ? <p className="text-success">Your account was created successfully! Please log in.</p>
+          : null
+        }
+        { this.props.loginFailed
+          ? <p className="text-danger">Login failed. Please try again.</p>
+          : null
+        }
+
         <FormGroup>
           <Label className="sr-only" for="loginEmail">Email address</Label>
           <Input type="email" id="loginEmail" placeholder="Email address" required onChange={this.props.handleFieldChange} />

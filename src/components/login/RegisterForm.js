@@ -17,7 +17,7 @@ class RegisterForm extends Component {
   render() {
 
     let validPassword = this.props.passwordMatch
-
+    let emailTaken = this.props.emailTaken
     return (
       <Form className="register-form" onSubmit={e => this.props.submitRegister(e)}>
         <h1 className="text-primary mb-3 font-weight-bold login-logo">Barkeeper</h1>
@@ -26,7 +26,8 @@ class RegisterForm extends Component {
           <Label className="sr-only" for="loginName">Name</Label>
           <Input type="text" id="loginName" placeholder="Name" required onChange={this.props.handleFieldChange} />
           <Label className="sr-only" for="loginEmail">Email address</Label>
-          <Input type="email" id="loginEmail" placeholder="Email address" required onChange={this.props.handleFieldChange} />
+          <Input type="email" id="loginEmail" placeholder="Email address" required onChange={this.props.handleFieldChange} invalid={emailTaken} />
+          <FormFeedback invalid>Email is taken!</FormFeedback>
         </FormGroup>
         <FormGroup>
           <Label className="sr-only" for="loginPassword">Password</Label>

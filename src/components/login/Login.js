@@ -15,7 +15,10 @@ class Login extends Component {
     rememberMe: false,
     loginForm: true,
     passwordConfirm: "",
-    passwordMatch: null
+    passwordMatch: null,
+    registerSuccess: false,
+    loginFailed: false,
+    emailTaken: false
   }
 
   // Toggle between Login and Register
@@ -69,11 +72,11 @@ class Login extends Component {
     return API.query("users", this.state.loginEmail)
       .then(user => {
         if(user.length && user[0].password === this.state.loginPassword) {
+          this.setState({loginFailed: false})
           window.sessionStorage.setItem("id", user[0].id)
           this.props.authenticate()
         } else {
-          //TODO: Give user feedback in form
-          alert("Login failed")
+          this.setState({loginFailed: true})
         }
       })
   }
@@ -97,11 +100,13 @@ class Login extends Component {
     return API.query("users", this.state.loginEmail)
       .then(existing => {
         if(existing.length) {
-          alert("Email is taken")
-          //TODO: Add form feedback instead of alert
-          return
+          return this.setState({emailTaken: true})
         } else {
           return API.saveData("users", newUser)
+          .then(() => {
+            this.toggleForms()
+            this.setState({registerSuccess: true})
+          })
         }
       })
 
@@ -129,7 +134,9 @@ class Login extends Component {
             toggleForms={this.toggleForms}
             handleFieldChange={this.handleFieldChange}
             resetFormState={this.resetFormState}
-            submitLogin={this.submitLogin} />
+            submitLogin={this.submitLogin}
+            registerSuccess={this.state.registerSuccess}
+            loginFailed={this.state.loginFailed} />
           :
           <RegisterForm
             toggleForms={this.toggleForms}
@@ -137,7 +144,8 @@ class Login extends Component {
             resetFormState={this.resetFormState}
             confirmPassword={this.confirmPassword}
             submitRegister={this.submitRegister}
-            passwordMatch={this.state.passwordMatch} />
+            passwordMatch={this.state.passwordMatch}
+            emailTaken={this.state.emailTaken} />
         }
       </Container>
     )
