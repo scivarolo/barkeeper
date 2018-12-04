@@ -1,0 +1,67 @@
+@import "../../variables";
+
+html, body, #root, .login-container {
+  height: 100%;
+}
+form {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  padding: 40px;
+}
+
+body {
+  background-color: lighten($light, 3%);
+}
+
+.login-form,
+.register-form {
+  input {
+    border: 1px solid darken($light, 3%);
+    &:active { outline: none; }
+  }
+  h6 {
+    font-size: 1.5em;
+    font-family: $font-family-base;
+  }
+}
+
+.login-logo {
+  font-size: 3.9em;
+}
+
+.form-group {
+  input:first-of-type{
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-bottom: -1px;
+  }
+  input:nth-of-type(2) {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+  }
+}
+
+.link {
+  cursor: pointer;
+  color: $success;
+  &:hover {
+    color: $danger;
+  }
+}
+
+.loginFade-enter {
+  opacity: 0.01;
+  transform: scale(0.9) translateY(50%);
+}
+.loginFade-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+  transition: all 300ms ease-out;
+}
