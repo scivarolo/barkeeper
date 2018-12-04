@@ -44,6 +44,11 @@ class API {
     })
   }
 
+  query(resource, string) {
+    return fetch(`${this.baseUrl}/${resource}/?q=${string}`)
+    .then(r => r.json())
+  }
+
 }
 
 export default new API()
