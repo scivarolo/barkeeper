@@ -10,13 +10,16 @@ class App extends Component {
   }
 
   isAuthenticated() {
-    // TODO: Check sessionStorage or localStorage for authentication
+    this.authenticate()
     return this.state.isAuthenticated
   }
 
   authenticate = () => {
-    if(window.sessionStorage.getItem("id"))
+    if(window.sessionStorage.getItem("id")) {
       this.setState({isAuthenticated: true})
+    } else {
+      this.setState({isAuthenticated: false})
+    }
   }
 
   componentDidMount() {
