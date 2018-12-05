@@ -71,7 +71,6 @@ class Cocktails extends Component {
                 {
                   cocktails.map((cocktail, i) => {
                     let ingredientLabels = ingredients[i]
-                    console.log(ingredientLabels)
 
                     return (
                       <ListGroupItem className="mb-3" key={cocktail.id}>
