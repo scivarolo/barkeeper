@@ -3,9 +3,9 @@ import {
   Col,
   Container,
   ListGroup,
-  ListGroupItem,
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
+import ShoppingListItem from './ShoppingListItem'
 
 import AddModal from './AddModal';
 
@@ -25,6 +25,11 @@ class ShoppingList extends Component {
         isLoaded: true
       })
     })
+  }
+
+  deleteItem = (userShoppingId) => {
+    return API.deleteData("userShopping", userShoppingId)
+      .then(() => this.getShoppingData())
   }
 
   componentDidMount() {
@@ -56,7 +61,10 @@ class ShoppingList extends Component {
               <ListGroup>
                 {
                   shoppingProducts.map(item => {
-                    return <ListGroupItem className="mb-2" key={item.id}>{item.product.name}</ListGroupItem>
+                    return <ShoppingListItem
+                            key={item.id}
+                            item={item}
+                            deleteItem={this.deleteItem} />
                   })
                 }
               </ListGroup>
