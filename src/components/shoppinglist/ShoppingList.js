@@ -8,7 +8,7 @@ class ShoppingList extends Component {
     isLoaded: false
   }
 
-  componentDidMount() {
+  getShoppingData() {
     let userId = sessionStorage.getItem("id")
     return API.getWithExpand("userShopping", "product", userId)
     .then(items => {
@@ -17,6 +17,11 @@ class ShoppingList extends Component {
         isLoaded: true
       })
     })
+  }
+
+  componentDidMount() {
+    this.getShoppingData()
+    .then(() => this.setState({isLoaded: true}))
   }
 
   render() {
