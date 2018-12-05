@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   Button,
   ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API';
+// import API from '../../modules/data/API';
 
 class BarItem extends Component {
 
