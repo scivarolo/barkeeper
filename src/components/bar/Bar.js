@@ -14,7 +14,8 @@ class Bar extends Component {
     API.getWithExpand("userProducts", "product", userId)
     .then((inventory) => this.setState({
       inventory: inventory,
-      isLoaded: true}))
+      isLoaded: true
+    }))
   }
 
   render() {

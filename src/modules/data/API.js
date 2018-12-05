@@ -10,7 +10,7 @@ class API {
 
   getAll(resource, userId) {
     let url = `${this.baseUrl}/${resource}`
-    if (userId) url += `&userId=${userId}`
+    if (userId) url += `?userId=${userId}`
 
     return fetch(url).then(r => r.json())
   }
