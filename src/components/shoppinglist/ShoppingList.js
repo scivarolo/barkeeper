@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API'
 class ShoppingList extends Component {
 
@@ -38,13 +43,13 @@ class ShoppingList extends Component {
           </Row>
           <Row>
             <Col>
-              <ul>
+              <ListGroup>
                 {
                   shoppingProducts.map(item => {
-                    return <li key={item.id}>{item.product.name}</li>
+                    return <ListGroupItem className="mb-2" key={item.id}>{item.product.name}</ListGroupItem>
                   })
                 }
-              </ul>
+              </ListGroup>
             </Col>
           </Row>
         </Container>
