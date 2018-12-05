@@ -11,17 +11,17 @@ class NavBar extends Component {
 
   render() {
     return (
-      <Navbar color="light" expand="sm">
-        <NavbarBrand tag={Link} to="/"><h3>Barkeeper</h3></NavbarBrand>
+      <Navbar color="primary" expand="sm">
+        <NavbarBrand tag={Link} to="/"><h3 className="text-white">Barkeeper</h3></NavbarBrand>
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink tag={Link} to="/cocktails">Cocktails</NavLink>
+            <NavLink className="text-white" tag={Link} to="/cocktails">Cocktails</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink tag={Link} to="/bar">Bar Inventory</NavLink>
+            <NavLink className="text-white" tag={Link} to="/bar">Bar Inventory</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink tag={Link} to="/shopping-list">Shopping List</NavLink>
+            <NavLink className="text-white" tag={Link} to="/shopping-list">Shopping List</NavLink>
           </NavItem>
         </Nav>
       </Navbar>
