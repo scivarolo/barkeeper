@@ -7,19 +7,15 @@ import API from '../../modules/data/API';
 class ShoppingListItem extends Component {
 
   boughtItem = (item) => {
-    //console.log("bought item", item)
+
     let userProductsObj = {
       userId: item.userId,
       productId: item.productId,
       amountAvailable: item.product.fullAmount
     }
-    // console.log("to inventory", userProductsObj)
-    //add item to userProducts
+    //add item to userProducts and delete from userShopping
     return API.saveData("userProducts", userProductsObj)
       .then(() => this.props.deleteItem(item.id))
-
-    //remove item from userShopping
-    //using this.props.deleteItem
   }
 
   render() {
