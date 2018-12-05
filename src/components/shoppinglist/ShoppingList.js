@@ -9,7 +9,8 @@ class ShoppingList extends Component {
   }
 
   componentDidMount() {
-    return API.getWithExpand("shoppingItems", "item")
+    let userId = sessionStorage.getItem("id")
+    return API.getWithExpand("shoppingItems", "item", userId)
     .then(items => {
       this.setState({
         shoppingItems: items,
