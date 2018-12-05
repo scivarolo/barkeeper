@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
 
 class Bar extends Component {
@@ -35,18 +40,18 @@ class Bar extends Component {
         </Row>
         <Row>
           <Col>
-            <ul>
+            <ListGroup>
               { /* List items in inventory */
                 inventory.map(item => {
                   return (
-                    <li key={item.id}>
-                      <h6>{item.product.name}</h6>
+                    <ListGroupItem className="mb-2" key={item.id}>
+                      <h4>{item.product.name}</h4>
                       <p>Available: {item.amountAvailable}{item.product.unit}</p>
-                    </li>
+                    </ListGroupItem>
                   )
                 })
               }
-            </ul>
+            </ListGroup>
           </Col>
         </Row>
       </Container>
