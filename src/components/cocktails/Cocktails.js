@@ -62,7 +62,7 @@ class Cocktails extends Component {
         <Container>
           <Row>
             <Col>
-              <h1>Cocktails</h1>
+              <h1 className="my-5">Cocktails</h1>
             </Col>
           </Row>
           <Row>

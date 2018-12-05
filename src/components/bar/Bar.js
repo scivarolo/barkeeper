@@ -35,7 +35,7 @@ class Bar extends Component {
         <Container>
           <Row>
             <Col>
-              <h1>Your Bar</h1>
+              <h1 className="my-5">Your Bar</h1>
             </Col>
           </Row>
           <Row>

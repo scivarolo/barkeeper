@@ -38,7 +38,7 @@ class ShoppingList extends Component {
         <Container>
           <Row>
             <Col>
-              <h1>Shopping List</h1>
+              <h1 className="my-5">Shopping List</h1>
             </Col>
           </Row>
           <Row>
