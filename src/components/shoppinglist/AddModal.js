@@ -38,8 +38,8 @@ class AddModal extends React.Component {
     let userId = sessionStorage.getItem("id")
     let productsArray = this.state.selectedProducts
     let savePromises = productsArray.map(id => API.saveData("userShopping", {
-      productId: id,
-      userId: userId,
+      productId: parseInt(id),
+      userId: parseInt(userId),
       quantity: 1
     }))
     return Promise.all(savePromises)
@@ -62,6 +62,7 @@ class AddModal extends React.Component {
   componentDidMount() {
     this.loadProducts()
   }
+
   render() {
     return (
       <div>
