@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import {
-  Container,
-  Row,
   Col,
+  Container,
   ListGroup,
-  ListGroupItem } from 'reactstrap'
+  Row, } from 'reactstrap'
 import API from '../../modules/data/API'
+import ShoppingListItem from './ShoppingListItem'
+
+import AddModal from './AddModal';
+
 class ShoppingList extends Component {
 
   state = {
@@ -13,7 +16,7 @@ class ShoppingList extends Component {
     isLoaded: false
   }
 
-  getShoppingData() {
+  getShoppingData = () => {
     let userId = sessionStorage.getItem("id")
     return API.getWithExpand("userShopping", "product", userId)
     .then(items => {
@@ -22,6 +25,11 @@ class ShoppingList extends Component {
         isLoaded: true
       })
     })
+  }
+
+  deleteItem = (userShoppingId) => {
+    return API.deleteData("userShopping", userShoppingId)
+      .then(() => this.getShoppingData())
   }
 
   componentDidMount() {
@@ -36,9 +44,16 @@ class ShoppingList extends Component {
     if (this.state.isLoaded) {
       return (
         <Container>
-          <Row>
-            <Col>
-              <h1 className="my-5">Shopping List</h1>
+          <Row className="my-5">
+            <Col className="d-flex">
+              <div>
+                <h1>Shopping List</h1>
+              </div>
+              <div className="ml-auto">
+                <AddModal
+                  buttonLabel="Add Product"
+                  getShoppingData={this.getShoppingData} />
+              </div>
             </Col>
           </Row>
           <Row>
@@ -46,7 +61,10 @@ class ShoppingList extends Component {
               <ListGroup>
                 {
                   shoppingProducts.map(item => {
-                    return <ListGroupItem className="mb-2" key={item.id}>{item.product.name}</ListGroupItem>
+                    return <ShoppingListItem
+                            key={item.id}
+                            item={item}
+                            deleteItem={this.deleteItem} />
                   })
                 }
               </ListGroup>
