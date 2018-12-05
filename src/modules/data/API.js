@@ -18,6 +18,16 @@ class API {
     .then(r => r.json())
   }
 
+  getWithEmbed(resource, embed) {
+    return fetch(`${this.baseUrl}/${resource}?_embed=${embed}`)
+    .then(r => r.json())
+  }
+
+  getWithExpand(resource, expand) {
+    return fetch(`${this.baseUrl}/${resource}?_expand=${expand}`)
+    .then(r => r.json())
+  }
+
   saveData(resource, object) {
     return fetch(`${this.baseUrl}/${resource}`, {
       method: "POST",
