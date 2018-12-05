@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import {
-  Container,
-  Row,
   Col,
+  Container,
   ListGroup,
-  ListGroupItem } from 'reactstrap'
+  ListGroupItem,
+  Row, } from 'reactstrap'
 import API from '../../modules/data/API'
+
+import AddModal from './AddModal';
+
 class ShoppingList extends Component {
 
   state = {
@@ -13,7 +16,7 @@ class ShoppingList extends Component {
     isLoaded: false
   }
 
-  getShoppingData() {
+  getShoppingData = () => {
     let userId = sessionStorage.getItem("id")
     return API.getWithExpand("userShopping", "product", userId)
     .then(items => {
@@ -36,9 +39,16 @@ class ShoppingList extends Component {
     if (this.state.isLoaded) {
       return (
         <Container>
-          <Row>
-            <Col>
-              <h1 className="my-5">Shopping List</h1>
+          <Row className="my-5">
+            <Col className="d-flex">
+              <div>
+                <h1>Shopping List</h1>
+              </div>
+              <div className="ml-auto">
+                <AddModal
+                  buttonLabel="Add Product"
+                  getShoppingData={this.getShoppingData} />
+              </div>
             </Col>
           </Row>
           <Row>
