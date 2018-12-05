@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API'
 class ShoppingList extends Component {
 
@@ -8,7 +13,7 @@ class ShoppingList extends Component {
     isLoaded: false
   }
 
-  componentDidMount() {
+  getShoppingData() {
     let userId = sessionStorage.getItem("id")
     return API.getWithExpand("userShopping", "product", userId)
     .then(items => {
@@ -17,6 +22,11 @@ class ShoppingList extends Component {
         isLoaded: true
       })
     })
+  }
+
+  componentDidMount() {
+    this.getShoppingData()
+    .then(() => this.setState({isLoaded: true}))
   }
 
   render() {
@@ -28,18 +38,18 @@ class ShoppingList extends Component {
         <Container>
           <Row>
             <Col>
-              <h1>Shopping List</h1>
+              <h1 className="my-5">Shopping List</h1>
             </Col>
           </Row>
           <Row>
             <Col>
-              <ul>
+              <ListGroup>
                 {
                   shoppingProducts.map(item => {
-                    return <li key={item.id}>{item.product.name}</li>
+                    return <ListGroupItem className="mb-2" key={item.id}>{item.product.name}</ListGroupItem>
                   })
                 }
-              </ul>
+              </ListGroup>
             </Col>
           </Row>
         </Container>

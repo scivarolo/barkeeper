@@ -16,13 +16,11 @@ class Cocktails extends Component {
     cocktailIngredients: []
   }
 
-  componentDidMount() {
+  getCocktailData() {
     let userId = sessionStorage.getItem("id")
-    let data = {
-      isLoaded: true
-    }
+    let data = {}
     //get userCocktails
-    API.getWithExpand("userCocktails", "cocktail", userId)
+    return API.getWithExpand("userCocktails", "cocktail", userId)
     .then(userCocktails => {
       data.userCocktails = userCocktails
       //use cocktailId to get cocktails
@@ -46,10 +44,12 @@ class Cocktails extends Component {
     .then(cocktailIngredients => {
       data.cocktailIngredients = cocktailIngredients
     })
-
-    //use ingredientIds to get ingredient names
-
     .then(() => this.setState(data))
+  }
+
+  componentDidMount() {
+    this.getCocktailData()
+    .then(() => this.setState({isLoaded: true}))
   }
 
   render() {
@@ -62,7 +62,7 @@ class Cocktails extends Component {
         <Container>
           <Row>
             <Col>
-              <h1>Cocktails</h1>
+              <h1 className="my-5">Cocktails</h1>
             </Col>
           </Row>
           <Row>
