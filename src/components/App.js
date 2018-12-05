@@ -5,8 +5,17 @@ import Barkeeper from './Barkeeper';
 
 class App extends Component {
 
-  state = {
-    isAuthenticated: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      isAuthenticated: () => {
+        if(window.sessionStorage.geItem("id")) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
   }
 
   isAuthenticated() {
