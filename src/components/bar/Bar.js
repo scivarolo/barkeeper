@@ -31,31 +31,31 @@ class Bar extends Component {
     let inventory = this.state.inventory
 
     if(this.state.isLoaded) {
-    return (
-      <Container>
-        <Row>
-          <Col>
-            <h1>Your Bar</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ListGroup>
-              { /* List items in inventory */
-                inventory.map(item => {
-                  return (
-                    <ListGroupItem className="mb-2" key={item.id}>
-                      <h4>{item.product.name}</h4>
-                      <p>Available: {item.amountAvailable}{item.product.unit}</p>
-                    </ListGroupItem>
-                  )
-                })
-              }
-            </ListGroup>
-          </Col>
-        </Row>
-      </Container>
-    )
+      return (
+        <Container>
+          <Row>
+            <Col>
+              <h1>Your Bar</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ListGroup>
+                { /* List items in inventory */
+                  inventory.map(item => {
+                    return (
+                      <ListGroupItem className="mb-2" key={item.id}>
+                        <h4>{item.product.name}</h4>
+                        <p>Available: {item.amountAvailable}{item.product.unit}</p>
+                      </ListGroupItem>
+                    )
+                  })
+                }
+              </ListGroup>
+            </Col>
+          </Row>
+        </Container>
+      )
     }
     else {
       return (
