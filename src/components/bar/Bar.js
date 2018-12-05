@@ -11,7 +11,7 @@ class Bar extends Component {
 
   componentDidMount() {
     let userId = sessionStorage.getItem("id")
-    API.getWithExpand("userItems", "item", userId)
+    API.getWithExpand("userProducts", "product", userId)
     .then((inventory) => this.setState({
       inventory: inventory,
       isLoaded: true}))
@@ -35,10 +35,10 @@ class Bar extends Component {
                 inventory.map(item => {
                   return (
                     <li key={item.id}>
-                      <h6>{item.item.name}</h6>
-                      <p>Available: {item.amountAvailable}{item.item.unit}</p>
+                      <h6>{item.product.name}</h6>
+                      <p>Available: {item.amountAvailable}{item.product.unit}</p>
                     </li>
-                    )
+                  )
                 })
               }
             </ul>

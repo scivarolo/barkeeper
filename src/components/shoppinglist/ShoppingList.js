@@ -4,16 +4,16 @@ import API from '../../modules/data/API'
 class ShoppingList extends Component {
 
   state = {
-    shoppingItems: [],
+    shoppingProducts: [],
     isLoaded: false
   }
 
   componentDidMount() {
     let userId = sessionStorage.getItem("id")
-    return API.getWithExpand("shoppingItems", "item", userId)
+    return API.getWithExpand("userShopping", "product", userId)
     .then(items => {
       this.setState({
-        shoppingItems: items,
+        shoppingProducts: items,
         isLoaded: true
       })
     })
@@ -21,7 +21,7 @@ class ShoppingList extends Component {
 
   render() {
 
-    let shoppingItems = this.state.shoppingItems
+    let shoppingProducts = this.state.shoppingProducts
 
     if (this.state.isLoaded) {
       return (
@@ -35,8 +35,8 @@ class ShoppingList extends Component {
             <Col>
               <ul>
                 {
-                  shoppingItems.map(sItem => {
-                    return <li key={sItem.id}>{sItem.item.name}</li>
+                  shoppingProducts.map(item => {
+                    return <li key={item.id}>{item.product.name}</li>
                   })
                 }
               </ul>
