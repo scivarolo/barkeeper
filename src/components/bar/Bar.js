@@ -6,6 +6,7 @@ import {
   ListGroup,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
+import BarItem from './BarItem'
 
 class Bar extends Component {
 
@@ -20,6 +21,11 @@ class Bar extends Component {
     .then((inventory) => this.setState({
       inventory: inventory
     }))
+  }
+
+  deleteItem = (id) => {
+    API.deleteData("userProducts", id)
+    .then(() => this.getInventoryData())
   }
 
   componentDidMount() {
@@ -44,10 +50,7 @@ class Bar extends Component {
                 { /* List items in inventory */
                   inventory.map(item => {
                     return (
-                      <ListGroupItem className="mb-2" key={item.id}>
-                        <h4>{item.product.name}</h4>
-                        <p>Available: {item.amountAvailable}{item.product.unit}</p>
-                      </ListGroupItem>
+                      <BarItem key={item.id} item={item} deleteItem={this.deleteItem} />
                     )
                   })
                 }
