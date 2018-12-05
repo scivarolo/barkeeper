@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
 
 class Cocktails extends Component {
@@ -48,6 +53,10 @@ class Cocktails extends Component {
   }
 
   render() {
+
+    let cocktails = this.state.cocktails
+    let ingredients = this.state.cocktailIngredients
+
     if(this.state.isLoaded) {
       return (
         <Container>
@@ -58,7 +67,38 @@ class Cocktails extends Component {
           </Row>
           <Row>
             <Col>
+              <ListGroup>
+                {
+                  cocktails.map((cocktail, i) => {
+                    let ingredientLabels = ingredients[i]
+                    console.log(ingredientLabels)
 
+                    return (
+                      <ListGroupItem className="mb-3" key={cocktail.id}>
+                        <h2 className="mb-3">{cocktail.name}</h2>
+                        <Row>
+                          <Col>
+                            <h5>Ingredients</h5>
+                            <ul>
+                              {
+                                cocktail.cocktailIngredients.map((ingredient, i) => {
+                                  return (
+                                    <li key={ingredient.id}>{ingredient.amount} {ingredient.unit} {ingredientLabels[i].label}</li>
+                                  )
+                                })
+                              }
+                            </ul>
+                          </Col>
+                          <Col>
+                            <h5>Instructions</h5>
+                            <p>{cocktail.instructions}</p>
+                          </Col>
+                        </Row>
+                      </ListGroupItem>
+                    )
+                  })
+                }
+              </ListGroup>
             </Col>
           </Row>
         </Container>
