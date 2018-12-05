@@ -9,13 +9,17 @@ class Bar extends Component {
     inventory: []
   }
 
-  componentDidMount() {
+  getInventoryData() {
     let userId = sessionStorage.getItem("id")
-    API.getWithExpand("userProducts", "product", userId)
+    return API.getWithExpand("userProducts", "product", userId)
     .then((inventory) => this.setState({
-      inventory: inventory,
-      isLoaded: true
+      inventory: inventory
     }))
+  }
+
+  componentDidMount() {
+    this.getInventoryData()
+    .then(() => this.setState({isLoaded: true}))
   }
 
   render() {
