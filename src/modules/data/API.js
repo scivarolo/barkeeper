@@ -8,14 +8,27 @@ class API {
     this.baseUrl = "http://localhost:5002"
   }
 
-  getAll(resource) {
-    return fetch(`${this.baseUrl}/${resource}`)
-    .then(r => r.json())
+  getAll(resource, userId) {
+    let url = `${this.baseUrl}/${resource}`
+    if (userId) url += `?userId=${userId}`
+
+    return fetch(url).then(r => r.json())
   }
 
   get(resource, id) {
-    return fetch(`${this.baseUrl}/${resource}/${id}`)
-    .then(r => r.json())
+    return fetch(`${this.baseUrl}/${resource}/${id}`).then(r => r.json())
+  }
+
+  getWithEmbed(resource, embed, userId) {
+    let url = `${this.baseUrl}/${resource}?_embed=${embed}`
+    if (userId) url += `&userId=${userId}`
+    return fetch(url).then(r => r.json())
+  }
+
+  getWithExpand(resource, expand, userId) {
+    let url = `${this.baseUrl}/${resource}?_expand=${expand}`
+    if (userId) url += `&userId=${userId}`
+    return fetch(url).then(r => r.json())
   }
 
   saveData(resource, object) {
@@ -44,9 +57,10 @@ class API {
     })
   }
 
-  query(resource, string) {
-    return fetch(`${this.baseUrl}/${resource}/?q=${string}`)
-    .then(r => r.json())
+  query(resource, string, userId) {
+    let url = `${this.baseUrl}/${resource}/?q=${string}`
+    if (userId) url += `&userId=${userId}`
+    return fetch(url).then(r => r.json())
   }
 
 }
