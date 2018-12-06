@@ -6,6 +6,7 @@ import {
   ListGroup,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
+import CocktailAddModal from './CocktailAddModal';
 
 class Cocktails extends Component {
 
@@ -16,7 +17,7 @@ class Cocktails extends Component {
     cocktailIngredients: []
   }
 
-  getCocktailData() {
+  getCocktailData = () => {
     let userId = sessionStorage.getItem("id")
     let data = {}
     //get userCocktails
@@ -60,9 +61,16 @@ class Cocktails extends Component {
     if(this.state.isLoaded) {
       return (
         <Container>
-          <Row>
-            <Col>
-              <h1 className="my-5">Cocktails</h1>
+          <Row className="my-5">
+            <Col className="d-flex">
+              <div>
+                <h1>Cocktails</h1>
+              </div>
+              <div className="ml-auto">
+                <CocktailAddModal
+                  buttonLabel="Add Cocktails"
+                  getCocktailData={this.getCocktailData} />
+              </div>
             </Col>
           </Row>
           <Row>
