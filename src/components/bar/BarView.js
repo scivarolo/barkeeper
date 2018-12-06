@@ -10,6 +10,7 @@ import {
 import API from '../../modules/data/API';
 import BarItem from './BarItem'
 import AddToBar from './AddToBar';
+import { Link } from 'react-router-dom'
 
 class BarView extends Component {
 
