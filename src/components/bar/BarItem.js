@@ -6,6 +6,7 @@ import {
   InputGroupText,
   Input,
   ListGroupItem } from 'reactstrap'
+import API from '../../modules/data/API';
 // import API from '../../modules/data/API';
 
 class BarItem extends Component {
@@ -26,14 +27,22 @@ class BarItem extends Component {
     this.setState({updateValue: e.target.value})
   }
 
-  prepareUpdate() {
+  updateItemAmount = () => {
     if(this.state.updateValue) {
       let updatedObj = {
         amountAvailable: parseInt(this.state.updateValue)
       }
-    this.props.updateItemAmount(this.props.item.id, updatedObj)
-    this.toggleUpdate()
+      return API.editData("userProducts", this.props.item.id, updatedObj)
+        .then(() => {
+          this.toggleUpdate()
+          return this.props.getInventoryData()
+        })
     }
+  }
+
+  deleteItem = (id) => {
+    return API.deleteData("userProducts", id)
+    .then(() => this.props.getInventoryData())
   }
 
   render() {
@@ -43,7 +52,7 @@ class BarItem extends Component {
         <h4>{item.product.name}</h4>
         <p>Available: {item.amountAvailable} {item.product.unit}</p>
         <Button onClick={this.toggleUpdate}>Update</Button>
-        <Button onClick={() => this.props.deleteItem(item.id)}>Delete</Button>
+        <Button onClick={() => this.deleteItem(item.id)}>Delete</Button>
         { this.state.showUpdateForm
           ? <div className="updateItem">
               <InputGroup size="sm">
@@ -53,7 +62,7 @@ class BarItem extends Component {
                   <InputGroupText>{item.product.unit}</InputGroupText>
                 </InputGroupAddon>
                 <InputGroupAddon addonType="append">
-                  <Button onClick={e => this.prepareUpdate(e)}>Save</Button>
+                  <Button onClick={this.updateItemAmount}>Save</Button>
                 </InputGroupAddon>
               </InputGroup>
             </div>

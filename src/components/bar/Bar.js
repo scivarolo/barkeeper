@@ -17,19 +17,9 @@ class Bar extends Component {
   getInventoryData = () => {
     let userId = sessionStorage.getItem("id")
     return API.getWithExpand("userProducts", "product", userId)
-    .then((inventory) => this.setState({
+    .then(inventory => this.setState({
       inventory: inventory
     }))
-  }
-
-  updateItemAmount = (id, updatedObj) => {
-    API.editData("userProducts", id, updatedObj)
-    .then(() => this.getInventoryData())
-  }
-
-  deleteItem = (id) => {
-    API.deleteData("userProducts", id)
-    .then(() => this.getInventoryData())
   }
 
   componentDidMount() {
@@ -64,8 +54,7 @@ class Bar extends Component {
                       <BarItem
                         key={item.id}
                         item={item}
-                        updateItemAmount={this.updateItemAmount}
-                        deleteItem={this.deleteItem} />
+                        getInventoryData={this.getInventoryData} />
                     )
                   })
                 }
