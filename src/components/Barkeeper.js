@@ -3,9 +3,9 @@ import NavBar from "./NavBar";
 import { Switch, Route, Redirect } from "react-router-dom"
 
 import Dashboard from "./dashboard/Dashboard"
-import Cocktails from "./cocktails/Cocktails"
-import Bar from "./bar/Bar"
-import ShoppingList from "./shoppinglist/ShoppingList"
+import BarView from "./bar/BarView"
+import ShoppingListView from "./shoppinglist/ShoppingListView"
+import CocktailsView from './cocktails/CocktailsView';
 
 class Barkeeper extends Component {
 
@@ -19,15 +19,15 @@ class Barkeeper extends Component {
           }} />
 
           <Route path="/cocktails" render={() => {
-              return <Cocktails />
+              return <CocktailsView />
           }} />
 
           <Route path="/bar" render={() => {
-            return <Bar />
+            return <BarView />
           }} />
 
           <Route path="/shopping-list" render={() => {
-            return <ShoppingList />
+            return <ShoppingListView />
           }} />
 
           <Route path="/login" render={() => {

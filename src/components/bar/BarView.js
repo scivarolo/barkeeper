@@ -7,7 +7,8 @@ import {
 import API from '../../modules/data/API';
 import BarItem from './BarItem'
 import BarAddModal from './BarAddModal'
-class Bar extends Component {
+
+class BarView extends Component {
 
   state = {
     isLoaded: false,
@@ -75,4 +76,4 @@ class Bar extends Component {
 
 }
 
-export default Bar
+export default BarView

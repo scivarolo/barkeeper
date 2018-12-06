@@ -9,7 +9,7 @@ import ShoppingListItem from './ShoppingListItem'
 
 import AddModal from './AddModal';
 
-class ShoppingList extends Component {
+class ShoppingListView extends Component {
 
   state = {
     shoppingProducts: [],
@@ -87,4 +87,4 @@ class ShoppingList extends Component {
 
 }
 
-export default ShoppingList
+export default ShoppingListView

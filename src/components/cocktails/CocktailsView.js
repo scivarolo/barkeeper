@@ -6,8 +6,10 @@ import {
   ListGroup,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
+import CocktailAddModal from './CocktailAddModal';
+import CocktailItem from './CocktailItem';
 
-class Cocktails extends Component {
+class CocktailsView extends Component {
 
   state = {
     isLoaded: false,
@@ -16,7 +18,7 @@ class Cocktails extends Component {
     cocktailIngredients: []
   }
 
-  getCocktailData() {
+  getCocktailData = () => {
     let userId = sessionStorage.getItem("id")
     let data = {}
     //get userCocktails
@@ -54,15 +56,28 @@ class Cocktails extends Component {
 
   render() {
 
+    /* cocktails contains the ingredient Ids
+     * userCocktail contains the id needed for delete
+     * and creating the keys for the ListGroupItems
+     * ingredients contains the ingredient labels
+     */
+    let userCocktails = this.state.userCocktails
     let cocktails = this.state.cocktails
     let ingredients = this.state.cocktailIngredients
 
     if(this.state.isLoaded) {
       return (
         <Container>
-          <Row>
-            <Col>
-              <h1 className="my-5">Cocktails</h1>
+          <Row className="my-5">
+            <Col className="d-flex">
+              <div>
+                <h1>Cocktails</h1>
+              </div>
+              <div className="ml-auto">
+                <CocktailAddModal
+                  buttonLabel="Add Cocktails"
+                  getCocktailData={this.getCocktailData} />
+              </div>
             </Col>
           </Row>
           <Row>
@@ -70,31 +85,12 @@ class Cocktails extends Component {
               <ListGroup>
                 {
                   cocktails.map((cocktail, i) => {
-                    let ingredientLabels = ingredients[i]
-
-                    return (
-                      <ListGroupItem className="mb-3" key={cocktail.id}>
-                        <h2 className="mb-3">{cocktail.name}</h2>
-                        <Row>
-                          <Col>
-                            <h5>Ingredients</h5>
-                            <ul>
-                              {
-                                cocktail.cocktailIngredients.map((ingredient, i) => {
-                                  return (
-                                    <li key={ingredient.id}>{ingredient.amount} {ingredient.unit} {ingredientLabels[i].label}</li>
-                                  )
-                                })
-                              }
-                            </ul>
-                          </Col>
-                          <Col>
-                            <h5>Instructions</h5>
-                            <p>{cocktail.instructions}</p>
-                          </Col>
-                        </Row>
-                      </ListGroupItem>
-                    )
+                    return (<CocktailItem
+                      key={userCocktails[i].id}
+                      userCocktail={userCocktails[i]}
+                      cocktail={cocktail}
+                      ingredients={ingredients[i]}
+                      getCocktailData={this.getCocktailData} />)
                   })
                 }
               </ListGroup>
@@ -117,4 +113,4 @@ class Cocktails extends Component {
 
 }
 
-export default Cocktails
+export default CocktailsView
