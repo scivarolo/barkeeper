@@ -51,8 +51,8 @@ class BarItem extends Component {
       <ListGroupItem className="mb-2" id={item.id}>
         <h4>{item.product.name}</h4>
         <p>Available: {item.amountAvailable} {item.product.unit}</p>
-        <Button onClick={this.toggleUpdate}>Update</Button>
-        <Button onClick={() => this.deleteItem(item.id)}>Delete</Button>
+        <Button size="sm" onClick={this.toggleUpdate}>Update</Button>
+        <Button size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
         { this.state.showUpdateForm
           ? <div className="updateItem">
               <InputGroup size="sm">
