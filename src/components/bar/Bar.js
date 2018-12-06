@@ -22,6 +22,11 @@ class Bar extends Component {
     }))
   }
 
+  updateItemAmount = (id, updatedObj) => {
+    API.editData("userProducts", id, updatedObj)
+    .then(() => this.getInventoryData())
+  }
+
   deleteItem = (id) => {
     API.deleteData("userProducts", id)
     .then(() => this.getInventoryData())
@@ -56,7 +61,11 @@ class Bar extends Component {
                 { /* List items in inventory */
                   inventory.map(item => {
                     return (
-                      <BarItem key={item.id} item={item} deleteItem={this.deleteItem} />
+                      <BarItem
+                        key={item.id}
+                        item={item}
+                        updateItemAmount={this.updateItemAmount}
+                        deleteItem={this.deleteItem} />
                     )
                   })
                 }
