@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
 import {
+  Button,
   Col,
   Container,
+  InputGroup,
+  InputGroupAddon,
   ListGroup,
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
-
-import AddModal from './AddModal';
+import AddToList from './AddToList';
 
 class ShoppingListView extends Component {
 
   state = {
     shoppingProducts: [],
-    isLoaded: false
+    isLoaded: false,
+    showAddInput: false
   }
 
   getShoppingData = () => {
@@ -26,7 +29,9 @@ class ShoppingListView extends Component {
       })
     })
   }
-
+  toggleAdd = () => {
+    this.setState({showAddInput: !this.state.showAddInput})
+  }
   deleteItem = (userShoppingId) => {
     return API.deleteData("userShopping", userShoppingId)
       .then(() => this.getShoppingData())
@@ -50,9 +55,17 @@ class ShoppingListView extends Component {
                 <h1>Shopping List</h1>
               </div>
               <div className="ml-auto">
-                <AddModal
-                  buttonLabel="Add Product"
-                  getShoppingData={this.getShoppingData} />
+              <InputGroup>
+                <AddToList show={this.state.showAddInput} toggle={this.toggleAdd} getShoppingData={this.getShoppingData} />
+                <InputGroupAddon addonType="append">
+                  <Button onClick={this.toggleAdd}>
+                  {
+                    this.state.showAddInput ? "Nevermind" : "Add Items"
+                  }
+                  </Button>
+                </InputGroupAddon>
+              </InputGroup>
+
               </div>
             </Col>
           </Row>
