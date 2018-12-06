@@ -8,7 +8,7 @@ import {
 import API from '../../modules/data/API';
 import CocktailAddModal from './CocktailAddModal';
 
-class Cocktails extends Component {
+class CocktailsView extends Component {
 
   state = {
     isLoaded: false,
@@ -125,4 +125,4 @@ class Cocktails extends Component {
 
 }
 
-export default Cocktails
+export default CocktailsView
