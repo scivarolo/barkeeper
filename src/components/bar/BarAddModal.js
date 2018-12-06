@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Button,
   ListGroup,
@@ -6,12 +6,12 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter } from 'reactstrap';
+  ModalFooter
+} from 'reactstrap'
 import API from '../../modules/data/API';
-import './addModal.scss';
 
+class BarAddModal extends Component {
 
-class AddModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,14 +37,14 @@ class AddModal extends React.Component {
   addProducts() {
     let userId = sessionStorage.getItem("id")
     let productsArray = this.state.selectedProducts
-    let savePromises = productsArray.map(id => API.saveData("userShopping", {
+    let savePromises = productsArray.map(id => API.saveData("userProducts", {
       productId: parseInt(id),
       userId: parseInt(userId),
-      quantity: 1
+      amountAvailable: this.state.products.find(p => parseInt(p.id) === parseInt(id)).fullAmount
     }))
     return Promise.all(savePromises)
       .then(() => this.setState({selectedProducts: []}))
-      .then(() => this.props.getShoppingData())
+      .then(() => this.props.getInventoryData())
   }
 
   handleSelections(e) {
@@ -86,19 +86,18 @@ class AddModal extends React.Component {
             </ListGroup>
           </ModalBody>
           <ModalFooter>
-            <Button
-              color="primary"
-              onClick={(e) => {
-                e.preventDefault()
-                this.addProducts()
-                this.toggle()
-              }}>Add Products</Button>{' '}
+            <Button color="primary" onClick={e => {
+              e.preventDefault()
+              this.addProducts()
+              this.toggle()
+            }}>Do Something</Button>{' '}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </div>
     );
   }
+
 }
 
-export default AddModal;
+export default BarAddModal

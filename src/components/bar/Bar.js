@@ -3,10 +3,10 @@ import {
   Container,
   Row,
   Col,
-  ListGroup,
-  ListGroupItem } from 'reactstrap'
+  ListGroup } from 'reactstrap'
 import API from '../../modules/data/API';
-
+import BarItem from './BarItem'
+import BarAddModal from './BarAddModal'
 class Bar extends Component {
 
   state = {
@@ -14,10 +14,10 @@ class Bar extends Component {
     inventory: []
   }
 
-  getInventoryData() {
+  getInventoryData = () => {
     let userId = sessionStorage.getItem("id")
     return API.getWithExpand("userProducts", "product", userId)
-    .then((inventory) => this.setState({
+    .then(inventory => this.setState({
       inventory: inventory
     }))
   }
@@ -33,9 +33,16 @@ class Bar extends Component {
     if(this.state.isLoaded) {
       return (
         <Container>
-          <Row>
-            <Col>
-              <h1 className="my-5">Your Bar</h1>
+          <Row className="my-5">
+            <Col className="d-flex">
+              <div>
+                <h1>Your Bar</h1>
+              </div>
+              <div className="ml-auto">
+                <BarAddModal
+                  buttonLabel="Add to Inventory"
+                  getInventoryData={this.getInventoryData} />
+              </div>
             </Col>
           </Row>
           <Row>
@@ -44,10 +51,10 @@ class Bar extends Component {
                 { /* List items in inventory */
                   inventory.map(item => {
                     return (
-                      <ListGroupItem className="mb-2" key={item.id}>
-                        <h4>{item.product.name}</h4>
-                        <p>Available: {item.amountAvailable}{item.product.unit}</p>
-                      </ListGroupItem>
+                      <BarItem
+                        key={item.id}
+                        item={item}
+                        getInventoryData={this.getInventoryData} />
                     )
                   })
                 }
