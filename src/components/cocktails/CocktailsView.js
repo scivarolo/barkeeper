@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {
+  Button,
   Container,
   Row,
   Col,
-  ListGroup,
-  ListGroupItem } from 'reactstrap'
+  ListGroup } from 'reactstrap'
+import { Link } from 'react-router-dom'
 import API from '../../modules/data/API';
 import CocktailAddModal from './CocktailAddModal';
 import CocktailItem from './CocktailItem';
@@ -77,6 +78,7 @@ class CocktailsView extends Component {
                 <CocktailAddModal
                   buttonLabel="Add Cocktails"
                   getCocktailData={this.getCocktailData} />
+                <Button tag={Link} to="/cocktails/new">New Recipe</Button>
               </div>
             </Col>
           </Row>

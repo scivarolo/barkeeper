@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import {
+  Button,
   Container,
   Row,
   Col,
+  InputGroup,
+  InputGroupAddon,
   ListGroup } from 'reactstrap'
 import API from '../../modules/data/API';
 import BarItem from './BarItem'
-import BarAddModal from './BarAddModal'
+import AddToBar from './AddToBar';
 
 class BarView extends Component {
 
   state = {
     isLoaded: false,
+    showAddInput: false,
     inventory: []
   }
 
@@ -23,10 +27,15 @@ class BarView extends Component {
     }))
   }
 
+  toggleAdd = () => {
+    this.setState({showAddInput: !this.state.showAddInput})
+  }
+
   componentDidMount() {
     this.getInventoryData()
     .then(() => this.setState({isLoaded: true}))
   }
+
 
   render() {
     let inventory = this.state.inventory
@@ -40,9 +49,18 @@ class BarView extends Component {
                 <h1>Your Bar</h1>
               </div>
               <div className="ml-auto">
-                <BarAddModal
-                  buttonLabel="Add to Inventory"
-                  getInventoryData={this.getInventoryData} />
+                <InputGroup>
+                  <AddToBar show={this.state.showAddInput}
+                    toggle={this.toggleAdd}
+                    getInventoryData={this.getInventoryData} />
+                  <InputGroupAddon addonType="append">
+                    <Button onClick={this.toggleAdd}>
+                    {
+                      this.state.showAddInput ? "Nevermind" : "Add Products"
+                    }
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
               </div>
             </Col>
           </Row>

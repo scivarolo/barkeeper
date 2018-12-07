@@ -6,6 +6,7 @@ import Dashboard from "./dashboard/Dashboard"
 import BarView from "./bar/BarView"
 import ShoppingListView from "./shoppinglist/ShoppingListView"
 import CocktailsView from './cocktails/CocktailsView';
+import NewCocktail from './create/NewCocktail'
 
 class Barkeeper extends Component {
 
@@ -16,6 +17,10 @@ class Barkeeper extends Component {
         <Switch>
           <Route exact path="/" render={() => {
               return <Dashboard />
+          }} />
+
+          <Route path="/cocktails/new" render={props => {
+            return <NewCocktail {...props} />
           }} />
 
           <Route path="/cocktails" render={() => {
