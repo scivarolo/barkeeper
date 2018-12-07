@@ -6,7 +6,7 @@ class UnitsDropdown extends Component {
 
   render() {
     return (
-      <Input type="select" required={this.props.isRequired}
+      <Input id="unitsDropdown" type="select" required={this.props.isRequired}
         onChange={this.props.onChangeFn}>
         <option value="">unit</option>
         <option>oz</option>
