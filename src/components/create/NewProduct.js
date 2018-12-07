@@ -13,6 +13,7 @@ import API from '../../modules/data/API';
 import user from '../../modules/data/user';
 
 //TODO: Allow new ingredient to be created when a new product is being created.
+//TODO: Give user feedback when a new product is created and added to their inventory.
 
 class NewProduct extends Component {
 
