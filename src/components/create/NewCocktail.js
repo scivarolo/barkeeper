@@ -12,7 +12,6 @@ import {
   import IngredientInput from './IngredientInput'
   import user from '../../modules/data/user';
 
-// TODO: Affordance to add a new ingredient on the fly.
 // TODO: Prevent already used recipe name?
 // TODO: Make an ingredient "optional" (won't count against ability to make it)
 
@@ -24,7 +23,8 @@ class NewCocktail extends Component {
     cocktailName: "",
     cocktailInstructions: "",
     newCocktailId: "",
-    ingredientRows: 3
+    ingredientRows: 3,
+    newIngredientIds: []
   }
 
   loadIngredients = () => {
@@ -81,15 +81,44 @@ class NewCocktail extends Component {
     })
     // Capture new recipe ID from response
     .then(r => this.setState({newRecipeId: r.id}))
+    //Check if any new ingredients and create entries in ingredients table.
+    .then(() => {
+      let newIngredients = []
+      for(let i in cocktailIngredients) {
+        if(cocktailIngredients[i].ingredient.customOption) {
+          newIngredients.push(API.saveData("ingredients", {
+            label: cocktailIngredients[i].ingredient.label,
+            createdBy: user.getId()
+          }))
+        }
+      }
+      if (newIngredients.length) {
+        return Promise.all(newIngredients)
+          .then(newIngredients => {
+            //Setstate with the new ingredient IDs
+            this.setState({
+              newIngredientIds: newIngredients
+            })
+        })
+      } else {
+        return
+      }
+    })
     // For each ingredient, save relationship in cocktailIngredients
-    // Includes cocktailId, ingredientId, amount, unit, sortOrder, isRequired:true
     .then(() => {
       let ingredients = []
       for(let i in cocktailIngredients) {
         if(cocktailIngredients[i].ingredient) {
+
+          //Use the ingredientId unless it was new, then find the id from the newIds array in state
+          let ingredientId = cocktailIngredients[i].ingredient.id
+          if(cocktailIngredients[i].ingredient.customOption) {
+            ingredientId = this.state.newIngredientIds.find(newIng => newIng.label === cocktailIngredients[i].ingredient.label).id
+          }
+
           let ingredientObj = {
             cocktailId: this.state.newRecipeId,
-            ingredientId: cocktailIngredients[i].ingredient.id,
+            ingredientId: ingredientId,
             sortOrder: cocktailIngredients[i].sortOrder,
             amount: Number(cocktailIngredients[i].amount),
             unit: cocktailIngredients[i].unit,
@@ -129,6 +158,7 @@ class NewCocktail extends Component {
           </Row>
 
           {this.outputIngredientInputs()}
+
           <Button onClick={this.addIngredientInput}>Add Ingredient</Button>
           <Row>
             <Col>

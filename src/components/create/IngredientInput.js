@@ -27,7 +27,8 @@ class IngredientInput extends Component {
         <Col>
           <InputGroup>
             <Typeahead
-              id="recipeName"
+              allowNew
+              newSelectionPrefix="Add New: "
               labelKey="label"
               options={ingredients}
               placeholder="Search for Ingredient"
