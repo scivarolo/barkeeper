@@ -20,12 +20,12 @@ class IngredientInput extends Component {
               labelKey="label"
               options={this.props.ingredients}
               placeholder="Search for Ingredient"
-              onChange={selected => this.props.updateValues([this.props.ingredientId], selected[0])} />
+              onChange={selected => this.props.ingredientToState(this.props.ingredientId, "label", selected[0].id)} />
               <Input type="number" placeholder="amount"
-                onChange={e => this.props.updateValues(`${this.props.ingredientId}amount`, e.target.value)}></Input>
+                onChange={e => this.props.ingredientToState(this.props.ingredientId, "amount", e.target.value)}></Input>
             <InputGroupAddon addonType="append">
               <Input type="select"
-                onChange={e => this.props.updateValues(`${this.props.ingredientId}unit`, e.target.value)}>
+                onChange={e => this.props.ingredientToState(this.props.ingredientId, "unit", e.target.value)}>
                 <option value="">unit</option>
                 <option>oz</option>
                 <option>ml</option>

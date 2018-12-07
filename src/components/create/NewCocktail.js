@@ -16,7 +16,10 @@ class NewCocktail extends Component {
 
   state = {
     ingredients: [],
-    ingredientRows: 4
+    recipeIngredients: {},
+    recipeName: "",
+    recipeInstructions: "",
+    ingredientRows: 3
   }
 
   loadIngredients = () => {
@@ -24,15 +27,36 @@ class NewCocktail extends Component {
     .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
-  updateValuesInState = (key, value) => {
+  valueToState = (key, value) => {
     this.setState({[key]: value})
+  }
+
+  ingredientToState = (ingredientId, key, value) => {
+    //store the values for each ingredient in object together
+    //store all ingredient objects in an object together
+    this.setState(prevState => {
+      let obj = Object.assign({}, prevState.recipeIngredients)
+
+      if(!obj[ingredientId]) obj[ingredientId] = {}
+      obj[ingredientId][key] = value
+
+      return {
+        recipeIngredients: obj
+      }
+    })
+  }
+
+  addIngredientInput = () => {
+    this.setState({
+      ingredientRows: this.state.ingredientRows + 1
+    })
   }
 
   outputIngredientInputs = () => {
     let array = []
     for (let i = 1; i <= this.state.ingredientRows; i++) {
       array.push(<IngredientInput
-        updateValues={this.updateValuesInState}
+        ingredientToState={this.ingredientToState}
         ingredients={this.state.ingredients}
         key={`ingredient${i}`}
         ingredientId={`ingredient${i}`} />)
@@ -52,16 +76,17 @@ class NewCocktail extends Component {
         <Row>
           <Col>
             <Label for="recipeName">Recipe Name</Label>
-            <Input id="recipeName" type="text" bsSize="lg" />
+            <Input id="recipeName" type="text" bsSize="lg"
+              onChange={e => this.valueToState(e.target.id, e.target.value)} />
           </Col>
         </Row>
 
         {this.outputIngredientInputs()}
-        <Button onClick={() => this.setState({ingredientRows: this.state.ingredientRows + 1})}>Add Ingredient</Button>
+        <Button onClick={this.addIngredientInput}>Add Ingredient</Button>
         <Row>
           <Col>
             <Label for="instructions">Instructions</Label>
-            <Input type="textarea" id="instructions" />
+            <Input type="textarea" id="instructions" onChange={e => this.valueToState(e.target.id, e.target.value)} />
           </Col>
         </Row>
 
