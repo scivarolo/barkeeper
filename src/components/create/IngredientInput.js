@@ -7,6 +7,7 @@ import {
   Input,
   InputGroupAddon
 } from 'reactstrap'
+import UnitsDropdown from './UnitsDropdown';
 
 //TODO: Pull in units list from database
 
@@ -43,15 +44,8 @@ class IngredientInput extends Component {
               <Input type="number" placeholder="amount"
                 onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
-              <Input type="select" required={this.state.isRequired}
-                onChange={e => this.props.ingredientToState(stateKey, "unit", e.target.value)}>
-                <option value="">unit</option>
-                <option>oz</option>
-                <option>ml</option>
-                <option>dashes</option>
-                <option>tbsp</option>
-                <option>barspoon</option>
-              </Input>
+                <UnitsDropdown isRequired={this.state.isRequired}
+                  onChangeFn={e => this.props.ingredientToState(stateKey, "units", e.target.value)} />
             </InputGroupAddon>
           </InputGroup>
         </Col>
