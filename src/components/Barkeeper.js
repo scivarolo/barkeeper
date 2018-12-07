@@ -19,9 +19,8 @@ class Barkeeper extends Component {
               return <Dashboard />
           }} />
 
-
-          <Route path="/cocktails/new" render={() => {
-            return <NewCocktail />
+          <Route path="/cocktails/new" render={props => {
+            return <NewCocktail {...props} />
           }} />
 
           <Route path="/cocktails" render={() => {

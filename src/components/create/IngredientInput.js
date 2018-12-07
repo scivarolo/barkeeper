@@ -8,24 +8,43 @@ import {
   InputGroupAddon
 } from 'reactstrap'
 
+//TODO: Pull in units list from database
+
 class IngredientInput extends Component {
 
+  state = {
+    isRequired: false
+  }
 
   render() {
+
+    let { ingredientId, ingredients } = this.props
+    let stateKey = `ingredient${ingredientId}`
+
     return (
-      <Row id={this.props.ingredientId} className="my-2">
+      <Row id={ingredientId} className="my-2">
         <Col>
           <InputGroup>
             <Typeahead
+              id="recipeName"
               labelKey="label"
-              options={this.props.ingredients}
+              options={ingredients}
               placeholder="Search for Ingredient"
-              onChange={selected => this.props.ingredientToState(this.props.ingredientId, "label", selected[0].id)} />
+              onChange={selected => {
+                if (selected.length) {
+                  this.setState({isRequired: true})
+                }
+                else {
+                  this.setState({isRequired:false})
+                }
+                this.props.ingredientToState(stateKey, "ingredient", selected[0])
+                this.props.ingredientToState(stateKey, "sortOrder", ingredientId)
+                }} />
               <Input type="number" placeholder="amount"
-                onChange={e => this.props.ingredientToState(this.props.ingredientId, "amount", e.target.value)}></Input>
+                onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
-              <Input type="select"
-                onChange={e => this.props.ingredientToState(this.props.ingredientId, "unit", e.target.value)}>
+              <Input type="select" required={this.state.isRequired}
+                onChange={e => this.props.ingredientToState(stateKey, "unit", e.target.value)}>
                 <option value="">unit</option>
                 <option>oz</option>
                 <option>ml</option>
