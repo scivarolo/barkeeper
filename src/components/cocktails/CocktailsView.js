@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import API from '../../modules/data/API';
 import CocktailAddModal from './CocktailAddModal';
 import CocktailItem from './CocktailItem';
+import { Alert, AlertContainer } from 'react-bs-notifier'
 
 class CocktailsView extends Component {
 
@@ -16,7 +17,16 @@ class CocktailsView extends Component {
     isLoaded: false,
     userCocktails: [],
     cocktails: [],
-    cocktailIngredients: []
+    cocktailIngredients: [],
+    showSuccessMessage: false,
+    successMessage: ""
+  }
+
+  toggleSuccessMessage = (message) => {
+    this.setState({showSuccessMessage: true, successMessage: message})
+    setTimeout(function(){
+      this.setState({showSuccessMessage: false, successMessage: ""});
+    }.bind(this), 3000)
   }
 
   getCocktailData = () => {
@@ -53,6 +63,11 @@ class CocktailsView extends Component {
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.setState({isLoaded: true}))
+
+    //If a new cocktail was just created, show the success message
+    if(this.props.location.hasOwnProperty('successMessage')) {
+      this.toggleSuccessMessage(this.props.location.successMessage)
+    }
   }
 
   render() {
@@ -77,7 +92,8 @@ class CocktailsView extends Component {
               <div className="ml-auto">
                 <CocktailAddModal
                   buttonLabel="Add Cocktails"
-                  getCocktailData={this.getCocktailData} />
+                  getCocktailData={this.getCocktailData}
+                  showSuccessMessage={this.toggleSuccessMessage} />
                 <Button tag={Link} to="/cocktails/new">New Recipe</Button>
               </div>
             </Col>
@@ -98,6 +114,12 @@ class CocktailsView extends Component {
               </ListGroup>
             </Col>
           </Row>
+          <AlertContainer>
+            {this.state.showSuccessMessage
+              ? ( <Alert type="success" headline="Successfully Added">
+                    {this.state.successMessage}
+                  </Alert> ) : null }
+          </AlertContainer>
         </Container>
       )
     } else {

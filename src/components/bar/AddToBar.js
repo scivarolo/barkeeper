@@ -38,7 +38,10 @@ class AddToBar extends Component {
     return Promise.all(savePromises)
       .then(() => this.setState({selected: []}))
       .then(() => this.props.getInventoryData())
-      .then(() => this.props.toggle())
+      .then(() => {
+        this.props.toggleSuccessMessage("Products were successfully added to your bar.")
+        this.props.toggle()
+      })
   }
 
   toggleCreateNewProduct = () => {
@@ -79,6 +82,7 @@ class AddToBar extends Component {
             ? <NewProduct
                 product={this.state.selected[this.state.selected.length - 1]}
                 toggle={this.toggleCreateNewProduct}
+                toggleSuccessMessage={this.props.toggleSuccessMessage}
                 getInventoryData={this.props.getInventoryData}
                 loadProducts={this.loadProducts} />
             : null

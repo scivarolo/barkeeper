@@ -13,7 +13,6 @@ import API from '../../modules/data/API';
 import user from '../../modules/data/user';
 
 //TODO: Allow new ingredient to be created when a new product is being created.
-//TODO: Give user feedback when a new product is created and added to their inventory.
 
 class NewProduct extends Component {
 
@@ -66,7 +65,10 @@ class NewProduct extends Component {
       }))
       .then(() => this.props.getInventoryData())
       .then(() => this.props.loadProducts())
-      .then(() => this.props.toggle())
+      .then(() => {
+        this.props.toggleSuccessMessage(`${this.state.newProductName} successfully created and added to your bar`)
+        this.props.toggle()
+      })
   }
 
   render() {

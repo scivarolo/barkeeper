@@ -10,13 +10,16 @@ import {
 import API from '../../modules/data/API';
 import BarItem from './BarItem'
 import AddToBar from './AddToBar';
+import { Alert, AlertContainer } from 'react-bs-notifier'
 
 class BarView extends Component {
 
   state = {
+    inventory: [],
     isLoaded: false,
     showAddInput: false,
-    inventory: []
+    showSuccessMessage: false,
+    successMessage: ""
   }
 
   getInventoryData = () => {
@@ -29,6 +32,13 @@ class BarView extends Component {
 
   toggleAdd = () => {
     this.setState({showAddInput: !this.state.showAddInput})
+  }
+
+  toggleSuccessMessage = (message) => {
+    this.setState({showSuccessMessage: true, successMessage: message})
+    setTimeout(function(){
+      this.setState({showSuccessMessage: false, successMessage: ""});
+    }.bind(this), 3000)
   }
 
   componentDidMount() {
@@ -52,6 +62,7 @@ class BarView extends Component {
                 <InputGroup>
                   <AddToBar show={this.state.showAddInput}
                     toggle={this.toggleAdd}
+                    toggleSuccessMessage={this.toggleSuccessMessage}
                     getInventoryData={this.getInventoryData} />
                   <InputGroupAddon addonType="append">
                     <Button onClick={this.toggleAdd}>
@@ -80,6 +91,12 @@ class BarView extends Component {
               </ListGroup>
             </Col>
           </Row>
+          <AlertContainer>
+            {this.state.showSuccessMessage
+              ? ( <Alert type="success" headline="Successfully Added">
+                    {this.state.successMessage}
+                  </Alert> ) : null }
+          </AlertContainer>
         </Container>
       )
     }
