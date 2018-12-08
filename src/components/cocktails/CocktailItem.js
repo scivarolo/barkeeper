@@ -79,7 +79,7 @@ class CocktailItem extends Component {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className="d-flex justify-content-end">
             <Button size="sm" onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>
           </Col>
         </Row>
