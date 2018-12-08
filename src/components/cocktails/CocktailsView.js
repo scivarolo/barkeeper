@@ -79,7 +79,6 @@ class CocktailsView extends Component {
     if(this.state.isLoaded) {
       return (
         <Container>
-          <Button onClick={this.toggleSuccessMessage}>Test</Button>
           <Row className="my-5">
             <Col className="d-flex">
               <div>
