@@ -45,6 +45,7 @@ class CocktailAddModal extends Component {
     return Promise.all(savePromises)
       .then(() => this.setState({selectedProducts: []}))
       .then(() => this.props.getCocktailData())
+      .then(() => this.props.showSuccessMessage("Cocktail was successfully added!"))
   }
 
   handleSelections(e) {
