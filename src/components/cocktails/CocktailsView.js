@@ -84,11 +84,15 @@ class CocktailsView extends Component {
     /* cocktails contains the ingredient Ids
      * userCocktail contains the id needed for delete
      * and creating the keys for the ListGroupItems
-     * ingredients contains the ingredient labels
+     * cocktailIngredients contains the ingredient labels
+     * userInventory contains the users inventory data for comparing to cocktail ingredients
      */
-    let userCocktails = this.state.userCocktails
-    let cocktails = this.state.cocktails
-    let ingredients = this.state.cocktailIngredients
+
+    let {
+      cocktails,
+      userCocktails,
+      cocktailIngredients,
+      userInventory } = this.state
 
     if(this.state.isLoaded) {
       return (
@@ -116,7 +120,8 @@ class CocktailsView extends Component {
                       key={userCocktails[i].id}
                       userCocktail={userCocktails[i]}
                       cocktail={cocktail}
-                      ingredients={ingredients[i]}
+                      userInventory={userInventory}
+                      ingredients={cocktailIngredients[i]}
                       getCocktailData={this.getCocktailData} />)
                   })
                 }
