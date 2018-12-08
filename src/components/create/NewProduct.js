@@ -66,7 +66,10 @@ class NewProduct extends Component {
       }))
       .then(() => this.props.getInventoryData())
       .then(() => this.props.loadProducts())
-      .then(() => this.props.toggle())
+      .then(() => {
+        this.props.toggleSuccessMessage(`${this.state.newProductName} successfully created and added to your bar`)
+        this.props.toggle()
+      })
   }
 
   render() {

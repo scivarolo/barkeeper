@@ -136,7 +136,11 @@ class NewCocktail extends Component {
       wantToMake: true,
       makeCount: 0
     }))
-    .then(() => this.props.history.push('/cocktails'))
+    // Redirect and show success message
+    .then(() => this.props.history.push({
+      pathname: '/cocktails',
+      successMessage: `${this.state.cocktailName} was successfully created and added to your list.`
+    }))
   }
 
   componentDidMount() {

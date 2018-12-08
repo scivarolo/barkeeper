@@ -23,8 +23,8 @@ class Barkeeper extends Component {
             return <NewCocktail {...props} />
           }} />
 
-          <Route path="/cocktails" render={() => {
-              return <CocktailsView />
+          <Route path="/cocktails" render={props => {
+              return <CocktailsView {...props} />
           }} />
 
           <Route path="/bar" render={() => {

@@ -63,6 +63,11 @@ class CocktailsView extends Component {
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.setState({isLoaded: true}))
+
+    //If a new cocktail was just created, show the success message
+    if(this.props.location.hasOwnProperty('successMessage')) {
+      this.toggleSuccessMessage(this.props.location.successMessage)
+    }
   }
 
   render() {
