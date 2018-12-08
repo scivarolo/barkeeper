@@ -11,6 +11,11 @@ import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
 import AddToList from './AddToList';
 
+// TODO: Show success alert when product added to shopping list.
+// TODO: Show success alert when product is created and added to shopping list.
+// TODO: Allow ingredients to be added to shopping list not just products?
+// TODO: Show success alert when ingredient is added to shopping list.
+
 class ShoppingListView extends Component {
 
   state = {

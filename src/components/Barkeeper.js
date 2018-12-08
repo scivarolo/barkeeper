@@ -8,6 +8,8 @@ import ShoppingListView from "./shoppinglist/ShoppingListView"
 import CocktailsView from './cocktails/CocktailsView';
 import NewCocktail from './create/NewCocktail'
 
+// TODO: Move Alert Container to Barkeeper to make available to all views as needed
+
 class Barkeeper extends Component {
 
   render() {
