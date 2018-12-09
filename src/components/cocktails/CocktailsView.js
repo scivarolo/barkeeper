@@ -50,7 +50,7 @@ class CocktailsView extends Component {
       cocktails.forEach(c => {
         //build query string for getting ingredient names of each cocktail
         let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '')
-        ingredientQueries.push(API.getAll(`ingredients`, null, queryString))
+        ingredientQueries.push(API.getWithFilters(`ingredients`, queryString))
       })
       return Promise.all(ingredientQueries)
     })

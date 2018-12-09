@@ -8,9 +8,15 @@ class API {
     this.baseUrl = "http://localhost:5002"
   }
 
-  getAll(resource, userId, query) {
+  getAll(resource, userId) {
     let url = `${this.baseUrl}/${resource}?id_ne=false`
-    if (query) url += query
+    if (userId) url += `&userId=${userId}`
+    return fetch(url).then(r => r.json())
+  }
+
+  getWithFilters(resource, string, userId) {
+    let url = `${this.baseUrl}/${resource}?id_ne=false&${string}`
+    if (string) url += string
     if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())
   }
