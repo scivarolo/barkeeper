@@ -8,6 +8,8 @@ import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import user from '../../modules/data/user';
 import API from '../../modules/data/API'
 
+// TODO: Bought ingredient, choose/create product to add to bar
+
 class AddIngredient extends Component {
 
   state = {
