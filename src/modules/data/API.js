@@ -9,9 +9,8 @@ class API {
   }
 
   getAll(resource, userId) {
-    let url = `${this.baseUrl}/${resource}`
-    if (userId) url += `?userId=${userId}`
-
+    let url = `${this.baseUrl}/${resource}?id_ne=false`
+    if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())
   }
 
@@ -20,13 +19,20 @@ class API {
   }
 
   getWithEmbed(resource, embed, userId) {
-    let url = `${this.baseUrl}/${resource}?_embed=${embed}`
+    let url = `${this.baseUrl}/${resource}?_embed=${embed}&id_ne=false`
+    if (userId) url += `&userId=${userId}`
+    return fetch(url).then(r => r.json())
+  }
+
+  getWithExpands(resource, userId, ...expands) {
+    let string = expands.reduce((string, expand) => `${string}&_expand=${expand}`, '')
+    let url = `${this.baseUrl}/${resource}?${string}&id_ne=false`
     if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())
   }
 
   getWithExpand(resource, expand, userId) {
-    let url = `${this.baseUrl}/${resource}?_expand=${expand}`
+    let url = `${this.baseUrl}/${resource}?_expand=${expand}&id_ne=false`
     if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())
   }
