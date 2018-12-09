@@ -8,11 +8,38 @@ import {
 } from 'reactstrap'
 import API from '../../modules/data/API';
 import "./cocktailItem.scss"
+import RecipeIngredient from './recipe/RecipeIngredient';
 
 class CocktailItem extends Component {
 
   state = {
-    userCanMake: true
+    userCanMake: true,
+    ingredientsStatus: {},
+    ingredientAvailability: {}
+  }
+
+  ingredientToState = (ingredient, key, value) => {
+    //store the values for each ingredient in object together
+    //store all ingredient objects in an object together
+    this.setState(prevState => {
+      let obj = Object.assign({}, prevState.ingredientsStatus)
+      let objectKey = ingredient.id
+      if(!obj[objectKey]) obj[objectKey] = {}
+      obj[objectKey][key] = value
+
+      return {
+        ingredientsStatus: obj
+      }
+    })
+  }
+
+  ingredientAvailability = (key, value) => {
+    this.setState(prevState => {
+      //key is ingredient.id
+      //value is true or false
+      let obj = Object.assign({}, prevState.ingredientAvailability, {[key]: value})
+      return {ingredientAvailability: obj}
+    })
   }
 
   deleteItem(id) {
@@ -21,19 +48,23 @@ class CocktailItem extends Component {
   }
 
   compareIngredient(ingredient, userInventory) {
+    let canMake = true
     if(!userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)) {
+      canMake = false
       this.setState({userCanMake: false})
     }
+    this.ingredientToState(ingredient, "canMake", canMake)
+    this.ingredientAvailability(ingredient.ingredientId, canMake)
   }
 
   componentDidMount() {
     this.props.cocktail.cocktailIngredients.forEach(ingredient => {
       this.compareIngredient(ingredient, this.props.userInventory)
-      console.log(ingredient)
     })
   }
 
   componentDidUpdate(prevProps) {
+    //Loop through recipe ingredients to find if recipe can be made with user inventory
     if(this.props.userInventory !== prevProps.userInventory) {
       this.setState({userCanMake: true})
       this.props.cocktail.cocktailIngredients.forEach(ingredient => {
@@ -67,7 +98,12 @@ class CocktailItem extends Component {
               {
                 cocktail.cocktailIngredients.map((ingredient, i) => {
                   return (
-                    <li key={ingredient.id}>{ingredient.amount} {ingredient.unit} {ingredients[i].label}</li>
+                    <RecipeIngredient
+                      key={ingredient.id}
+                      canMake={this.state.ingredientAvailability[ingredient.ingredientId]}
+                      ingredient={ingredient}
+                      label={ingredients[i].label} />
+                    // <li key={ingredient.id}>{ingredient.amount} {ingredient.unit} {ingredients[i].label}</li>
                   )
                 })
               }

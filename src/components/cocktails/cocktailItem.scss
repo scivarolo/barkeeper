@@ -5,3 +5,22 @@
   border-bottom-right-radius: 0;
   margin-right: -20px;
 }
+
+.ingredient--can-make {
+  .btn {
+    opacity: 0;
+    transition: opacity 0.125s ease-in-out 1.25s;
+  }
+  &:hover .btn {
+    opacity: 1;
+    transition: opacity .125s ease-in-out 0s;
+  }
+}
+
+.ingredient__label {
+  margin: 0 5px;
+}
+
+.ingredient__unit {
+  margin: 0 3px;
+}
