@@ -29,11 +29,33 @@ class ShoppingListItem extends Component {
       .then(() => this.props.deleteItem(item.id))
   }
 
+  increaseQuantity = () => {
+    return API.editData("userShopping", this.props.item.id, {
+      quantity: this.props.item.quantity + 1
+    }).then(() => this.props.getShoppingData())
+  }
+
+  decreaseQuantity = () => {
+    if (this.props.item.quantity === 1) {
+      return this.props.deleteItem(this.props.item.id)
+    } else {
+      return API.editData("userShopping", this.props.item.id, {
+        quantity: this.props.item.quantity - 1
+      }).then(() => this.props.getShoppingData())
+    }
+  }
+
   render() {
     let item = this.props.item
     return (
       <ListGroupItem className="mb-2 d-flex" id={item.id}>
-        <div>{item.productId ? `Product: ${item.product.name}` : `Ingredient: ${item.ingredient.label}`}</div>
+        <div>
+          <h6>{item.productId ? `Product: ${item.product.name}` : `Ingredient: ${item.ingredient.label}`}</h6>
+          <p>Quantity: {item.quantity}
+            <i onClick={this.decreaseQuantity} className="icon-minus icons mx-1"></i>
+            <i onClick={this.increaseQuantity} className="icon-plus icons mx-1"></i>
+          </p>
+        </div>
         <div className="ml-auto">
           { item.productId
             ? <Button className="btn-sm ml-2" onClick={() => this.boughtItem(item)}>Bought</Button>

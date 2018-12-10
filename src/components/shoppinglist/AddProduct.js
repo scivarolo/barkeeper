@@ -21,14 +21,25 @@ class AddProduct extends Component {
   }
 
   addDropdownProducts = () => {
+    if(!this.state.selected.length) return
     let userId = user.getId()
     let products = this.state.selected
-    let savePromises = products.map(product => API.saveData("userShopping", {
-      productId: product.id,
-      ingredientId: "",
-      userId: userId,
-      quantity: 1
-    }))
+
+    let savePromises = products.map(product => {
+      let haveProduct = this.props.shoppingList.find(shopProduct => shopProduct.productId === product.id)
+      if(haveProduct) {
+        return API.editData("userShopping", haveProduct.id, {
+          quantity: haveProduct.quantity + 1
+        })
+      } else {
+        return API.saveData("userShopping", {
+          productId: product.id,
+          ingredientId: false,
+          userId: userId,
+          quantity: 1
+        })
+      }
+    })
     return Promise.all(savePromises)
       .then(() => this.setState({selected: []}))
       .then(() => this.props.getShoppingData())

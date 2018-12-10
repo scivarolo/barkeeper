@@ -4,7 +4,6 @@ import {
   Col,
   Container,
   InputGroup,
-  InputGroupAddon,
   ListGroup,
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
@@ -70,7 +69,11 @@ class ShoppingListView extends Component {
               </div>
               <div className="ml-auto">
               <InputGroup>
-                <AddProduct show={this.state.showAddProduct} toggle={this.toggleAddProduct} getShoppingData={this.getShoppingData} />
+                <AddProduct
+                  show={this.state.showAddProduct}
+                  toggle={this.toggleAddProduct}
+                  shoppingList={this.state.shoppingProducts}
+                  getShoppingData={this.getShoppingData} />
                 <Button className="mx-2" onClick={this.toggleAddProduct}>
                   {this.state.showAddProduct ? "Cancel" : "Add Products"}
                 </Button>
@@ -91,6 +94,7 @@ class ShoppingListView extends Component {
                     return <ShoppingListItem
                             key={item.id}
                             item={item}
+                            getShoppingData={this.getShoppingData}
                             deleteItem={this.deleteItem} />
                   })
                 }

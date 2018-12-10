@@ -25,7 +25,7 @@ class AddIngredient extends Component {
     let ingredients = this.state.selected
     let savePromises = ingredients.map(ingredient => API.saveData("userShopping", {
       ingredientId: ingredient.id,
-      productId: "",
+      productId: false,
       userId: userId,
       quantity: 1
     }))
