@@ -73,6 +73,7 @@ class BarView extends Component {
                   <AddToBar show={this.state.showAddInput}
                     toggle={this.toggleAdd}
                     toggleSuccessMessage={this.toggleSuccessMessage}
+                    inventory={this.state.inventory}
                     getInventoryData={this.getInventoryData} />
                   <InputGroupAddon addonType="append">
                     <Button onClick={this.toggleAdd}>

@@ -4,13 +4,13 @@ import {
   Col,
   Container,
   InputGroup,
-  InputGroupAddon,
   ListGroup,
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
 import AddProduct from './AddProduct'
 import AddIngredient from './AddIngredient'
+import user from '../../modules/data/user';
 
 // TODO: Show success alert when product added to shopping list.
 // TODO: Show success alert when product is created and added to shopping list.
@@ -28,7 +28,7 @@ class ShoppingListView extends Component {
   }
 
   getShoppingData = () => {
-    let userId = sessionStorage.getItem("id")
+    let userId = user.getId()
     return API.getWithExpands("userShopping", userId, "product", "ingredient")
     .then(items => {
       this.setState({
@@ -70,11 +70,19 @@ class ShoppingListView extends Component {
               </div>
               <div className="ml-auto">
               <InputGroup>
-                <AddProduct show={this.state.showAddProduct} toggle={this.toggleAddProduct} getShoppingData={this.getShoppingData} />
+                <AddProduct
+                  show={this.state.showAddProduct}
+                  toggle={this.toggleAddProduct}
+                  shoppingList={this.state.shoppingProducts}
+                  getShoppingData={this.getShoppingData} />
                 <Button className="mx-2" onClick={this.toggleAddProduct}>
                   {this.state.showAddProduct ? "Cancel" : "Add Products"}
                 </Button>
-                <AddIngredient show={this.state.showAddIngredient} toggle={this.toggleAddIngredient} getShoppingData={this.getShoppingData} />
+                <AddIngredient
+                  show={this.state.showAddIngredient}
+                  toggle={this.toggleAddIngredient}
+                  shoppingList={this.state.shoppingProducts}
+                  getShoppingData={this.getShoppingData} />
                 <Button className="ml-2" onClick={this.toggleAddIngredient}>
                   {this.state.showAddIngredient ? "Cancel" : "Add Ingredients"}
                 </Button>
@@ -91,6 +99,7 @@ class ShoppingListView extends Component {
                     return <ShoppingListItem
                             key={item.id}
                             item={item}
+                            getShoppingData={this.getShoppingData}
                             deleteItem={this.deleteItem} />
                   })
                 }

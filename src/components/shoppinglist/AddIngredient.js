@@ -21,14 +21,25 @@ class AddIngredient extends Component {
   }
 
   addDropdownIngredients = () => {
+    if(!this.state.selected.length) return
     let userId = user.getId()
     let ingredients = this.state.selected
-    let savePromises = ingredients.map(ingredient => API.saveData("userShopping", {
-      ingredientId: ingredient.id,
-      productId: "",
-      userId: userId,
-      quantity: 1
-    }))
+
+    let savePromises = ingredients.map(ingredient => {
+      let haveIngredient = this.props.shoppingList.find(shopIngredient => shopIngredient.ingredientId === ingredient.id)
+      if(haveIngredient) {
+        return API.editData("userShopping", haveIngredient.id, {
+          quantity: haveIngredient.quantity + 1
+        })
+      } else {
+        return API.saveData("userShopping", {
+          ingredientId: ingredient.id,
+          productId: false,
+          userId: userId,
+          quantity: 1
+        })
+      }
+    })
     return Promise.all(savePromises)
       .then(() => this.setState({selected: []}))
       .then(() => this.props.getShoppingData())
