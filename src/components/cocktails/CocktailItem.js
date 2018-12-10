@@ -9,6 +9,7 @@ import {
 import API from '../../modules/data/API';
 import "./cocktailItem.scss"
 import RecipeIngredient from './recipe/RecipeIngredient';
+import user from '../../modules/data/user'
 
 class CocktailItem extends Component {
 
@@ -57,6 +58,20 @@ class CocktailItem extends Component {
     this.ingredientAvailability(ingredient.ingredientId, canMake)
   }
 
+  addToShoppingList = (...ingredients) => {
+    //Array of missing ingredients to add to shopping list.
+    let addArray = []
+    ingredients.forEach(ingredient => {
+      addArray.push(API.saveData("userShopping", {
+        ingredientId: ingredient.id,
+        productId: false,
+        userId: user.getId(),
+        quantity: 1
+      }))
+      return Promise.all(addArray)
+    })
+  }
+
   componentDidMount() {
     this.props.cocktail.cocktailIngredients.forEach(ingredient => {
       this.compareIngredient(ingredient, this.props.userInventory)
@@ -75,7 +90,7 @@ class CocktailItem extends Component {
 
   render() {
 
-    let { cocktail, ingredients, userInventory } = this.props
+    let { cocktail, ingredients } = this.props
 
     return (
       <ListGroupItem className="mb-3" key={cocktail.id}>
@@ -102,8 +117,8 @@ class CocktailItem extends Component {
                       key={ingredient.id}
                       canMake={this.state.ingredientAvailability[ingredient.ingredientId]}
                       ingredient={ingredient}
+                      addToShoppingList={this.addToShoppingList}
                       label={ingredients[i].label} />
-                    // <li key={ingredient.id}>{ingredient.amount} {ingredient.unit} {ingredients[i].label}</li>
                   )
                 })
               }
