@@ -35,8 +35,11 @@ class Units {
     return startValue * base / toUnitBase
   }
   compare(aVal, aUnit, bVal, bUnit) {
+    console.log(aVal, aUnit, bVal, bUnit)
     let a = this.convert(aVal, aUnit, "ml")
     let b = this.convert(bVal, bUnit, "ml")
+
+    console.log("a: ", a, " b: ", b)
 
     if (a > b) {
       return 1

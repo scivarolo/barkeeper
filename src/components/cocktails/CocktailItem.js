@@ -10,6 +10,7 @@ import API from '../../modules/data/API';
 import "./cocktailItem.scss"
 import RecipeIngredient from './recipe/RecipeIngredient';
 import user from '../../modules/data/user'
+import Units from '../../modules/UnitConverter';
 
 class CocktailItem extends Component {
 
@@ -43,6 +44,8 @@ class CocktailItem extends Component {
     })
   }
 
+
+
   deleteItem(id) {
     return API.deleteData("userCocktails", id)
     .then(() => this.props.getCocktailData())
@@ -50,9 +53,23 @@ class CocktailItem extends Component {
 
   compareIngredient(ingredient, userInventory) {
     let canMake = true
-    if(!userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)) {
+    let products = userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
+    if(!products.length) {
       canMake = false
       this.setState({userCanMake: false})
+    } else {
+      //TODO: When there are multiple products that match an ingredient
+      products.forEach(product => {
+        let amount = product.amountAvailable
+        let unit = product.product.unit
+        let comparison = Units.compare(amount, unit, ingredient.amount, ingredient.unit)
+        console.log(comparison)
+        if(comparison === 1 || comparison === 0) {
+          canMake = true
+        } else {
+          canMake = false
+        }
+      })
     }
     this.ingredientToState(ingredient, "canMake", canMake)
     this.ingredientAvailability(ingredient.ingredientId, canMake)
