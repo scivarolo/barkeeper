@@ -9,24 +9,27 @@ import {
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
-import AddToList from './AddToList';
+import AddProduct from './AddProduct'
+import AddIngredient from './AddIngredient'
 
 // TODO: Show success alert when product added to shopping list.
 // TODO: Show success alert when product is created and added to shopping list.
-// TODO: Allow ingredients to be added to shopping list not just products?
 // TODO: Show success alert when ingredient is added to shopping list.
+// TODO: Ability to create Ingredient on the fly.
+// TODO: Ability to create Product on the fly.
 
 class ShoppingListView extends Component {
 
   state = {
     shoppingProducts: [],
     isLoaded: false,
-    showAddInput: false
+    showAddProduct: false,
+    showAddIngredient: false
   }
 
   getShoppingData = () => {
     let userId = sessionStorage.getItem("id")
-    return API.getWithExpand("userShopping", "product", userId)
+    return API.getWithExpands("userShopping", userId, "product", "ingredient")
     .then(items => {
       this.setState({
         shoppingProducts: items,
@@ -34,9 +37,15 @@ class ShoppingListView extends Component {
       })
     })
   }
-  toggleAdd = () => {
-    this.setState({showAddInput: !this.state.showAddInput})
+
+  toggleAddProduct = () => {
+    this.setState({showAddProduct: !this.state.showAddProduct})
   }
+
+  toggleAddIngredient = () => {
+    this.setState({showAddIngredient: !this.state.showAddIngredient})
+  }
+
   deleteItem = (userShoppingId) => {
     return API.deleteData("userShopping", userShoppingId)
       .then(() => this.getShoppingData())
@@ -61,14 +70,14 @@ class ShoppingListView extends Component {
               </div>
               <div className="ml-auto">
               <InputGroup>
-                <AddToList show={this.state.showAddInput} toggle={this.toggleAdd} getShoppingData={this.getShoppingData} />
-                <InputGroupAddon addonType="append">
-                  <Button onClick={this.toggleAdd}>
-                  {
-                    this.state.showAddInput ? "Nevermind" : "Add Items"
-                  }
-                  </Button>
-                </InputGroupAddon>
+                <AddProduct show={this.state.showAddProduct} toggle={this.toggleAddProduct} getShoppingData={this.getShoppingData} />
+                <Button className="mx-2" onClick={this.toggleAddProduct}>
+                  {this.state.showAddProduct ? "Cancel" : "Add Products"}
+                </Button>
+                <AddIngredient show={this.state.showAddIngredient} toggle={this.toggleAddIngredient} getShoppingData={this.getShoppingData} />
+                <Button className="ml-2" onClick={this.toggleAddIngredient}>
+                  {this.state.showAddIngredient ? "Cancel" : "Add Ingredients"}
+                </Button>
               </InputGroup>
 
               </div>

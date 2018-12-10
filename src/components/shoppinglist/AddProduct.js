@@ -8,7 +8,7 @@ import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import user from '../../modules/data/user';
 import API from '../../modules/data/API'
 
-class AddToList extends Component {
+class AddProduct extends Component {
 
   state = {
     allProducts: [],
@@ -25,6 +25,7 @@ class AddToList extends Component {
     let products = this.state.selected
     let savePromises = products.map(product => API.saveData("userShopping", {
       productId: product.id,
+      ingredientId: "",
       userId: userId,
       quantity: 1
     }))
@@ -60,4 +61,4 @@ class AddToList extends Component {
 
 }
 
-export default AddToList
+export default AddProduct
