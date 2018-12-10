@@ -10,6 +10,7 @@ import API from '../../modules/data/API';
 import CocktailAddModal from './CocktailAddModal';
 import CocktailItem from './CocktailItem';
 import { Alert, AlertContainer } from 'react-bs-notifier'
+import user from '../../modules/data/user';
 
 class CocktailsView extends Component {
 
@@ -18,6 +19,7 @@ class CocktailsView extends Component {
     userCocktails: [],
     cocktails: [],
     cocktailIngredients: [],
+    userInventory: [],
     showSuccessMessage: false,
     successMessage: ""
   }
@@ -30,7 +32,7 @@ class CocktailsView extends Component {
   }
 
   getCocktailData = () => {
-    let userId = sessionStorage.getItem("id")
+    let userId = user.getId()
     let data = {}
     //get userCocktails
     return API.getWithExpand("userCocktails", "cocktail", userId)
@@ -60,8 +62,15 @@ class CocktailsView extends Component {
     .then(() => this.setState(data))
   }
 
+  getUserInventory() {
+    let userId = user.getId()
+    API.getWithExpand("userProducts", "product", userId)
+    .then(data => this.setState({userInventory: data}))
+  }
+
   componentDidMount() {
     this.getCocktailData()
+    .then(() => this.getUserInventory())
     .then(() => this.setState({isLoaded: true}))
 
     //If a new cocktail was just created, show the success message
@@ -75,11 +84,15 @@ class CocktailsView extends Component {
     /* cocktails contains the ingredient Ids
      * userCocktail contains the id needed for delete
      * and creating the keys for the ListGroupItems
-     * ingredients contains the ingredient labels
+     * cocktailIngredients contains the ingredient labels
+     * userInventory contains the users inventory data for comparing to cocktail ingredients
      */
-    let userCocktails = this.state.userCocktails
-    let cocktails = this.state.cocktails
-    let ingredients = this.state.cocktailIngredients
+
+    let {
+      cocktails,
+      userCocktails,
+      cocktailIngredients,
+      userInventory } = this.state
 
     if(this.state.isLoaded) {
       return (
@@ -107,7 +120,8 @@ class CocktailsView extends Component {
                       key={userCocktails[i].id}
                       userCocktail={userCocktails[i]}
                       cocktail={cocktail}
-                      ingredients={ingredients[i]}
+                      userInventory={userInventory}
+                      ingredients={cocktailIngredients[i]}
                       getCocktailData={this.getCocktailData} />)
                   })
                 }
