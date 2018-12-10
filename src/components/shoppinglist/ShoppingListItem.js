@@ -3,7 +3,7 @@ import {
   Button,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
-import BoughtIngredientModal from './BoughtIngredientModal';
+import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal';
 import user from '../../modules/data/user';
 
 class ShoppingListItem extends Component {
@@ -41,7 +41,8 @@ class ShoppingListItem extends Component {
                 buttonLabel="Bought"
                 ingredient={this.props.item.ingredient}
                 boughtIngredientProduct={this.boughtIngredientProduct}
-                item={item} />
+                item={item}
+                deleteItem={this.props.deleteItem} />
           }
           <Button className="btn-sm ml-2" onClick={() => this.props.deleteItem(item.id)}>Delete</Button>
         </div>

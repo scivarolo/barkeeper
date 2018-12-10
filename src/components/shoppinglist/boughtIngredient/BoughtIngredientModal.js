@@ -1,6 +1,15 @@
+/**
+ * Modal for when an ingredient was "bought" from the shopping list.
+ * Let's user choose an existing product to add to their inventory
+ * Or create a new product.
+ */
+
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import API from '../../modules/data/API';
+import API from '../../../modules/data/API';
+import NewProduct from './NewProduct';
+
+//TODO: replace with Typeahead to filter existing products and create a new one from there.
 
 class BoughtIngredientModal extends Component {
 
@@ -8,7 +17,8 @@ class BoughtIngredientModal extends Component {
     super(props);
     this.state = {
       modal: false,
-      productsOfIngredient: []
+      productsOfIngredient: [],
+      newProduct: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -42,8 +52,9 @@ class BoughtIngredientModal extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.label} Product</ModalHeader>
           <ModalBody>
-            {
-              this.state.productsOfIngredient.map(product => {
+            { this.state.newProduct
+              ? <NewProduct ingredient={this.props.ingredient} toggle={this.toggle} deleteItem={() => this.props.deleteItem(this.props.item.id)} />
+              : this.state.productsOfIngredient.map(product => {
                 return <Button
                           key={product.id}
                           block
@@ -56,7 +67,7 @@ class BoughtIngredientModal extends Component {
             }
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>New Product</Button>{' '}
+            <Button color="primary" onClick={() => this.setState({newProduct: true})}>New Product</Button>{' '}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
