@@ -16,7 +16,6 @@ class API {
 
   getWithFilters(resource, string, userId) {
     let url = `${this.baseUrl}/${resource}?id_ne=false&${string}`
-    if (string) url += string
     if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())
   }
