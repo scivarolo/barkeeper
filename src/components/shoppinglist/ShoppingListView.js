@@ -10,6 +10,7 @@ import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
 import AddProduct from './AddProduct'
 import AddIngredient from './AddIngredient'
+import user from '../../modules/data/user';
 
 // TODO: Show success alert when product added to shopping list.
 // TODO: Show success alert when product is created and added to shopping list.
@@ -27,7 +28,7 @@ class ShoppingListView extends Component {
   }
 
   getShoppingData = () => {
-    let userId = sessionStorage.getItem("id")
+    let userId = user.getId()
     return API.getWithExpands("userShopping", userId, "product", "ingredient")
     .then(items => {
       this.setState({

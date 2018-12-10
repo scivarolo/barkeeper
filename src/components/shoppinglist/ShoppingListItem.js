@@ -8,25 +8,51 @@ import user from '../../modules/data/user';
 
 class ShoppingListItem extends Component {
 
-  boughtItem = (item) => {
-    let userProductsObj = {
-      userId: item.userId,
-      productId: item.productId,
-      amountAvailable: item.product.fullAmount
-    }
-    //add item to userProducts and delete from userShopping
-    return API.saveData("userProducts", userProductsObj)
-      .then(() => this.props.deleteItem(item.id))
+  // When 'bought' is clicked on a PRODUCT
+  boughtProduct = (item) => {
+    //check if product is already in user inventory
+    return API.getWithFilters("userProducts", `productId=${item.productId}`, item.userId)
+    .then(hasProduct => {
+      if (hasProduct.length) {
+        return API.editData("userProducts", hasProduct[0].id, {
+          quantity: hasProduct[0].quantity + item.quantity
+        }).then(() => this.props.deleteItem(item.id))
+      } else {
+        let userProductsObj = {
+          userId: item.userId,
+          productId: item.productId,
+          amountAvailable: item.product.fullAmount,
+          quantity: item.quantity
+        }
+        //add item to userProducts and delete from userShopping
+        return API.saveData("userProducts", userProductsObj)
+          .then(() => this.props.deleteItem(item.id))
+      }
+    })
+
   }
 
+  //When 'bought' is clicked on an INGREDIENT, and an existing product is chosen
   boughtIngredientProduct = (product, item) => {
-    let userProductsObj = {
-      userId: user.getId(),
-      productId: product.id,
-      amountAvailable: product.fullAmount
-    }
-    return API.saveData("userProducts", userProductsObj)
-      .then(() => this.props.deleteItem(item.id))
+
+    return API.getWithFilters("userProducts", `productId=${product.id}`, item.userId)
+    .then(hasProduct => {
+      if(hasProduct.length) {
+        return API.editData("userProducts", hasProduct[0].id, {
+          quantity: hasProduct[0].quantity + item.quantity
+        }).then(() => this.props.deleteItem(item.id))
+      } else {
+        let userProductsObj = {
+          userId: item.userId,
+          productId: product.id,
+          amountAvailable: product.fullAmount,
+          quantity: item.quantity
+        }
+        return API.saveData("userProducts", userProductsObj)
+          .then(() => this.props.deleteItem(item.id))
+      }
+    })
+
   }
 
   increaseQuantity = () => {
@@ -58,7 +84,7 @@ class ShoppingListItem extends Component {
         </div>
         <div className="ml-auto">
           { item.productId
-            ? <Button className="btn-sm ml-2" onClick={() => this.boughtItem(item)}>Bought</Button>
+            ? <Button className="btn-sm ml-2" onClick={() => this.boughtProduct(item)}>Bought</Button>
             : <BoughtIngredientModal
                 buttonLabel="Bought"
                 ingredient={this.props.item.ingredient}

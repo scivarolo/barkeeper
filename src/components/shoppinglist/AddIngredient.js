@@ -32,7 +32,7 @@ class AddIngredient extends Component {
           quantity: haveIngredient.quantity + 1
         })
       } else {
-        API.saveData("userShopping", {
+        return API.saveData("userShopping", {
           ingredientId: ingredient.id,
           productId: false,
           userId: userId,
