@@ -27,7 +27,6 @@ class AddToBar extends Component {
 
   addDropdownProducts = () => {
     if(!this.state.selected.length) return
-    //TODO: Check if product is already in inventory and increase quantity.
     let userId = user.getId()
     let products = this.state.selected
     let savePromises = products.map(product => {
