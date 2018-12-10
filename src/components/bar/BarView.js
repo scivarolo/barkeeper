@@ -8,6 +8,7 @@ import {
   InputGroupAddon,
   ListGroup } from 'reactstrap'
 import API from '../../modules/data/API';
+import user from '../../modules/data/user'
 import BarItem from './BarItem'
 import AddToBar from './AddToBar';
 import { Alert, AlertContainer } from 'react-bs-notifier'
@@ -23,8 +24,17 @@ class BarView extends Component {
   }
 
   getInventoryData = () => {
-    let userId = sessionStorage.getItem("id")
+    let userId = user.getId()
     return API.getWithExpand("userProducts", "product", userId)
+    // return API.getWithFilters("userProducts", "_expand=product&_sort=product.name", userId)
+    .then(inventory => {
+      let sortedArray = inventory.sort(function(a, b) {
+        var textA = a.product.name.toUpperCase();
+        var textB = b.product.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      })
+      return sortedArray
+    })
     .then(inventory => this.setState({
       inventory: inventory
     }))

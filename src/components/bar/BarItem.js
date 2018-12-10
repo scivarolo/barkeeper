@@ -40,9 +40,23 @@ class BarItem extends Component {
     }
   }
 
+  totalProductAmount = (item) => {
+    if(item.quantity === 1) {
+      return this.setState({totalAmount: item.amountAvailable})
+    }
+    if(item.quantity > 1) {
+      let totalAmount = item.amountAvailable + (item.product.fullAmount * (item.quantity - 1))
+      return this.setState({totalAmount: totalAmount})
+    }
+  }
+
   deleteItem = (id) => {
     return API.deleteData("userProducts", id)
     .then(() => this.props.getInventoryData())
+  }
+
+  componentDidMount() {
+    this.totalProductAmount(this.props.item)
   }
 
   render() {
@@ -51,6 +65,7 @@ class BarItem extends Component {
       <ListGroupItem className="mb-2" id={item.id}>
         <h4>{item.product.name}</h4>
         <p>Available: {item.amountAvailable} {item.product.unit}</p>
+        <p>Quantity: {item.quantity}</p>
         <Button size="sm" onClick={this.toggleUpdate}>Update</Button>
         <Button size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
         { this.state.showUpdateForm
