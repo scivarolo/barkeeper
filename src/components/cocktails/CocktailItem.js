@@ -58,9 +58,8 @@ class CocktailItem extends Component {
       canMake = false
       this.setState({userCanMake: false})
     } else {
-      //TODO: When there are multiple products that match an ingredient
       products.forEach(product => {
-        let amount = product.amountAvailable
+        let amount = product.amountAvailable + (product.product.fullAmount * (product.quantity - 1))
         let unit = product.product.unit
         let comparison = Units.compare(amount, unit, ingredient.amount, ingredient.unit)
         if(comparison === 1 || comparison === 0) {
