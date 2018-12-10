@@ -41,6 +41,7 @@ class AddToBar extends Component {
         return API.saveData("userProducts", {
           productId: product.id,
           userId: userId,
+          quantity: 1,
           amountAvailable: this.state.allProducts.find(p => parseInt(p.id) === parseInt(product.id)).fullAmount
         })
       }
