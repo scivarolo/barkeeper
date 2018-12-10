@@ -7,7 +7,8 @@ import {
   Input,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
-// import API from '../../modules/data/API';
+
+//TODO: Address update and delete now that quantities are a thing.
 
 class BarItem extends Component {
 
