@@ -39,8 +39,6 @@ class Units {
     let a = this.convert(aVal, aUnit, "ml")
     let b = this.convert(bVal, bUnit, "ml")
 
-    console.log("a: ", a, " b: ", b)
-
     if (a > b) {
       return 1
     } else if (a === b) {

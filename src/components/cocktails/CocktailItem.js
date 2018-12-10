@@ -63,7 +63,6 @@ class CocktailItem extends Component {
         let amount = product.amountAvailable
         let unit = product.product.unit
         let comparison = Units.compare(amount, unit, ingredient.amount, ingredient.unit)
-        console.log(comparison)
         if(comparison === 1 || comparison === 0) {
           canMake = true
         } else {
