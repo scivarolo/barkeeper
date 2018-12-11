@@ -1,3 +1,6 @@
+/* This is used in NewCocktail for adding ingredients to a recipe.
+ */
+
 import React, { Component } from 'react'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import {
@@ -8,8 +11,6 @@ import {
   InputGroupAddon
 } from 'reactstrap'
 import UnitsDropdown from './UnitsDropdown';
-
-//TODO: Pull in units list from database
 
 class IngredientInput extends Component {
 

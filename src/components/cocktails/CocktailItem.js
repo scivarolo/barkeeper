@@ -11,6 +11,7 @@ import "./cocktailItem.scss"
 import RecipeIngredient from './recipe/RecipeIngredient';
 import user from '../../modules/data/user'
 import Units from '../../modules/UnitConverter';
+import CocktailEditModal from './CocktailEditModal';
 
 class CocktailItem extends Component {
 
@@ -43,8 +44,6 @@ class CocktailItem extends Component {
       return {ingredientAvailability: obj}
     })
   }
-
-
 
   deleteItem(id) {
     return API.deleteData("userCocktails", id)
@@ -96,7 +95,7 @@ class CocktailItem extends Component {
 
   componentDidUpdate(prevProps) {
     //Loop through recipe ingredients to find if recipe can be made with user inventory
-    if(this.props.userInventory !== prevProps.userInventory) {
+    if(this.props.userInventory !== prevProps.userInventory || this.props.cocktail !== prevProps.cocktail) {
       this.setState({userCanMake: true})
       this.props.cocktail.cocktailIngredients.forEach(ingredient => {
         this.compareIngredient(ingredient, this.props.userInventory)
@@ -148,6 +147,15 @@ class CocktailItem extends Component {
         </Row>
         <Row>
           <Col className="d-flex justify-content-end">
+            {
+              this.props.userCocktail.userId === user.getId()
+              ? <CocktailEditModal
+                buttonLabel="Edit"
+                cocktail={cocktail}
+                ingredientNames={ingredients}
+                getCocktailData={this.props.getCocktailData}  />
+              : null
+            }
             <Button size="sm" onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>
           </Col>
         </Row>
