@@ -135,7 +135,7 @@ class CocktailItem extends Component {
                       ingredient={ingredient}
                       userShoppingList={this.props.userShoppingList}
                       addToShoppingList={this.addToShoppingList}
-                      label={ingredients[i].label} />
+                      label={ingredients.find(label => label.id === ingredient.ingredientId).label} />
                   )
                 })
               }
