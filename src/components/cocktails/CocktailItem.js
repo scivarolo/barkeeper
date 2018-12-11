@@ -83,8 +83,9 @@ class CocktailItem extends Component {
         userId: user.getId(),
         quantity: 1
       }))
-      return Promise.all(addArray)
     })
+    return Promise.all(addArray)
+    .then(() => this.props.getShoppingList())
   }
 
   componentDidMount() {
@@ -132,6 +133,7 @@ class CocktailItem extends Component {
                       key={ingredient.id}
                       canMake={this.state.ingredientAvailability[ingredient.ingredientId]}
                       ingredient={ingredient}
+                      userShoppingList={this.props.userShoppingList}
                       addToShoppingList={this.addToShoppingList}
                       label={ingredients[i].label} />
                   )

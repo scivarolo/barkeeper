@@ -20,6 +20,7 @@ class CocktailsView extends Component {
     cocktails: [],
     cocktailIngredients: [],
     userInventory: [],
+    userShoppingList: [],
     showSuccessMessage: false,
     successMessage: ""
   }
@@ -68,9 +69,16 @@ class CocktailsView extends Component {
     .then(data => this.setState({userInventory: data}))
   }
 
+  getShoppingList = () => {
+    let userId = user.getId()
+    API.getWithExpands("userShopping", userId, "product", "ingredient")
+    .then(data => this.setState({userShoppingList: data}))
+  }
+
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.getUserInventory())
+    .then(() => this.getShoppingList())
     .then(() => this.setState({isLoaded: true}))
 
     //If a new cocktail was just created, show the success message
@@ -91,6 +99,7 @@ class CocktailsView extends Component {
     let {
       cocktails,
       userCocktails,
+      userShoppingList,
       cocktailIngredients,
       userInventory } = this.state
 
@@ -116,13 +125,17 @@ class CocktailsView extends Component {
               <ListGroup>
                 {
                   cocktails.map((cocktail, i) => {
-                    return (<CocktailItem
-                      key={userCocktails[i].id}
-                      userCocktail={userCocktails[i]}
-                      cocktail={cocktail}
-                      userInventory={userInventory}
-                      ingredients={cocktailIngredients[i]}
-                      getCocktailData={this.getCocktailData} />)
+                    return (
+                      <CocktailItem
+                        key={userCocktails[i].id}
+                        userCocktail={userCocktails[i]}
+                        cocktail={cocktail}
+                        userInventory={userInventory}
+                        userShoppingList={userShoppingList}
+                        getShoppingList={this.getShoppingList}
+                        ingredients={cocktailIngredients[i]}
+                        getCocktailData={this.getCocktailData} />
+                    )
                   })
                 }
               </ListGroup>
