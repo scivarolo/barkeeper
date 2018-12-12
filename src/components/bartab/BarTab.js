@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {
+  Button,
   Table } from 'reactstrap'
 import './bartab.scss'
 import BarTabCocktail from './BarTabCocktail';
@@ -23,10 +24,10 @@ class BarTab extends Component {
       return (
         <div className="sticky-top bartab--offset bartab__wrapper">
           <h1>Bar Tab</h1>
-          <Table>
+          <Table className="table-sm mt-4">
             <thead>
               <tr>
-                <th>Cocktail</th>
+                <th className="col-sm-8">Cocktail</th>
                 <th>Qty</th>
               </tr>
             </thead>
@@ -34,6 +35,7 @@ class BarTab extends Component {
               {
                 this.props.userTab.map(tabCocktail => {
                   return <BarTabCocktail
+                            key={tabCocktail.id}
                             cocktail={tabCocktail}
                             removeFromUserTab={this.removeFromUserTab}
                             getUserTab={this.props.getUserTab} />
@@ -41,6 +43,7 @@ class BarTab extends Component {
               }
             </tbody>
           </Table>
+          <Button onClick={() => this.props.makeCocktails(this.props.userTab)}>Make Cocktails</Button>
         </div>
       )
 

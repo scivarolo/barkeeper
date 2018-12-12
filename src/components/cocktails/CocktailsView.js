@@ -12,6 +12,7 @@ import CocktailItem from './CocktailItem';
 import { Alert, AlertContainer } from 'react-bs-notifier'
 import user from '../../modules/data/user';
 import BarTab from '../bartab/BarTab';
+import Units from '../../modules/UnitConverter'
 
 class CocktailsView extends Component {
 
@@ -108,6 +109,53 @@ class CocktailsView extends Component {
     .then(() => this.getUserTab())
   }
 
+  makeCocktail = () => {
+    //For each cocktail, get ingredients.
+
+  }
+
+  makeCocktails = (cocktailsToMake) => {
+    console.log("Cocktails to Make:", cocktailsToMake)
+    let madeCocktails = []
+    cocktailsToMake.forEach(c => {
+      console.log(`We are making ${c.quantity} ${c.cocktail.name}`)
+      madeCocktails.push(
+        API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
+        .then((ingredients) => {
+          let productUpdates = []
+          ingredients.forEach(ingredient => {
+            //TODO: convert product amount to "ml"
+            //TODO: check if you'll hit a negative number of amountLeft
+            //TODO: remove cocktails from usertab when made
+            const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+            const amountNeeded = ingredient.amount * c.quantity
+            const amountUnit = ingredient.unit
+            const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
+            const prodAvailable = prod.amountAvailable + (prod.product.fullAmount * prod.quantity)
+            const amountLeft = prodAvailable - amountNeededMl
+            const quantityLeft = amountLeft / prod.product.fullAmount
+            const quantityCeil = Math.ceil(quantityLeft)
+            const newAmountAvailable = amountLeft % prod.product.fullAmount
+
+            const userProductId = prod.id
+            const userProductPatchObj = {
+              amountAvailable: newAmountAvailable,
+              quantity: quantityCeil
+            }
+
+            productUpdates.push(
+              API.editData("userProducts", userProductId, userProductPatchObj)
+            )
+          })
+          return Promise.all(productUpdates)
+        })
+      )
+    })
+    return Promise.all(madeCocktails)
+      .then(() => this.getUserInventory())
+      .then(() => this.getUserTab())
+  }
+
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.getUserInventory())
@@ -183,7 +231,8 @@ class CocktailsView extends Component {
             <Col>
               <BarTab
                 userTab={this.state.userTab}
-                getUserTab={this.getUserTab} />
+                getUserTab={this.getUserTab}
+                makeCocktails={this.makeCocktails} />
             </Col>
           </Row>
           <AlertContainer>
