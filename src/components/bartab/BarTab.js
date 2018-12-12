@@ -1,10 +1,19 @@
 import React, { Component } from 'react'
+import {
+  Table } from 'reactstrap'
 import './bartab.scss'
+import BarTabCocktail from './BarTabCocktail';
+import API from '../../modules/data/API';
 
 class BarTab extends Component {
 
   state = {
 
+  }
+
+  removeFromUserTab = (userTabId) => {
+    return API.deleteData("userTab", userTabId)
+      .then(() => this.props.getUserTab())
   }
 
   render() {
@@ -14,7 +23,24 @@ class BarTab extends Component {
       return (
         <div className="sticky-top bartab--offset bartab__wrapper">
           <h1>Bar Tab</h1>
-          <p>You have cocktails in your tab but Barkeeper can't display them yet. Check back soon!</p>
+          <Table>
+            <thead>
+              <tr>
+                <th>Cocktail</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                this.props.userTab.map(tabCocktail => {
+                  return <BarTabCocktail
+                            cocktail={tabCocktail}
+                            removeFromUserTab={this.removeFromUserTab}
+                            getUserTab={this.props.getUserTab} />
+                })
+              }
+            </tbody>
+          </Table>
         </div>
       )
 
