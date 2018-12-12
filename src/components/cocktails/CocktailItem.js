@@ -120,7 +120,10 @@ class CocktailItem extends Component {
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
               ? <div>
-                  <Button size="sm" className="mr-2">Add to my Tab</Button>
+                  <Button
+                    onClick={() => this.props.addToUserTab(cocktail.id)}
+                    size="sm"
+                    className="mr-2">Add to my Tab</Button>
                   <Badge color="success">You can make this!</Badge>
                 </div>
               : <Badge color="danger">You are missing ingredients!</Badge>

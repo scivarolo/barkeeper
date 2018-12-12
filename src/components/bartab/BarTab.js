@@ -7,8 +7,6 @@ class BarTab extends Component {
 
   }
 
-
-
   render() {
 
     if (this.props.userTab && this.props.userTab.length) {

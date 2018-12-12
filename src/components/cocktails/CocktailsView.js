@@ -20,6 +20,7 @@ class CocktailsView extends Component {
     userCocktails: [],
     cocktails: [],
     cocktailIngredients: [],
+    userTab: [],
     userInventory: [],
     userShoppingList: [],
     showSuccessMessage: false,
@@ -86,15 +87,32 @@ class CocktailsView extends Component {
     .then(data => this.setState({userTab: data}))
   }
 
-  addToUserTab = () => {
-    console.log("Add to Tab goes here")
-    return this.getUserTab()
+  addToUserTab = (cocktailId) => {
+    //TODO: let user specify quantity. Or let them do it once its in the tab.
+    let inTab = this.state.userTab.find(tabCocktail => tabCocktail.cocktailId === cocktailId)
+    if(inTab) {
+      let obj = {
+        quantity: inTab.quantity + 1
+      }
+      return API.editData("userTab", inTab.id, obj)
+      .then(() => this.getUserTab())
+    }
+
+    // Not in tab already
+    let obj = {
+      userId: user.getId(),
+      cocktailId: cocktailId,
+      quantity: 1
+    }
+    return API.saveData("userTab", obj)
+    .then(() => this.getUserTab())
   }
 
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.getUserInventory())
     .then(() => this.getShoppingList())
+    .then(() => this.getUserTab())
     .then(() => this.setState({isLoaded: true}))
 
     //If a new cocktail was just created, show the success message
@@ -164,6 +182,7 @@ class CocktailsView extends Component {
             </Col>
             <Col>
               <BarTab
+                userTab={this.state.userTab}
                 getUserTab={this.getUserTab} />
             </Col>
           </Row>
