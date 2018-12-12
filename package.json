@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "json": "json-server -p 5002 -w api/database.json"
+    "json": "json-server -p 5002 -w api/database.json -d 50"
   },
   "eslintConfig": {
     "extends": "react-app"
