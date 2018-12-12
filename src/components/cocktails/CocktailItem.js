@@ -119,14 +119,17 @@ class CocktailItem extends Component {
           </div>
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
-              ? <Badge color="success">You can make this!</Badge>
+              ? <div>
+                  <Button size="sm" className="mr-2">Add to my Tab</Button>
+                  <Badge color="success">You can make this!</Badge>
+                </div>
               : <Badge color="danger">You are missing ingredients!</Badge>
             }
           </div>
         </div>
 
         <Row>
-          <Col>
+          <Col md={5}>
             <h5>Ingredients</h5>
             <ul>
               {

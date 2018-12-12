@@ -1,0 +1,11 @@
+@import '../../variables.scss';
+
+.bartab--offset {
+  top: 50px;
+}
+
+.bartab__wrapper {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid rgba($dark, 0.1);
+}

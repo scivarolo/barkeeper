@@ -11,6 +11,7 @@ import CocktailAddModal from './CocktailAddModal';
 import CocktailItem from './CocktailItem';
 import { Alert, AlertContainer } from 'react-bs-notifier'
 import user from '../../modules/data/user';
+import BarTab from '../bartab/BarTab';
 
 class CocktailsView extends Component {
 
@@ -79,6 +80,17 @@ class CocktailsView extends Component {
     .then(data => this.setState({userShoppingList: data}))
   }
 
+  getUserTab = () => {
+    let userId = user.getId()
+    API.getWithExpands("userTab", userId, "cocktail")
+    .then(data => this.setState({userTab: data}))
+  }
+
+  addToUserTab = () => {
+    console.log("Add to Tab goes here")
+    return this.getUserTab()
+  }
+
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.getUserInventory())
@@ -110,39 +122,49 @@ class CocktailsView extends Component {
     if(this.state.isLoaded) {
       return (
         <Container>
-          <Row className="my-5">
-            <Col className="d-flex">
-              <div>
-                <h1>Cocktails</h1>
-              </div>
-              <div className="ml-auto">
-                <CocktailAddModal
-                  buttonLabel="Add Cocktails"
-                  getCocktailData={this.getCocktailData}
-                  showSuccessMessage={this.toggleSuccessMessage} />
-                <Button tag={Link} to="/cocktails/new">New Recipe</Button>
-              </div>
+          <Row className="pt-5">
+
+            <Col md={8}>
+              <Row className="mb-5">
+                <Col className="d-flex">
+                  <div>
+                    <h1>Cocktails</h1>
+                  </div>
+                  <div className="ml-auto">
+                    <CocktailAddModal
+                      buttonLabel="Add Cocktails"
+                      getCocktailData={this.getCocktailData}
+                      showSuccessMessage={this.toggleSuccessMessage} />
+                    <Button tag={Link} to="/cocktails/new">New Recipe</Button>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ListGroup>
+                    {
+                      cocktails.map((cocktail, i) => {
+                        return (
+                          <CocktailItem
+                            key={userCocktails[i].id}
+                            cocktail={cocktail}
+                            ingredients={cocktailIngredients[i]}
+                            userCocktail={userCocktails[i]}
+                            userInventory={userInventory}
+                            userShoppingList={userShoppingList}
+                            getShoppingList={this.getShoppingList}
+                            getCocktailData={this.getCocktailData}
+                            addToUserTab={this.addToUserTab} />
+                        )
+                      })
+                    }
+                  </ListGroup>
+                </Col>
+              </Row>
             </Col>
-          </Row>
-          <Row>
             <Col>
-              <ListGroup>
-                {
-                  cocktails.map((cocktail, i) => {
-                    return (
-                      <CocktailItem
-                        key={userCocktails[i].id}
-                        userCocktail={userCocktails[i]}
-                        cocktail={cocktail}
-                        userInventory={userInventory}
-                        userShoppingList={userShoppingList}
-                        getShoppingList={this.getShoppingList}
-                        ingredients={cocktailIngredients[i]}
-                        getCocktailData={this.getCocktailData} />
-                    )
-                  })
-                }
-              </ListGroup>
+              <BarTab
+                getUserTab={this.getUserTab} />
             </Col>
           </Row>
           <AlertContainer>
