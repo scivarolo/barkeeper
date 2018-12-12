@@ -66,7 +66,7 @@ class CocktailAddModal extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Choose Product(s) to Add</ModalHeader>
@@ -95,7 +95,7 @@ class CocktailAddModal extends Component {
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
-      </div>
+      </>
     )
   }
 

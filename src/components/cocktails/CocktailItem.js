@@ -11,6 +11,7 @@ import "./cocktailItem.scss"
 import RecipeIngredient from './recipe/RecipeIngredient';
 import user from '../../modules/data/user'
 import Units from '../../modules/UnitConverter';
+import CocktailEditModal from './CocktailEditModal';
 
 class CocktailItem extends Component {
 
@@ -44,8 +45,6 @@ class CocktailItem extends Component {
     })
   }
 
-
-
   deleteItem(id) {
     return API.deleteData("userCocktails", id)
     .then(() => this.props.getCocktailData())
@@ -78,26 +77,31 @@ class CocktailItem extends Component {
     let addArray = []
     ingredients.forEach(ingredient => {
       addArray.push(API.saveData("userShopping", {
-        ingredientId: ingredient.id,
+        ingredientId: ingredient.ingredientId,
         productId: false,
         userId: user.getId(),
         quantity: 1
       }))
-      return Promise.all(addArray)
     })
+    return Promise.all(addArray)
+    .then(() => this.props.getShoppingList())
   }
 
   componentDidMount() {
-    this.props.cocktail.cocktailIngredients.forEach(ingredient => {
+    this.props.cocktail.cocktailIngredients.sort((a, b) => {
+      return a.sortOrder - b.sortOrder
+    }).forEach(ingredient => {
       this.compareIngredient(ingredient, this.props.userInventory)
     })
   }
 
   componentDidUpdate(prevProps) {
     //Loop through recipe ingredients to find if recipe can be made with user inventory
-    if(this.props.userInventory !== prevProps.userInventory) {
+    if(this.props.userInventory !== prevProps.userInventory || this.props.cocktail !== prevProps.cocktail) {
       this.setState({userCanMake: true})
-      this.props.cocktail.cocktailIngredients.forEach(ingredient => {
+      this.props.cocktail.cocktailIngredients.sort((a, b) => {
+        return a.sortOrder - b.sortOrder
+      }).forEach(ingredient => {
         this.compareIngredient(ingredient, this.props.userInventory)
       })
     }
@@ -132,8 +136,9 @@ class CocktailItem extends Component {
                       key={ingredient.id}
                       canMake={this.state.ingredientAvailability[ingredient.ingredientId]}
                       ingredient={ingredient}
+                      userShoppingList={this.props.userShoppingList}
                       addToShoppingList={this.addToShoppingList}
-                      label={ingredients[i].label} />
+                      label={ingredients.find(label => label.id === ingredient.ingredientId).label} />
                   )
                 })
               }
@@ -146,6 +151,15 @@ class CocktailItem extends Component {
         </Row>
         <Row>
           <Col className="d-flex justify-content-end">
+            {
+              this.props.userCocktail.userId === user.getId()
+              ? <CocktailEditModal
+                buttonLabel="Edit"
+                cocktail={cocktail}
+                ingredientNames={ingredients}
+                getCocktailData={this.props.getCocktailData}  />
+              : null
+            }
             <Button size="sm" onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>
           </Col>
         </Row>

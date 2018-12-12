@@ -9,11 +9,21 @@
 .ingredient--can-make {
   .btn {
     opacity: 0;
-    transition: opacity 0.125s ease-in-out 1.25s;
+    transition: opacity 0.125s ease-in-out .5s;
   }
   &:hover .btn {
     opacity: 1;
     transition: opacity .125s ease-in-out 0s;
+  }
+}
+
+.in-shopping-list {
+  opacity: 0;
+  color: lightgray;
+  transition: opacity .125s ease-in-out 0s;
+  .ingredient--can-make:hover & {
+    transition: opacity .125s ease-in-out 0s;
+    opacity: 1;
   }
 }
 
