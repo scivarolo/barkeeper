@@ -12,7 +12,6 @@ class RecipeIngredient extends Component {
     let found = this.props.userShoppingList.find(shoppingItem => {
       return this.props.ingredient.ingredientId === shoppingItem.ingredientId || this.props.ingredient.ingredientId === shoppingItem.product.ingredientId
     })
-    console.log(found, "found", this.props.ingredient.id)
     if(found) {
       this.setState({inShoppingList: true})
     } else {
