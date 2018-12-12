@@ -88,7 +88,9 @@ class CocktailItem extends Component {
   }
 
   componentDidMount() {
-    this.props.cocktail.cocktailIngredients.forEach(ingredient => {
+    this.props.cocktail.cocktailIngredients.sort((a, b) => {
+      return a.sortOrder - b.sortOrder
+    }).forEach(ingredient => {
       this.compareIngredient(ingredient, this.props.userInventory)
     })
   }
@@ -97,7 +99,9 @@ class CocktailItem extends Component {
     //Loop through recipe ingredients to find if recipe can be made with user inventory
     if(this.props.userInventory !== prevProps.userInventory || this.props.cocktail !== prevProps.cocktail) {
       this.setState({userCanMake: true})
-      this.props.cocktail.cocktailIngredients.forEach(ingredient => {
+      this.props.cocktail.cocktailIngredients.sort((a, b) => {
+        return a.sortOrder - b.sortOrder
+      }).forEach(ingredient => {
         this.compareIngredient(ingredient, this.props.userInventory)
       })
     }
