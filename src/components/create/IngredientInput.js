@@ -43,11 +43,11 @@ class IngredientInput extends Component {
                 this.props.ingredientToState(stateKey, "ingredient", selected[0])
                 this.props.ingredientToState(stateKey, "sortOrder", ingredientId)
                 }} />
-              <Input type="number" placeholder="amount"
+              <Input type="number" placeholder="amount" step="any"
                 onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
                 <UnitsDropdown isRequired={this.state.isRequired}
-                  onChangeFn={e => this.props.ingredientToState(stateKey, "units", e.target.value)} />
+                  onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
             </InputGroupAddon>
           </InputGroup>
         </Col>
