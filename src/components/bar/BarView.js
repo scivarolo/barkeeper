@@ -29,8 +29,8 @@ class BarView extends Component {
     // return API.getWithFilters("userProducts", "_expand=product&_sort=product.name", userId)
     .then(inventory => {
       let sortedArray = inventory.sort(function(a, b) {
-        var textA = a.product.name.toUpperCase();
-        var textB = b.product.name.toUpperCase();
+        let textA = a.product.name.toUpperCase();
+        let textB = b.product.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
       })
       return sortedArray
