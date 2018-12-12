@@ -124,14 +124,14 @@ class CocktailsView extends Component {
         .then((ingredients) => {
           let productUpdates = []
           ingredients.forEach(ingredient => {
-            //TODO: convert product amount to "ml"
             //TODO: check if you'll hit a negative number of amountLeft
-            //TODO: remove cocktails from usertab when made
+            //TODO: remove cocktails from userTab when made
             const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
             const amountNeeded = ingredient.amount * c.quantity
             const amountUnit = ingredient.unit
             const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
-            const prodAvailable = prod.amountAvailable + (prod.product.fullAmount * prod.quantity)
+            const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * prod.quantity)), prod.product.unit, "ml")
+
             const amountLeft = prodAvailable - amountNeededMl
             const quantityLeft = amountLeft / prod.product.fullAmount
             const quantityCeil = Math.ceil(quantityLeft)
