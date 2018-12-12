@@ -53,7 +53,11 @@ class BoughtIngredientModal extends Component {
           <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.label} Product</ModalHeader>
           <ModalBody>
             { this.state.newProduct
-              ? <NewProduct ingredient={this.props.ingredient} toggle={this.toggle} deleteItem={() => this.props.deleteItem(this.props.item.id)} />
+              ? <NewProduct
+                  item={this.props.item}
+                  ingredient={this.props.ingredient}
+                  toggle={this.toggle}
+                  deleteItem={() => this.props.deleteItem(this.props.item.id)} />
               : this.state.productsOfIngredient.map(product => {
                 return <Button
                           key={product.id}
