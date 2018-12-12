@@ -55,7 +55,7 @@ class CocktailItem extends Component {
     let products = userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
     if(!products.length) {
       canMake = false
-      this.setState({userCanMake: false})
+      // this.setState({userCanMake: false})
     } else {
       products.forEach(product => {
         let amount = product.amountAvailable + (product.product.fullAmount * (product.quantity - 1))
@@ -68,6 +68,7 @@ class CocktailItem extends Component {
         }
       })
     }
+    this.setState({userCanMake: canMake})
     this.ingredientToState(ingredient, "canMake", canMake)
     this.ingredientAvailability(ingredient.ingredientId, canMake)
   }
