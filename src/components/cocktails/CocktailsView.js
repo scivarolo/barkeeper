@@ -46,7 +46,11 @@ class CocktailsView extends Component {
       return Promise.all(cocktailQueries)
     })
     .then(cocktails => {
-      data.cocktails = cocktails
+      data.cocktails = cocktails.sort((a,b) => {
+        let aName = a.name.toUpperCase()
+        let bName = b.name.toUpperCase();
+        return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+      })
 
       //for each cocktail, loop through array of ingredients to build fetchs for each ingredient
       let ingredientQueries = []
