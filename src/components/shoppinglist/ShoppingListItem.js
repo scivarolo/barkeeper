@@ -5,6 +5,7 @@ import {
 import API from '../../modules/data/API';
 import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal';
 import user from '../../modules/data/user';
+import QuantityToggles from '../utils/QuantityToggles';
 
 class ShoppingListItem extends Component {
 
@@ -78,8 +79,9 @@ class ShoppingListItem extends Component {
         <div>
           <h6>{item.productId ? `Product: ${item.product.name}` : `Ingredient: ${item.ingredient.label}`}</h6>
           <p>Quantity: {item.quantity}
-            <i onClick={this.decreaseQuantity} className="icon-minus icons mx-1"></i>
-            <i onClick={this.increaseQuantity} className="icon-plus icons mx-1"></i>
+            <QuantityToggles
+              increase={this.increaseQuantity}
+              decrease={this.decreaseQuantity} />
           </p>
         </div>
         <div className="ml-auto">
