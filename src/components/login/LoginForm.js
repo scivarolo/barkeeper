@@ -36,7 +36,7 @@ class LoginForm extends Component {
           <Label><Input type="checkbox" value="remember-me" onChange={this.props.handleFieldChange} />Remember Me</Label>
         </div>
         <Button color="primary" block size="lg" type="submit">Sign In</Button>
-        <p className="mt-2">Don&rsquo;t have any account? <span className="link" onClick={this.props.toggleForms}>Register</span></p>
+        <p className="mt-2">Don&rsquo;t have an account? <span className="link" onClick={this.props.toggleForms}>Register</span></p>
       </Form>
     )
   }
