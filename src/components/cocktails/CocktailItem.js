@@ -125,14 +125,19 @@ class CocktailItem extends Component {
     if (this.props.userInventory !== prevProps.userInventory || this.props.cocktail !== prevProps.cocktail) {
       this.checkIngredientsAgainstInventory()
     }
+
   }
 
   render() {
 
     let { cocktail, ingredients } = this.props
 
+    let hide = ""
+    if(!this.state.userCanMake && this.props.showOnlyMakeable) {
+      hide = "d-none"
+    }
     return (
-      <ListGroupItem className="mb-3" key={cocktail.id}>
+      <ListGroupItem className={`mb-3 ${hide}`} key={cocktail.id}>
         <div className="d-flex justify-content-between">
           <div>
             <h2 className="mb-3">{cocktail.name}</h2>

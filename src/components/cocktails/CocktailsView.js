@@ -25,7 +25,12 @@ class CocktailsView extends Component {
     userInventory: [],
     userShoppingList: [],
     showSuccessMessage: false,
-    successMessage: ""
+    successMessage: "",
+    showOnlyMakeable: false
+  }
+
+  toggleMakeable = () => {
+    this.setState({showOnlyMakeable: !this.state.showOnlyMakeable})
   }
 
   toggleSuccessMessage = (message) => {
@@ -235,7 +240,7 @@ class CocktailsView extends Component {
               <Row className="mb-5">
                 <Col className="d-flex">
                   <div>
-                    <h1>Cocktails</h1>
+                    <h1>My Cocktails</h1>
                   </div>
                   <div className="ml-auto">
                     <CocktailAddModal
@@ -244,6 +249,17 @@ class CocktailsView extends Component {
                       showSuccessMessage={this.toggleSuccessMessage} />
                     <Button tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
+                </Col>
+              </Row>
+              <Row className="mb-4">
+                <Col>
+                  <Button onClick={this.toggleMakeable}>
+                  {
+                    this.state.showOnlyMakeable
+                    ? "Show All My Cocktails"
+                    : "Show Only Cocktails I Can Make"
+                  }
+                  </Button>
                 </Col>
               </Row>
               <Row>
@@ -261,7 +277,8 @@ class CocktailsView extends Component {
                             userShoppingList={userShoppingList}
                             getShoppingList={this.getShoppingList}
                             getCocktailData={this.getCocktailData}
-                            addToUserTab={this.addToUserTab} />
+                            addToUserTab={this.addToUserTab}
+                            showOnlyMakeable={this.state.showOnlyMakeable} />
                         )
                       })
                     }
