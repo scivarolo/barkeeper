@@ -57,7 +57,11 @@ class AddIngredient extends Component {
           <Typeahead
             labelKey="label"
             multiple={true}
-            options={this.state.ingredients}
+            options={this.state.ingredients.sort((a,b) => {
+              let aName = a.label.toUpperCase()
+              let bName = b.label.toUpperCase();
+              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+            })}
             placeholder="Search for ingredients"
             onChange={selected => this.setState({selected: selected})} />
           <InputGroupAddon addonType="append">
