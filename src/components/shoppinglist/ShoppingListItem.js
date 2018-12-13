@@ -5,9 +5,9 @@ import {
   Badge,
   Button,
   ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API';
-import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal';
-import QuantityToggles from '../utils/QuantityToggles';
+import API from '../../modules/data/API'
+import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal'
+import QuantityToggles from '../utils/QuantityToggles'
 
 class ShoppingListItem extends Component {
 

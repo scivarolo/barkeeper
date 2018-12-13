@@ -4,10 +4,10 @@
  * Or create a new product.
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import API from '../../../modules/data/API';
-import NewProduct from './NewProduct';
+import API from '../../../modules/data/API'
+import NewProduct from './NewProduct'
 
 //TODO: replace with Typeahead to filter existing products and create a new one from there.
 
@@ -27,7 +27,7 @@ class BoughtIngredientModal extends Component {
   toggle() {
     this.setState({
       modal: !this.state.modal
-    });
+    })
   }
 
   getIngredientProducts = (ingredientId) => {

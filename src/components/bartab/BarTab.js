@@ -3,8 +3,8 @@ import {
   Button,
   Table } from 'reactstrap'
 import './bartab.scss'
-import BarTabCocktail from './BarTabCocktail';
-import API from '../../modules/data/API';
+import BarTabCocktail from './BarTabCocktail'
+import API from '../../modules/data/API'
 
 class BarTab extends Component {
 
@@ -52,7 +52,7 @@ class BarTab extends Component {
       return (
         <div className="sticky-top bartab--offset bartab__wrapper">
           <h1>Bar Tab</h1>
-          <p>You don't have any cocktails in your tab right now. Add some!</p>
+          <p>{`You don't have any cocktails in your tab right now. Add some!`}</p>
         </div>
       )
 

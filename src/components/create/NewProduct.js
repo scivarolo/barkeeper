@@ -3,14 +3,13 @@ import {
   Form,
   InputGroup,
   Input,
-  Button
-  } from "reactstrap";
+  Button } from "reactstrap"
 import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import UnitsDropdown from './UnitsDropdown';
-import API from '../../modules/data/API';
-import user from '../../modules/data/user';
+import UnitsDropdown from './UnitsDropdown'
+import API from '../../modules/data/API'
+import user from '../../modules/data/user'
 
 //TODO: Allow new ingredient to be created when a new product is being created.
 

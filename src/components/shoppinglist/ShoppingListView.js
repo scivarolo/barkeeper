@@ -9,8 +9,8 @@ import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
 import AddProduct from './AddProduct'
 import AddIngredient from './AddIngredient'
-import user from '../../modules/data/user';
-import './shoppingList.scss';
+import user from '../../modules/data/user'
+import './shoppingList.scss'
 
 // TODO: Show success alert when product added to shopping list.
 // TODO: Show success alert when product is created and added to shopping list.

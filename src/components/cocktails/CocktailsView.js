@@ -6,12 +6,12 @@ import {
   Col,
   ListGroup } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import API from '../../modules/data/API';
-import CocktailAddModal from './CocktailAddModal';
-import CocktailItem from './CocktailItem';
+import API from '../../modules/data/API'
+import CocktailAddModal from './CocktailAddModal'
+import CocktailItem from './CocktailItem'
 import { Alert, AlertContainer } from 'react-bs-notifier'
-import user from '../../modules/data/user';
-import BarTab from '../bartab/BarTab';
+import user from '../../modules/data/user'
+import BarTab from '../bartab/BarTab'
 import Units from '../../modules/UnitConverter'
 
 class CocktailsView extends Component {
@@ -94,7 +94,6 @@ class CocktailsView extends Component {
   }
 
   addToUserTab = (cocktailId) => {
-    //TODO: let user specify quantity. Or let them do it once its in the tab.
     let inTab = this.state.userTab.find(tabCocktail => tabCocktail.cocktailId === cocktailId)
     if(inTab) {
       let obj = {

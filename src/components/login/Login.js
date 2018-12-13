@@ -4,7 +4,7 @@ import "./login.scss"
 
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
-import API from '../../modules/data/API';
+import API from '../../modules/data/API'
 
 class Login extends Component {
 

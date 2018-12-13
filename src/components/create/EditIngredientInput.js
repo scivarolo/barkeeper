@@ -11,7 +11,7 @@ import {
   Input,
   InputGroupAddon
 } from 'reactstrap'
-import UnitsDropdown from './UnitsDropdown';
+import UnitsDropdown from './UnitsDropdown'
 
 class EditIngredientInput extends Component {
 
@@ -54,13 +54,15 @@ class EditIngredientInput extends Component {
                   } else {
                     this.props.ingredientToState(stateKey, "ingredientId", "")
                   }
-
                 }
-                // this.props.ingredientToState(stateKey, "sortOrder", ingredientId)
-                }} />
-              <Input type="number" step="any" placeholder="amount"
+              }} />
+              <Input
+                type="number"
+                step="any"
+                placeholder="amount"
                 defaultValue={this.props.initialIngredient ? this.props.initialIngredient.amount : ""}
-                onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}required={this.state.isRequired}></Input>
+                onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
+                required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
                 <UnitsDropdown isRequired={this.state.isRequired}
                   initialUnit={this.props.initialIngredient ? this.props.initialIngredient.unit : ""}

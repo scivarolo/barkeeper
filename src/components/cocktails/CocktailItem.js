@@ -4,13 +4,12 @@ import {
   Button,
   Col,
   Row,
-  ListGroupItem,
-} from 'reactstrap'
-import API from '../../modules/data/API';
-import RecipeIngredient from './recipe/RecipeIngredient';
+  ListGroupItem } from 'reactstrap'
+import API from '../../modules/data/API'
+import RecipeIngredient from './recipe/RecipeIngredient'
 import user from '../../modules/data/user'
-import Units from '../../modules/UnitConverter';
-import CocktailEditModal from './CocktailEditModal';
+import Units from '../../modules/UnitConverter'
+import CocktailEditModal from './CocktailEditModal'
 import "./cocktailItem.scss"
 
 class CocktailItem extends Component {

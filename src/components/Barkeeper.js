@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import NavBar from "./NavBar";
+import React, { Component } from 'react'
+import NavBar from "./NavBar"
 import { Switch, Route, Redirect } from "react-router-dom"
 
 import Dashboard from "./dashboard/Dashboard"
 import BarView from "./bar/BarView"
 import ShoppingListView from "./shoppinglist/ShoppingListView"
-import CocktailsView from './cocktails/CocktailsView';
+import CocktailsView from './cocktails/CocktailsView'
 import NewCocktail from './create/NewCocktail'
 
 // TODO: Move Alert Container to Barkeeper to make available to all views as needed

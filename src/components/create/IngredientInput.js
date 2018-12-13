@@ -10,7 +10,7 @@ import {
   Input,
   InputGroupAddon
 } from 'reactstrap'
-import UnitsDropdown from './UnitsDropdown';
+import UnitsDropdown from './UnitsDropdown'
 
 class IngredientInput extends Component {
 

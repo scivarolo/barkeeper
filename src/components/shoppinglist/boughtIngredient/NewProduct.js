@@ -3,11 +3,10 @@ import {
   Form,
   InputGroup,
   Input,
-  Button
-  } from "reactstrap";
-import UnitsDropdown from '../../create/UnitsDropdown';
-import API from '../../../modules/data/API';
-import user from '../../../modules/data/user';
+  Button } from "reactstrap"
+import UnitsDropdown from '../../create/UnitsDropdown'
+import API from '../../../modules/data/API'
+import user from '../../../modules/data/user'
 
 class NewProduct extends Component {
 

@@ -8,8 +8,8 @@ import {
   Col,
   Form,
   Input,
-  Label } from "reactstrap";
-  import API from '../../modules/data/API';
+  Label } from "reactstrap"
+  import API from '../../modules/data/API'
   import IngredientInput from './IngredientInput'
   import user from '../../modules/data/user'
 
@@ -82,7 +82,7 @@ class NewCocktail extends Component {
     })
     // Capture new recipe ID from response
     .then(r => this.setState({newRecipeId: r.id}))
-    //Check if any new ingredients and create entries in ingredients table.
+    // Check if any new ingredients and create entries in ingredients table.
     .then(() => {
       let newIngredients = []
       for(let i in cocktailIngredients) {
