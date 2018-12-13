@@ -8,6 +8,7 @@ import {
   ModalBody,
   ModalFooter } from 'reactstrap'
 import API from '../../modules/data/API'
+import './cocktailAdd.scss'
 
 class CocktailAddModal extends Component {
 
@@ -69,19 +70,21 @@ class CocktailAddModal extends Component {
       <>
         <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Choose Product(s) to Add</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Choose Cocktails to Add</ModalHeader>
           <ModalBody>
             <ListGroup className="addProductsList">
               {
                 this.state.cocktails.map(c => {
-                  return (
-                    <ListGroupItem
-                      key={c.id}
-                      id={c.id}
-                      onClick={e => this.handleSelections(e)}>
-                      {c.name}
-                    </ListGroupItem>
-                  )
+                  if(!this.props.userCocktails.find(userC => userC.cocktailId === c.id)) {
+                    return (
+                      <ListGroupItem
+                        key={c.id}
+                        id={c.id}
+                        onClick={e => this.handleSelections(e)}>
+                        {c.name}
+                      </ListGroupItem>
+                    )
+                  }
                 })
               }
             </ListGroup>
