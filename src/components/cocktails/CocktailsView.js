@@ -227,7 +227,8 @@ class CocktailsView extends Component {
       userCocktails,
       userShoppingList,
       cocktailIngredients,
-      userInventory } = this.state
+      userInventory,
+      showOnlyMakeable } = this.state
 
     if(this.state.isLoaded) {
       return (
@@ -267,7 +268,7 @@ class CocktailsView extends Component {
                     {
                       cocktails.map((cocktail, i) => {
                         //Find the userCocktail relationship that goes with the cocktail.
-                        let thisUserCocktail = this.state.userCocktails.find(userCocktail => userCocktail.cocktailId === cocktail.id)
+                        let thisUserCocktail = userCocktails.find(userCocktail => userCocktail.cocktailId === cocktail.id)
                         return (
                           <CocktailItem
                             key={thisUserCocktail.id}
@@ -279,7 +280,7 @@ class CocktailsView extends Component {
                             getShoppingList={this.getShoppingList}
                             getCocktailData={this.getCocktailData}
                             addToUserTab={this.addToUserTab}
-                            showOnlyMakeable={this.state.showOnlyMakeable} />
+                            showOnlyMakeable={showOnlyMakeable} />
                         )
                       })
                     }
