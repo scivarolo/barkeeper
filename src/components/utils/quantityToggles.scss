@@ -1,0 +1,9 @@
+@import "../../variables.scss";
+
+.quantity-toggles svg {
+  color: $primary;
+  transition: color ease-in-out .085s;
+  &:hover {
+    color: $warning;
+  }
+}
