@@ -244,6 +244,7 @@ class CocktailsView extends Component {
                     <CocktailAddModal
                       buttonLabel="Add Cocktails"
                       getCocktailData={this.getCocktailData}
+                      userCocktails={this.state.userCocktails}
                       showSuccessMessage={this.toggleSuccessMessage} />
                     <Button tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
@@ -265,12 +266,14 @@ class CocktailsView extends Component {
                   <ListGroup>
                     {
                       cocktails.map((cocktail, i) => {
+                        //Find the userCocktail relationship that goes with the cocktail.
+                        let thisUserCocktail = this.state.userCocktails.find(userCocktail => userCocktail.cocktailId === cocktail.id)
                         return (
                           <CocktailItem
-                            key={userCocktails[i].id}
+                            key={thisUserCocktail.id}
                             cocktail={cocktail}
                             ingredients={cocktailIngredients[i]}
-                            userCocktail={userCocktails[i]}
+                            userCocktail={thisUserCocktail}
                             userInventory={userInventory}
                             userShoppingList={userShoppingList}
                             getShoppingList={this.getShoppingList}
