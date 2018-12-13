@@ -4,7 +4,6 @@ import {
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API';
 import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal';
-import user from '../../modules/data/user';
 import QuantityToggles from '../utils/QuantityToggles';
 
 class ShoppingListItem extends Component {
