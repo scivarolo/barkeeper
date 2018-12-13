@@ -6,9 +6,13 @@ class QuantityToggles extends Component {
 
   render() {
     return (
-      <span className="quantity-toggles ml-2">
-        <FontAwesomeIcon onClick={this.props.increase} icon="plus-circle" />{' '}
-        <FontAwesomeIcon onClick={this.props.decrease} icon="minus-circle" />
+      <span className="d-flex quantity-toggles ml-2">
+        <span>
+          <FontAwesomeIcon onClick={this.props.increase} icon="plus-circle" />
+        </span>
+        <span className="ml-1">
+          <FontAwesomeIcon onClick={this.props.decrease} icon="minus-circle" />
+        </span>
       </span>
     )
   }

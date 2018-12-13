@@ -27,10 +27,12 @@ class BarTabCocktail extends Component {
       <tr>
         <td>{this.props.cocktail.cocktail.name}</td>
         <td>
+          <div className="d-flex">
           {this.props.cocktail.quantity}
           <QuantityToggles
             increase={this.increaseQuantity}
             decrease={this.decreaseQuantity} />
+            </div>
         </td>
       </tr>
     )

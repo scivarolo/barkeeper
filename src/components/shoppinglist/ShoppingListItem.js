@@ -92,11 +92,12 @@ class ShoppingListItem extends Component {
         </Row>
         <Row>
           <Col className="d-flex">
-            <p>Quantity: {item.quantity}
+            <span className="d-flex">
+              <span>Quantity: {item.quantity}</span>
               <QuantityToggles
                 increase={this.increaseQuantity}
                 decrease={this.decreaseQuantity} />
-            </p>
+            </span>
             <div className="ml-auto">
               { item.productId
                 ? <Button outline color="warning" className="btn-sm ml-2" onClick={() => this.boughtProduct(item)}>Bought</Button>
