@@ -85,6 +85,7 @@ class CocktailAddModal extends Component {
                       </ListGroupItem>
                     )
                   }
+                  return null
                 })
               }
             </ListGroup>
