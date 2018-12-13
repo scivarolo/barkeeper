@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   Container,
@@ -10,7 +11,7 @@ import {
   Label } from "reactstrap";
   import API from '../../modules/data/API';
   import IngredientInput from './IngredientInput'
-  import user from '../../modules/data/user';
+  import user from '../../modules/data/user'
 
 // TODO: Prevent already used recipe name?
 // TODO: Make an ingredient "optional" (won't count against ability to make it)
@@ -150,8 +151,15 @@ class NewCocktail extends Component {
   render() {
     return (
       <Container>
+        <Row className="pt-5 mb-5">
+          <Col className="d-flex">
+            <div>
+              <h1>New Cocktail Recipe</h1>
+            </div>
+          </Col>
+        </Row>
 
-        <h1>New Cocktail Recipe</h1>
+
         <Form onSubmit={e => this.saveRecipe(e)}>
           <Row>
             <Col>
@@ -161,19 +169,23 @@ class NewCocktail extends Component {
             </Col>
           </Row>
 
-          {this.outputIngredientInputs()}
+          <Row className="mt-3">
+            <Col md={7} className="mb-3">
+              <Label>Ingredients</Label>
+              {this.outputIngredientInputs()}
+              <Button size="sm" onClick={this.addIngredientInput}>Additional Ingredient</Button>
+            </Col>
 
-          <Button onClick={this.addIngredientInput}>Add Ingredient</Button>
-          <Row>
-            <Col>
-              <Label for="cocktailInstructions">Instructions</Label>
-              <Input type="textarea" id="cocktailInstructions" onChange={e => this.valueToState(e.target.id, e.target.value)} required={true} />
+            <Col md={5}>
+              <Label for="cocktailInstructions" className="mb-3">Instructions</Label>
+              <Input type="textarea" id="cocktailInstructions" onChange={e => this.valueToState(e.target.id, e.target.value)} required={true} rows="5" />
             </Col>
           </Row>
 
           <Row className="mt-3">
-            <Col>
-              <Button type="submit">Save Recipe</Button>
+            <Col className="d-flex">
+              <Button color="primary" className="ml-auto" type="submit">Save Recipe</Button>
+              <Button className="ml-2" tag={Link} to="/cocktails">Cancel</Button>
             </Col>
           </Row>
         </Form>
