@@ -7,11 +7,11 @@ import {
   ListGroupItem,
 } from 'reactstrap'
 import API from '../../modules/data/API';
-import "./cocktailItem.scss"
 import RecipeIngredient from './recipe/RecipeIngredient';
 import user from '../../modules/data/user'
 import Units from '../../modules/UnitConverter';
 import CocktailEditModal from './CocktailEditModal';
+import "./cocktailItem.scss"
 
 class CocktailItem extends Component {
 
@@ -138,9 +138,9 @@ class CocktailItem extends Component {
     }
     return (
       <ListGroupItem className={`mb-3 ${hide}`} key={cocktail.id}>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex mb-3 justify-content-between cocktail-header">
           <div>
-            <h2 className="mb-3">{cocktail.name}</h2>
+            <h2 className="mb-3 cocktail-name">{cocktail.name}</h2>
           </div>
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
@@ -151,7 +151,7 @@ class CocktailItem extends Component {
                     className="mr-2">Add to my Tab</Button>
                   <Badge color="success">You can make this!</Badge>
                 </div>
-              : <Badge color="danger">You are missing ingredients!</Badge>
+              : <Badge color="danger">Missing ingredients!</Badge>
             }
           </div>
         </div>
@@ -159,7 +159,7 @@ class CocktailItem extends Component {
         <Row>
           <Col md={5}>
             <h5>Ingredients</h5>
-            <ul>
+            <ul className="recipe-ingredients">
               {
                 cocktail.cocktailIngredients.map((ingredient, i) => {
                   return (

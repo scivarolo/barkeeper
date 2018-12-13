@@ -34,16 +34,18 @@ class RecipeIngredient extends Component {
     let canMake = this.props.canMake
 
     return (
-      <li className={canMake ? "" : "text-danger ingredient--can-make"}>
-        <span className="ingredient__amount">{this.props.ingredient.amount}</span>
-        <span className="ingredient__unit">{this.props.ingredient.unit}</span>
+      <li className={canMake ? "" : "text-danger ingredient--cant-make"}>
+        <span className="ingredient__amount-wrap">
+          <span className="ingredient__amount">{this.props.ingredient.amount}</span>
+          <span className="ingredient__unit">{this.props.ingredient.unit}</span>
+        </span>
         <span className="ingredient__label">{this.props.label}</span>
         {(!canMake)
           ? !this.state.inShoppingList
-            ? <Button size="sm"
+            ? <Button color="success" size="sm"
               onClick={() => this.props.addToShoppingList(this.props.ingredient)}
-              className="ml-2 ingredient-add-button">Add to Shopping List</Button>
-            : <span className="in-shopping-list">In your shopping list</span>
+              className="ml-2 ingredient-add-button">+ Shopping List</Button>
+            : <span className="in-shopping-list">Added</span>
           : "" }
       </li>
     )
