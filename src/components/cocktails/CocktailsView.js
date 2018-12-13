@@ -189,10 +189,8 @@ class CocktailsView extends Component {
   }
 
   makeCocktails = (cocktailsToMake) => {
-    // console.log("Cocktails to Make:", cocktailsToMake)
     let madeCocktails = []
     cocktailsToMake.forEach(c => {
-      // console.log(`We are making ${c.quantity} ${c.cocktail.name}`)
       madeCocktails.push(
         this.makeCocktail(c)
       )
