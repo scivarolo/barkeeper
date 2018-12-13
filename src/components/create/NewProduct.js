@@ -54,7 +54,7 @@ class NewProduct extends Component {
       name: this.state.newProductName,
       ingredientId: this.state.newProductIngredient[0].id,
       unit: this.state.unitsDropdown,
-      fullAmount: this.state.newProductSize,
+      fullAmount: Number(this.state.newProductSize),
       createdBy: user.getId()
     }
     return API.saveData("products", obj)
