@@ -48,7 +48,7 @@ class BoughtIngredientModal extends Component {
   render() {
     return (
       <>
-        <Button color="danger" size="sm" onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <Button outline color="warning" size="sm" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.label} Product</ModalHeader>
           <ModalBody>
