@@ -21,13 +21,13 @@ class CocktailItem extends Component {
     ingredientAvailability: {}
   }
 
-  ingredientToState = (ingredient, key, value) => {
+  ingredientStatusToState = (ingredient, key, value) => {
     //store the values for each ingredient in object together
     //store all ingredient objects in an object together
     this.setState(prevState => {
       let obj = Object.assign({}, prevState.ingredientsStatus)
       let objectKey = ingredient.id
-      if(!obj[objectKey]) obj[objectKey] = {}
+      if (!obj[objectKey]) obj[objectKey] = {}
       obj[objectKey][key] = value
 
       return {
@@ -36,7 +36,7 @@ class CocktailItem extends Component {
     })
   }
 
-  ingredientAvailability = (key, value) => {
+  ingredientAvailabilityToState = (key, value) => {
     this.setState(prevState => {
       //key is ingredient.id
       //value is true or false
@@ -50,26 +50,56 @@ class CocktailItem extends Component {
     .then(() => this.props.getCocktailData())
   }
 
-  compareIngredient(ingredient, userInventory) {
-    let canMake = true
+  canMakeRecipe = () => {
+    let canMakeRecipe = true
+    let statuses = Object.values(this.state.ingredientsStatus)
+    statuses.forEach(status => {
+      if (status.canMake === false) canMakeRecipe = false
+    })
+    this.setState({userCanMake: canMakeRecipe})
+
+  }
+  checkIngredientsAgainstInventory = () => {
+    let ingredientPromises = []
+
+    this.props.cocktail.cocktailIngredients.sort((a, b) => {
+      return a.sortOrder - b.sortOrder
+    }).forEach(ingredient => {
+      ingredientPromises.push(
+        this.checkSingleIngredientAgainstInventory(ingredient, this.props.userInventory)
+      )
+    })
+
+    return Promise.all(ingredientPromises)
+    .then(() => this.canMakeRecipe())
+
+  }
+  checkSingleIngredientAgainstInventory = (ingredient, userInventory) => {
+    let canMake
+    //Find the items in the user's inventory that match the ingredient
     let products = userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
-    if(!products.length) {
+    if (!products.length) {
       canMake = false
-      this.setState({userCanMake: false})
     } else {
+      let productsTotalMl = 0
+      //loop through that ingredient's products and sum the total.
       products.forEach(product => {
         let amount = product.amountAvailable + (product.product.fullAmount * (product.quantity - 1))
         let unit = product.product.unit
-        let comparison = Units.compare(amount, unit, ingredient.amount, ingredient.unit)
-        if(comparison === 1 || comparison === 0) {
-          canMake = true
-        } else {
-          canMake = false
-        }
+        let amountMl = Units.convert(amount, unit, "ml")
+        productsTotalMl += amountMl
       })
+      let comparison = Units.compare(productsTotalMl, "ml", ingredient.amount, ingredient.unit)
+      if (comparison === 1 || comparison === 0) {
+        canMake = true
+      } else {
+        canMake = false
+      }
+
     }
-    this.ingredientToState(ingredient, "canMake", canMake)
-    this.ingredientAvailability(ingredient.ingredientId, canMake)
+
+    this.ingredientStatusToState(ingredient, "canMake", canMake)
+    this.ingredientAvailabilityToState(ingredient.ingredientId, canMake)
   }
 
   addToShoppingList = (...ingredients) => {
@@ -88,45 +118,46 @@ class CocktailItem extends Component {
   }
 
   componentDidMount() {
-    this.props.cocktail.cocktailIngredients.sort((a, b) => {
-      return a.sortOrder - b.sortOrder
-    }).forEach(ingredient => {
-      this.compareIngredient(ingredient, this.props.userInventory)
-    })
+    this.checkIngredientsAgainstInventory()
   }
 
   componentDidUpdate(prevProps) {
-    //Loop through recipe ingredients to find if recipe can be made with user inventory
-    if(this.props.userInventory !== prevProps.userInventory || this.props.cocktail !== prevProps.cocktail) {
-      this.setState({userCanMake: true})
-      this.props.cocktail.cocktailIngredients.sort((a, b) => {
-        return a.sortOrder - b.sortOrder
-      }).forEach(ingredient => {
-        this.compareIngredient(ingredient, this.props.userInventory)
-      })
+    if (this.props.userInventory !== prevProps.userInventory || this.props.cocktail !== prevProps.cocktail) {
+      this.checkIngredientsAgainstInventory()
     }
+
   }
 
   render() {
 
     let { cocktail, ingredients } = this.props
 
+    let hide = ""
+    if(!this.state.userCanMake && this.props.showOnlyMakeable) {
+      hide = "d-none"
+    }
     return (
-      <ListGroupItem className="mb-3" key={cocktail.id}>
+      <ListGroupItem className={`mb-3 ${hide}`} key={cocktail.id}>
         <div className="d-flex justify-content-between">
           <div>
             <h2 className="mb-3">{cocktail.name}</h2>
           </div>
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
-              ? <Badge color="success">You can make this!</Badge>
+              ? <div>
+                  <Button
+                    onClick={() => this.props.addToUserTab(cocktail.id)}
+                    size="sm"
+                    className="mr-2">Add to my Tab</Button>
+                  <Badge color="success">You can make this!</Badge>
+                </div>
               : <Badge color="danger">You are missing ingredients!</Badge>
             }
           </div>
         </div>
 
         <Row>
-          <Col>
+          <Col md={5}>
             <h5>Ingredients</h5>
             <ul>
               {

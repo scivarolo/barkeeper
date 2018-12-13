@@ -47,7 +47,8 @@ class NewProduct extends Component {
       .then((r) => API.saveData("userProducts", {
         userId: user.getId(),
         productId: r.id,
-        amountAvailable: r.fullAmount
+        amountAvailable: r.fullAmount,
+        quantity: this.props.item.quantity
       }))
       .then(() => {
         // this.props.toggleSuccessMessage(`${this.state.newProductName} successfully created and added to your bar`)

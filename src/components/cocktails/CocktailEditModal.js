@@ -5,8 +5,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter } from 'reactstrap';
-import API from '../../modules/data/API';
-import IngredientInput from '../create/IngredientInput'
 import EditCocktail from '../create/EditCocktail';
 
 class CocktailEditModal extends React.Component {

@@ -11,6 +11,8 @@ import CocktailAddModal from './CocktailAddModal';
 import CocktailItem from './CocktailItem';
 import { Alert, AlertContainer } from 'react-bs-notifier'
 import user from '../../modules/data/user';
+import BarTab from '../bartab/BarTab';
+import Units from '../../modules/UnitConverter'
 
 class CocktailsView extends Component {
 
@@ -19,10 +21,16 @@ class CocktailsView extends Component {
     userCocktails: [],
     cocktails: [],
     cocktailIngredients: [],
+    userTab: [],
     userInventory: [],
     userShoppingList: [],
     showSuccessMessage: false,
-    successMessage: ""
+    successMessage: "",
+    showOnlyMakeable: false
+  }
+
+  toggleMakeable = () => {
+    this.setState({showOnlyMakeable: !this.state.showOnlyMakeable})
   }
 
   toggleSuccessMessage = (message) => {
@@ -79,10 +87,124 @@ class CocktailsView extends Component {
     .then(data => this.setState({userShoppingList: data}))
   }
 
+  getUserTab = () => {
+    let userId = user.getId()
+    API.getWithExpands("userTab", userId, "cocktail")
+    .then(data => this.setState({userTab: data}))
+  }
+
+  addToUserTab = (cocktailId) => {
+    //TODO: let user specify quantity. Or let them do it once its in the tab.
+    let inTab = this.state.userTab.find(tabCocktail => tabCocktail.cocktailId === cocktailId)
+    if(inTab) {
+      let obj = {
+        quantity: inTab.quantity + 1
+      }
+      return API.editData("userTab", inTab.id, obj)
+      .then(() => this.getUserTab())
+    }
+
+    // Not in tab already
+    let obj = {
+      userId: user.getId(),
+      cocktailId: cocktailId,
+      quantity: 1
+    }
+    return API.saveData("userTab", obj)
+    .then(() => this.getUserTab())
+  }
+
+  makeCocktail = (c) => {
+    //c = the cocktail.
+    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
+      .then((ingredients) => {
+        /**
+         * Loop through each of the cocktail's ingredients
+         * Find the first product in the inventory that matches
+         * and calculate how much will be left.
+         * Return all updates in a Promise.all
+         * TODO: user can choose which product to use if there are multiple options
+         */
+        let productUpdates = []
+
+        //Check if all ingredients are available
+        let canMake = true
+        ingredients.forEach(ingredient => {
+          const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+          if (!prod) return canMake = false
+
+          const amountNeeded = ingredient.amount * c.quantity
+          const amountUnit = ingredient.unit
+          const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
+          const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * prod.quantity)), prod.product.unit, "ml")
+
+          const amountLeft = prodAvailable - amountNeededMl
+          if (amountLeft < 0) canMake = false
+        })
+        if (canMake) {
+          ingredients.forEach(ingredient => {
+            const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+            if (!prod) return alert(`You're missing a necessary product`)
+
+            const amountNeeded = ingredient.amount * c.quantity
+            const amountUnit = ingredient.unit
+            const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
+            const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * (prod.quantity - 1))), prod.product.unit, "ml")
+
+            const amountLeft = prodAvailable - amountNeededMl
+            const quantityLeft = amountLeft / prod.product.fullAmount
+            const quantityCeil = Math.ceil(quantityLeft)
+            const newAmountAvailable = amountLeft % prod.product.fullAmount
+
+            const userProductId = prod.id
+            const userProductPatchObj = {
+              amountAvailable: newAmountAvailable,
+              quantity: quantityCeil
+            }
+
+            if (amountLeft < 0) {
+              return alert(`You don't have enough of an ingredient to make this many.`)
+            } else if (amountLeft === 0) {
+              return productUpdates.push(
+                API.deleteData("userProducts", userProductId)
+              )
+            } else {
+              return productUpdates.push(
+                API.editData("userProducts", userProductId, userProductPatchObj)
+              )
+            }
+
+          })
+          return Promise.all(productUpdates)
+          .then(() => {
+            let userCocktail = this.state.userCocktails.find(userCocktail => userCocktail.id === c.cocktailId)
+            return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
+          })
+          .then(() => API.deleteData("userTab", c.id))
+        } else {
+          alert(`You don't have enough of an ingredient to make ${c.cocktail.name}.`)
+        }
+
+      })
+  }
+
+  makeCocktails = (cocktailsToMake) => {
+    let madeCocktails = []
+    cocktailsToMake.forEach(c => {
+      madeCocktails.push(
+        this.makeCocktail(c)
+      )
+    })
+    return Promise.all(madeCocktails)
+      .then(() => this.getUserInventory())
+      .then(() => this.getUserTab())
+  }
+
   componentDidMount() {
     this.getCocktailData()
     .then(() => this.getUserInventory())
     .then(() => this.getShoppingList())
+    .then(() => this.getUserTab())
     .then(() => this.setState({isLoaded: true}))
 
     //If a new cocktail was just created, show the success message
@@ -110,39 +232,63 @@ class CocktailsView extends Component {
     if(this.state.isLoaded) {
       return (
         <Container>
-          <Row className="my-5">
-            <Col className="d-flex">
-              <div>
-                <h1>Cocktails</h1>
-              </div>
-              <div className="ml-auto">
-                <CocktailAddModal
-                  buttonLabel="Add Cocktails"
-                  getCocktailData={this.getCocktailData}
-                  showSuccessMessage={this.toggleSuccessMessage} />
-                <Button tag={Link} to="/cocktails/new">New Recipe</Button>
-              </div>
+          <Row className="pt-5">
+
+            <Col md={8}>
+              <Row className="mb-5">
+                <Col className="d-flex">
+                  <div>
+                    <h1>My Cocktails</h1>
+                  </div>
+                  <div className="ml-auto">
+                    <CocktailAddModal
+                      buttonLabel="Add Cocktails"
+                      getCocktailData={this.getCocktailData}
+                      showSuccessMessage={this.toggleSuccessMessage} />
+                    <Button tag={Link} to="/cocktails/new">New Recipe</Button>
+                  </div>
+                </Col>
+              </Row>
+              <Row className="mb-4">
+                <Col>
+                  <Button onClick={this.toggleMakeable}>
+                  {
+                    this.state.showOnlyMakeable
+                    ? "Show All My Cocktails"
+                    : "Show Only Cocktails I Can Make"
+                  }
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ListGroup>
+                    {
+                      cocktails.map((cocktail, i) => {
+                        return (
+                          <CocktailItem
+                            key={userCocktails[i].id}
+                            cocktail={cocktail}
+                            ingredients={cocktailIngredients[i]}
+                            userCocktail={userCocktails[i]}
+                            userInventory={userInventory}
+                            userShoppingList={userShoppingList}
+                            getShoppingList={this.getShoppingList}
+                            getCocktailData={this.getCocktailData}
+                            addToUserTab={this.addToUserTab}
+                            showOnlyMakeable={this.state.showOnlyMakeable} />
+                        )
+                      })
+                    }
+                  </ListGroup>
+                </Col>
+              </Row>
             </Col>
-          </Row>
-          <Row>
             <Col>
-              <ListGroup>
-                {
-                  cocktails.map((cocktail, i) => {
-                    return (
-                      <CocktailItem
-                        key={userCocktails[i].id}
-                        userCocktail={userCocktails[i]}
-                        cocktail={cocktail}
-                        userInventory={userInventory}
-                        userShoppingList={userShoppingList}
-                        getShoppingList={this.getShoppingList}
-                        ingredients={cocktailIngredients[i]}
-                        getCocktailData={this.getCocktailData} />
-                    )
-                  })
-                }
-              </ListGroup>
+              <BarTab
+                userTab={this.state.userTab}
+                getUserTab={this.getUserTab}
+                makeCocktails={this.makeCocktails} />
             </Col>
           </Row>
           <AlertContainer>
