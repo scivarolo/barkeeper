@@ -4,7 +4,6 @@ import {
   Col,
   Container,
   InputGroup,
-  ListGroup,
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
