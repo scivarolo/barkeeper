@@ -5,16 +5,18 @@ import {
   InputGroupAddon,
   InputGroupText,
   Input,
+  Progress,
   ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API';
-
-//TODO: Address update and delete now that quantities are a thing.
+import QuantityToggles from '../utils/QuantityToggles'
+import API from '../../modules/data/API'
+import './barItem.scss'
 
 class BarItem extends Component {
 
   state = {
     showUpdateForm: false,
-    updateValue: ""
+    updateValue: "",
+    totalAmount: "",
   }
 
   toggleUpdate = () => {
@@ -25,7 +27,11 @@ class BarItem extends Component {
   }
 
   handleFieldChange = (e) => {
-    this.setState({updateValue: e.target.value})
+    let val = e.target.value
+    if(e.target.value > this.props.item.product.fullAmount) {
+      val = this.props.item.product.fullAmount
+    }
+    this.setState({updateValue: val})
   }
 
   updateItemAmount = () => {
@@ -56,6 +62,22 @@ class BarItem extends Component {
     .then(() => this.props.getInventoryData())
   }
 
+  increaseQuantity = () => {
+    return API.editData("userProducts", this.props.item.id, {
+      quantity: this.props.item.quantity + 1
+    }).then(() => this.props.getInventoryData())
+  }
+
+  decreaseQuantity = () => {
+    if (this.props.item.quantity === 1) {
+      return this.deleteItem(this.props.item.id)
+    } else {
+      return API.editData("userProducts", this.props.item.id, {
+        quantity: this.props.item.quantity - 1
+      }).then(() => this.props.getInventoryData())
+    }
+  }
+
   componentDidMount() {
     this.totalProductAmount(this.props.item)
   }
@@ -64,26 +86,41 @@ class BarItem extends Component {
     let item = this.props.item
     return (
       <ListGroupItem className="mb-2" id={item.id}>
-        <h4>{item.product.name}</h4>
-        <p>Available: {item.amountAvailable} {item.product.unit}</p>
-        <p>Quantity: {item.quantity}</p>
-        <Button size="sm" onClick={this.toggleUpdate}>Update</Button>
-        <Button size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
-        { this.state.showUpdateForm
-          ? <div className="updateItem">
-              <InputGroup size="sm">
-                <Input type="number" style={{border: "1px solid lightgray"}}
-                  placeholder={item.amountAvailable} onChange={e => this.handleFieldChange(e)} />
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>{item.product.unit}</InputGroupText>
-                </InputGroupAddon>
-                <InputGroupAddon addonType="append">
-                  <Button onClick={this.updateItemAmount}>Save</Button>
-                </InputGroupAddon>
-              </InputGroup>
-            </div>
-          : null
-        }
+        <h4>{item.product.name} ({item.product.fullAmount} {item.product.unit})</h4>
+        <div className="d-flex">
+          <div className="mr-3">
+            <span>Quantity: {item.quantity}
+              <QuantityToggles increase={this.increaseQuantity} decrease={this.decreaseQuantity} />
+            </span>
+          </div>
+          <div className="mr-3">
+            <span>Available: {item.amountAvailable} {item.product.unit}</span>
+          </div>
+          <div style={{width: '150px'}}>
+            <Progress className="item-amount-chart" value={item.amountAvailable} max={item.product.fullAmount} />
+          </div>
+          <div className="ml-auto">
+            { this.state.showUpdateForm
+              ? <div className="updateItem mr-2">
+                  <InputGroup size="sm">
+                    <Input type="number" min="0" step="any" max={item.product.fullAmount} value={this.state.updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
+                      placeholder={item.amountAvailable} onChange={e => this.handleFieldChange(e)} />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText>{item.product.unit}</InputGroupText>
+                    </InputGroupAddon>
+                    <InputGroupAddon addonType="append">
+                      <Button onClick={this.updateItemAmount}>Save</Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </div>
+              : null
+            }
+            <Button size="sm" className="mr-2" onClick={this.toggleUpdate}>
+              {this.state.showUpdateForm ? "Cancel" : "Update"}
+            </Button>
+            <Button size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
+          </div>
+        </div>
       </ListGroupItem>
     )
   }

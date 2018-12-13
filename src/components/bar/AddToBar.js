@@ -82,7 +82,11 @@ class AddToBar extends Component {
             newSelectionPrefix="New: "
             labelKey="name"
             multiple={true}
-            options={this.state.allProducts}
+            options={this.state.allProducts.sort((a,b) => {
+              let aName = a.name.toUpperCase()
+              let bName = b.name.toUpperCase();
+              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+            })}
             placeholder="Search for products"
             onChange={selected => this.dropdownChange(selected)} />
           <InputGroupAddon addonType="append">
