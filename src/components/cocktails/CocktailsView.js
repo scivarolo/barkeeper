@@ -122,9 +122,11 @@ class CocktailsView extends Component {
          */
         let productUpdates = []
 
+        //Check if all ingredients are available
+        let canMake = true
         ingredients.forEach(ingredient => {
           const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
-          if (!prod) return alert(`You're missing a necessary product`)
+          if (!prod) return canMake = false
 
           const amountNeeded = ingredient.amount * c.quantity
           const amountUnit = ingredient.unit
@@ -132,39 +134,52 @@ class CocktailsView extends Component {
           const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * prod.quantity)), prod.product.unit, "ml")
 
           const amountLeft = prodAvailable - amountNeededMl
-          const quantityLeft = amountLeft / prod.product.fullAmount
-          const quantityCeil = Math.ceil(quantityLeft)
-          const newAmountAvailable = amountLeft % prod.product.fullAmount
-
-          const userProductId = prod.id
-          const userProductPatchObj = {
-            amountAvailable: newAmountAvailable,
-            quantity: quantityCeil
-          }
-
-          if (amountLeft < 0) {
-            return alert(`You don't have enough of an ingredient to make this many.`)
-          } else if (amountLeft === 0) {
-            return productUpdates.push(
-              () => API.deleteData("userProducts", userProductId)
-            )
-          } else {
-            return productUpdates.push(
-              () => API.editData("userProducts", userProductId, userProductPatchObj)
-            )
-          }
-
+          if (amountLeft < 0) canMake = false
         })
-        if(productUpdates.length !== ingredients.length) {
-          console.log(productUpdates)
-          return
-        }
-        return Promise.all(productUpdates)
+        if (canMake) {
+          ingredients.forEach(ingredient => {
+            const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+            if (!prod) return alert(`You're missing a necessary product`)
+
+            const amountNeeded = ingredient.amount * c.quantity
+            const amountUnit = ingredient.unit
+            const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
+            const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * (prod.quantity - 1))), prod.product.unit, "ml")
+
+            const amountLeft = prodAvailable - amountNeededMl
+            const quantityLeft = amountLeft / prod.product.fullAmount
+            const quantityCeil = Math.ceil(quantityLeft)
+            const newAmountAvailable = amountLeft % prod.product.fullAmount
+
+            const userProductId = prod.id
+            const userProductPatchObj = {
+              amountAvailable: newAmountAvailable,
+              quantity: quantityCeil
+            }
+
+            if (amountLeft < 0) {
+              return alert(`You don't have enough of an ingredient to make this many.`)
+            } else if (amountLeft === 0) {
+              return productUpdates.push(
+                API.deleteData("userProducts", userProductId)
+              )
+            } else {
+              return productUpdates.push(
+                API.editData("userProducts", userProductId, userProductPatchObj)
+              )
+            }
+
+          })
+          return Promise.all(productUpdates)
           .then(() => {
             let userCocktail = this.state.userCocktails.find(userCocktail => userCocktail.id === c.cocktailId)
             return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
           })
           .then(() => API.deleteData("userTab", c.id))
+        } else {
+          alert(`You don't have enough of an ingredient to make ${c.cocktail.name}.`)
+        }
+
       })
   }
 
