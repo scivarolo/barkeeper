@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import './quantityToggles.scss'
 
 class QuantityToggles extends Component {
 
   render() {
     return (
-      <span className="ml-2">
-        <i onClick={this.props.decrease} className="icon-minus icons mx-1"></i>
-        <i onClick={this.props.increase} className="icon-plus icons mx-1"></i>
+      <span className="d-flex quantity-toggles ml-2">
+        <span>
+          <FontAwesomeIcon onClick={this.props.increase} icon="plus-circle" />
+        </span>
+        <span className="ml-1">
+          <FontAwesomeIcon onClick={this.props.decrease} icon="minus-circle" />
+        </span>
       </span>
     )
   }

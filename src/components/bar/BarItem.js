@@ -89,7 +89,8 @@ class BarItem extends Component {
         <h4>{item.product.name} ({item.product.fullAmount} {item.product.unit})</h4>
         <div className="d-flex">
           <div className="mr-3">
-            <span>Quantity: {item.quantity}
+            <span className="d-flex">
+              <span>Quantity: {item.quantity}</span>
               <QuantityToggles increase={this.increaseQuantity} decrease={this.decreaseQuantity} />
             </span>
           </div>

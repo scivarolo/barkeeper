@@ -3,15 +3,15 @@
  * in the database, but is needed for the current step
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Button,
   InputGroup,
   Input,
   InputGroupAddon,
-  InputGroupText } from "reactstrap";
-import API from '../../modules/data/API';
-import user from '../../modules/data/user';
+  InputGroupText } from "reactstrap"
+import API from '../../modules/data/API'
+import user from '../../modules/data/user'
 
 class NewIngredient extends Component {
 

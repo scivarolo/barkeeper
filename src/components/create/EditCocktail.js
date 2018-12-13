@@ -7,10 +7,10 @@ import {
   Col,
   Form,
   Input,
-  Label } from "reactstrap";
-  import API from '../../modules/data/API';
+  Label } from "reactstrap"
+  import API from '../../modules/data/API'
   import EditIngredientInput from './EditIngredientInput'
-  import user from '../../modules/data/user';
+  import user from '../../modules/data/user'
 
 class EditCocktail extends Component {
 

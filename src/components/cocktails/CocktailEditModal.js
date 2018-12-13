@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 import {
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter } from 'reactstrap';
-import EditCocktail from '../create/EditCocktail';
+  ModalFooter } from 'reactstrap'
+import EditCocktail from '../create/EditCocktail'
 
 class CocktailEditModal extends React.Component {
   constructor(props) {

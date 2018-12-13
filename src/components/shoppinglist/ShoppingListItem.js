@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import {
+  Row,
+  Col,
+  Badge,
   Button,
   ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API';
-import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal';
-import QuantityToggles from '../utils/QuantityToggles';
+import API from '../../modules/data/API'
+import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal'
+import QuantityToggles from '../utils/QuantityToggles'
 
 class ShoppingListItem extends Component {
 
@@ -74,27 +77,42 @@ class ShoppingListItem extends Component {
   render() {
     let item = this.props.item
     return (
-      <ListGroupItem className="mb-2 d-flex" id={item.id}>
-        <div>
-          <h6>{item.productId ? `Product: ${item.product.name}` : `Ingredient: ${item.ingredient.label}`}</h6>
-          <p>Quantity: {item.quantity}
-            <QuantityToggles
-              increase={this.increaseQuantity}
-              decrease={this.decreaseQuantity} />
-          </p>
-        </div>
-        <div className="ml-auto">
-          { item.productId
-            ? <Button className="btn-sm ml-2" onClick={() => this.boughtProduct(item)}>Bought</Button>
-            : <BoughtIngredientModal
-                buttonLabel="Bought"
-                ingredient={this.props.item.ingredient}
-                boughtIngredientProduct={this.boughtIngredientProduct}
-                item={item}
-                deleteItem={this.props.deleteItem} />
-          }
-          <Button className="btn-sm ml-2" onClick={() => this.props.deleteItem(item.id)}>Delete</Button>
-        </div>
+      <ListGroupItem className="mb-2" id={item.id}>
+        <Row>
+          <Col>
+            <div className="border-bottom mb-2">
+              <h4>{
+                item.productId
+                ? <>{item.product.name} <Badge className="shopping-badge" color="primary">Product</Badge></>
+                : <>{item.ingredient.label} <Badge className="shopping-badge" color="danger">Ingredient</Badge></>
+              }
+              </h4>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="d-flex">
+            <span className="d-flex">
+              <span>Quantity: {item.quantity}</span>
+              <QuantityToggles
+                increase={this.increaseQuantity}
+                decrease={this.decreaseQuantity} />
+            </span>
+            <div className="ml-auto">
+              { item.productId
+                ? <Button outline color="warning" className="btn-sm ml-2" onClick={() => this.boughtProduct(item)}>Bought</Button>
+                : <BoughtIngredientModal
+                    buttonLabel="Bought"
+                    ingredient={this.props.item.ingredient}
+                    boughtIngredientProduct={this.boughtIngredientProduct}
+                    item={item}
+                    deleteItem={this.props.deleteItem} />
+              }
+              <Button outline color="danger" className="btn-sm ml-2" onClick={() => this.props.deleteItem(item.id)}>Delete</Button>
+            </div>
+          </Col>
+
+        </Row>
       </ListGroupItem>
     )
   }

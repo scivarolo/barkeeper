@@ -13,7 +13,7 @@ import './cocktailAdd.scss'
 class CocktailAddModal extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       modal: false,
       cocktails: [],

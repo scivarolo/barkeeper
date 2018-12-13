@@ -4,13 +4,13 @@ import {
   Col,
   Container,
   InputGroup,
-  ListGroup,
   Row, } from 'reactstrap'
 import API from '../../modules/data/API'
 import ShoppingListItem from './ShoppingListItem'
 import AddProduct from './AddProduct'
 import AddIngredient from './AddIngredient'
-import user from '../../modules/data/user';
+import user from '../../modules/data/user'
+import './shoppingList.scss'
 
 // TODO: Show success alert when product added to shopping list.
 // TODO: Show success alert when product is created and added to shopping list.
@@ -93,7 +93,7 @@ class ShoppingListView extends Component {
           </Row>
           <Row>
             <Col>
-              <ListGroup>
+              <div className="shopping-list-grid">
                 {
                   shoppingProducts.map(item => {
                     return <ShoppingListItem
@@ -103,7 +103,7 @@ class ShoppingListView extends Component {
                             deleteItem={this.deleteItem} />
                   })
                 }
-              </ListGroup>
+              </div>
             </Col>
           </Row>
         </Container>

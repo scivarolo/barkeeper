@@ -3,5 +3,7 @@
 
 @import 'variables';
 //add variables above import
-
+.badge {
+  font-family: $font-family-base;
+}
 @import '~bootstrap/scss/bootstrap.scss';

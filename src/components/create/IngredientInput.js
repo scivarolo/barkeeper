@@ -3,6 +3,8 @@
 
 import React, { Component } from 'react'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
+import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import {
   Col,
   Row,
@@ -10,7 +12,7 @@ import {
   Input,
   InputGroupAddon
 } from 'reactstrap'
-import UnitsDropdown from './UnitsDropdown';
+import UnitsDropdown from './UnitsDropdown'
 
 class IngredientInput extends Component {
 

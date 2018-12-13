@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Button,
   InputGroupAddon } from 'reactstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import user from '../../modules/data/user';
+import user from '../../modules/data/user'
 import API from '../../modules/data/API'
-import NewProduct from '../create/NewProduct';
+import NewProduct from '../create/NewProduct'
 
 //TODO: Disable Product Typeahead while new product is being created.
 //TODO: If they cancel creating new product, remove the entry from the Typeahead.

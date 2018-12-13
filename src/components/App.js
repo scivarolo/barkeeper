@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import Login from './login/Login';
 import Barkeeper from './Barkeeper';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
 
+library.add(faPlusCircle, faMinusCircle)
 class App extends Component {
 
   constructor(props) {

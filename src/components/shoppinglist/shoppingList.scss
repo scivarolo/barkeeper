@@ -1,0 +1,13 @@
+.shopping-badge {
+  font-size: .65em;
+  position:relative;
+  top: -4px;
+}
+
+@media (min-width: 900px) {
+  .shopping-list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+  }
+}

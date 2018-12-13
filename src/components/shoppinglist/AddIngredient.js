@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Button,
   InputGroupAddon } from 'reactstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import user from '../../modules/data/user';
+import user from '../../modules/data/user'
 import API from '../../modules/data/API'
 
 class AddIngredient extends Component {
@@ -57,7 +57,11 @@ class AddIngredient extends Component {
           <Typeahead
             labelKey="label"
             multiple={true}
-            options={this.state.ingredients}
+            options={this.state.ingredients.sort((a,b) => {
+              let aName = a.label.toUpperCase()
+              let bName = b.label.toUpperCase();
+              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+            })}
             placeholder="Search for ingredients"
             onChange={selected => this.setState({selected: selected})} />
           <InputGroupAddon addonType="append">
