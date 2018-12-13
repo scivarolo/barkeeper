@@ -6,6 +6,7 @@ import {
   NavbarBrand,
   NavItem,
   NavLink } from 'reactstrap'
+import user from '../modules/data/user';
 
 class NavBar extends Component {
 
@@ -22,6 +23,12 @@ class NavBar extends Component {
           </NavItem>
           <NavItem>
             <NavLink className="text-white" tag={Link} to="/shopping-list">Shopping List</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="/" className="text-white" onClick={() => {
+              user.logout()
+              this.props.authenticate()
+            }} >Logout</NavLink>
           </NavItem>
         </Nav>
       </Navbar>
