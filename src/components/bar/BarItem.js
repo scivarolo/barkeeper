@@ -11,8 +11,6 @@ import QuantityToggles from '../utils/QuantityToggles'
 import API from '../../modules/data/API'
 import './barItem.scss'
 
-//TODO: Address update and delete now that quantities are a thing.
-
 class BarItem extends Component {
 
   state = {
