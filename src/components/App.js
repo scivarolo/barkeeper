@@ -42,7 +42,7 @@ class App extends Component {
     return (
       <>
       { this.isAuthenticated()
-      ? <Barkeeper />
+      ? <Barkeeper authenticate={this.authenticate} />
       : <>
           <Redirect to="/login" />
           <Login

@@ -58,7 +58,7 @@ class RegisterForm extends Component {
         </FormGroup>
 
         <Button color="primary" block size="lg" type="submit">Register</Button>
-        <p className="mt-2">Already have any account? <span className="link" onClick={this.props.toggleForms}>Login</span></p>
+        <p className="mt-2">Already have an account? <span className="link" onClick={this.props.toggleForms}>Login</span></p>
       </Form>
     )
   }
