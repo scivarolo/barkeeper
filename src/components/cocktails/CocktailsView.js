@@ -119,7 +119,7 @@ class CocktailsView extends Component {
     return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
       .then((ingredients) => {
         let prodsObj = {}
-        // find that products available for each ingredient
+        // find the products available for each ingredient
         ingredients.forEach(ingredient => {
           let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
           prodsObj[ingredient.ingredientId] = prods

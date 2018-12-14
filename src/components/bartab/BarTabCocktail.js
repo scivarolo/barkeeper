@@ -24,6 +24,8 @@ class BarTabCocktail extends Component {
   }
 
   renderIngredientOptions = () => {
+    // if an ingredient has multiple options,
+    // return an input with the options
     let cocktailProducts = this.props.cocktailProducts
     for(let i in cocktailProducts) {
       if(cocktailProducts[i].length > 1) {
@@ -42,8 +44,6 @@ class BarTabCocktail extends Component {
         return null
       }
     }
-    // if an ingredient has multiple options,
-    // return an input with the options
   }
 
   render() {
