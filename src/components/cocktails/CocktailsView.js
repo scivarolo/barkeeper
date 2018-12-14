@@ -179,11 +179,14 @@ class CocktailsView extends Component {
             const amountUnit = ingredient.unit
             const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
             const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * (prod.quantity - 1))), prod.product.unit, "ml")
-
+            const prodFullAmount = Units.convert(prod.product.fullAmount, prod.product.unit, "ml")
             const amountLeft = prodAvailable - amountNeededMl
-            const quantityLeft = amountLeft / prod.product.fullAmount
+            const quantityLeft = amountLeft / prodFullAmount
             const quantityCeil = Math.ceil(quantityLeft)
-            const newAmountAvailable = amountLeft % prod.product.fullAmount
+            let newAmountAvailable = amountLeft % prodFullAmount
+            if(prod.product.unit !== "ml") {
+              newAmountAvailable = Units.convert(newAmountAvailable, "ml", prod.product.unit)
+            }
 
             const userProductId = prod.id
             const userProductPatchObj = {
@@ -206,7 +209,7 @@ class CocktailsView extends Component {
           })
           return Promise.all(productUpdates)
           .then(() => {
-            let userCocktail = this.state.userCocktails.find(userCocktail => userCocktail.id === c.cocktailId)
+            let userCocktail = this.state.userCocktails.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
             return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
           })
           .then(() => API.deleteData("userTab", c.id))
