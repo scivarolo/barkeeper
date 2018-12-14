@@ -26,7 +26,7 @@ class CocktailEditModal extends React.Component {
   render() {
     return (
       <>
-        <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <Button size="sm" outline color="warning" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Edit {this.props.cocktail.name}</ModalHeader>
           <ModalBody>

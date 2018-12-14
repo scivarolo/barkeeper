@@ -17,6 +17,16 @@ class BarTab extends Component {
       .then(() => this.props.getUserTab())
   }
 
+  componentDidMount() {
+    return this.props.userTab.forEach(c => this.props.getTabCocktailProductChoices(c))
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.userTab !== this.props.userTab) {
+      return this.props.userTab.forEach(c => this.props.getTabCocktailProductChoices(c))
+    }
+  }
+
   render() {
 
     if (this.props.userTab && this.props.userTab.length) {
@@ -37,7 +47,11 @@ class BarTab extends Component {
                   return <BarTabCocktail
                             key={tabCocktail.id}
                             cocktail={tabCocktail}
+                            userInventory={this.props.userInventory}
+                            ingredients={this.props.cocktails.find(c => c.id === tabCocktail.cocktailId).cocktailIngredients}
                             removeFromUserTab={this.removeFromUserTab}
+                            makeWithThisIngredient={this.props.makeWithThisIngredient}
+                            cocktailProducts={this.props.userTabProducts[tabCocktail.id]}
                             getUserTab={this.props.getUserTab} />
                 })
               }

@@ -190,7 +190,7 @@ class CocktailItem extends Component {
                 getCocktailData={this.props.getCocktailData}  />
               : null
             }
-            <Button size="sm" onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>
+            <Button size="sm" className="ml-2" color="danger" outline onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>
           </Col>
         </Row>
       </ListGroupItem>

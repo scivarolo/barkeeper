@@ -22,6 +22,8 @@ class CocktailsView extends Component {
     cocktails: [],
     cocktailIngredients: [],
     userTab: [],
+    userTabProducts: {},
+    tabChoices: {},
     userInventory: [],
     userShoppingList: [],
     showSuccessMessage: false,
@@ -113,6 +115,34 @@ class CocktailsView extends Component {
     .then(() => this.getUserTab())
   }
 
+  getTabCocktailProductChoices = (c) => {
+    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
+      .then((ingredients) => {
+        let prodsObj = {}
+        // find the products available for each ingredient
+        ingredients.forEach(ingredient => {
+          let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
+          prodsObj[ingredient.ingredientId] = prods
+        })
+        return this.setState(prevState => {
+          let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
+          return {userTabProducts: userTabProductsObj}
+        })
+      })
+  }
+
+  makeWithThisIngredient = (e, tabCocktailId, ingredientId) => {
+    let obj = {
+      productId: Number(e.target.value),
+      tabCocktailId: Number(tabCocktailId),
+      ingredientId: Number(ingredientId)
+    }
+    this.setState(prevState => {
+      return { tabChoices: Object.assign({}, prevState.tabChoices, {[tabCocktailId]: {[ingredientId]: obj} }) }
+    })
+
+  }
+
   makeCocktail = (c) => {
     //c = the cocktail.
     return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
@@ -122,14 +152,20 @@ class CocktailsView extends Component {
          * Find the first product in the inventory that matches
          * and calculate how much will be left.
          * Return all updates in a Promise.all
-         * TODO: user can choose which product to use if there are multiple options
          */
         let productUpdates = []
 
         //Check if all ingredients are available
         let canMake = true
         ingredients.forEach(ingredient => {
-          const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+          let prod
+          //If multiple product options, and user specified one. If not, just use the first one.
+          if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
+            let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
+            prod = this.state.userInventory.find(item => item.productId === productId)
+          } else {
+            prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+          }
           if (!prod) return canMake = false
 
           const amountNeeded = ingredient.amount * c.quantity
@@ -142,8 +178,15 @@ class CocktailsView extends Component {
         })
         if (canMake) {
           ingredients.forEach(ingredient => {
-            const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
-            if (!prod) return alert(`You're missing a necessary product`)
+            let prod
+            //If multiple product options, and user specified one. If not, just use the first one.
+            if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
+              let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
+              prod = this.state.userInventory.find(item => item.productId === productId)
+            } else {
+              prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+            }
+            if (!prod) return this.toggleSuccessMessage(`You don't have any __ingredient__`)
 
             const amountNeeded = ingredient.amount * c.quantity
             const amountUnit = ingredient.unit
@@ -180,11 +223,16 @@ class CocktailsView extends Component {
           return Promise.all(productUpdates)
           .then(() => {
             let userCocktail = this.state.userCocktails.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
+            if(c.quantity > 1) {
+              this.toggleSuccessMessage(`You made ${c.quantity} ${c.cocktail.name}s!`)
+            } else {
+              this.toggleSuccessMessage(`You made ${c.quantity} ${c.cocktail.name}!`)
+            }
             return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
           })
           .then(() => API.deleteData("userTab", c.id))
         } else {
-          alert(`You don't have enough of an ingredient to make ${c.cocktail.name}.`)
+          this.toggleSuccessMessage(`You're missing ingredients needed to make ${c.cocktail.name}.`)
         }
 
       })
@@ -249,13 +297,13 @@ class CocktailsView extends Component {
                       getCocktailData={this.getCocktailData}
                       userCocktails={this.state.userCocktails}
                       showSuccessMessage={this.toggleSuccessMessage} />
-                    <Button tag={Link} to="/cocktails/new">New Recipe</Button>
+                    <Button color="primary" tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
                 </Col>
               </Row>
               <Row className="mb-4">
                 <Col>
-                  <Button onClick={this.toggleMakeable}>
+                  <Button color="warning" onClick={this.toggleMakeable}>
                   {
                     this.state.showOnlyMakeable
                     ? "Show All My Cocktails"
@@ -294,6 +342,11 @@ class CocktailsView extends Component {
               <BarTab
                 userTab={this.state.userTab}
                 getUserTab={this.getUserTab}
+                userInventory={userInventory}
+                cocktails={this.state.cocktails}
+                makeWithThisIngredient={this.makeWithThisIngredient}
+                getTabCocktailProductChoices={this.getTabCocktailProductChoices}
+                userTabProducts={this.state.userTabProducts}
                 makeCocktails={this.makeCocktails} />
             </Col>
           </Row>
