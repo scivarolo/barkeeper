@@ -152,14 +152,20 @@ class CocktailsView extends Component {
          * Find the first product in the inventory that matches
          * and calculate how much will be left.
          * Return all updates in a Promise.all
-         * TODO: user can choose which product to use if there are multiple options
          */
         let productUpdates = []
 
         //Check if all ingredients are available
         let canMake = true
         ingredients.forEach(ingredient => {
-          const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+          let prod
+          //If multiple product options, and user specified one. If not, just use the first one.
+          if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
+            let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
+            prod = this.state.userInventory.find(item => item.productId === productId)
+          } else {
+            prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+          }
           if (!prod) return canMake = false
 
           const amountNeeded = ingredient.amount * c.quantity
@@ -172,8 +178,15 @@ class CocktailsView extends Component {
         })
         if (canMake) {
           ingredients.forEach(ingredient => {
-            const prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
-            if (!prod) return alert(`You're missing a necessary product`)
+            let prod
+            //If multiple product options, and user specified one. If not, just use the first one.
+            if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
+              let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
+              prod = this.state.userInventory.find(item => item.productId === productId)
+            } else {
+              prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
+            }
+            if (!prod) return this.toggleSuccessMessage(`You don't have any __ingredient__`)
 
             const amountNeeded = ingredient.amount * c.quantity
             const amountUnit = ingredient.unit
@@ -210,11 +223,16 @@ class CocktailsView extends Component {
           return Promise.all(productUpdates)
           .then(() => {
             let userCocktail = this.state.userCocktails.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
+            if(c.quantity > 1) {
+              this.toggleSuccessMessage(`You made ${c.quantity} ${c.cocktail.name}s!`)
+            } else {
+              this.toggleSuccessMessage(`You made ${c.quantity} ${c.cocktail.name}!`)
+            }
             return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
           })
           .then(() => API.deleteData("userTab", c.id))
         } else {
-          alert(`You don't have enough of an ingredient to make ${c.cocktail.name}.`)
+          this.toggleSuccessMessage(`You're missing ingredients needed to make ${c.cocktail.name}.`)
         }
 
       })
