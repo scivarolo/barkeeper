@@ -116,10 +116,10 @@ class BarItem extends Component {
                 </div>
               : null
             }
-            <Button size="sm" className="mr-2" onClick={this.toggleUpdate}>
+            <Button outline color="warning" size="sm" className="mr-2" onClick={this.toggleUpdate}>
               {this.state.showUpdateForm ? "Cancel" : "Update"}
             </Button>
-            <Button size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
+            <Button outline color="danger" size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
           </div>
         </div>
       </ListGroupItem>

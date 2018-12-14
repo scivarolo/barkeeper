@@ -297,13 +297,13 @@ class CocktailsView extends Component {
                       getCocktailData={this.getCocktailData}
                       userCocktails={this.state.userCocktails}
                       showSuccessMessage={this.toggleSuccessMessage} />
-                    <Button tag={Link} to="/cocktails/new">New Recipe</Button>
+                    <Button color="primary" tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
                 </Col>
               </Row>
               <Row className="mb-4">
                 <Col>
-                  <Button onClick={this.toggleMakeable}>
+                  <Button color="warning" onClick={this.toggleMakeable}>
                   {
                     this.state.showOnlyMakeable
                     ? "Show All My Cocktails"
