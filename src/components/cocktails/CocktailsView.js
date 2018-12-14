@@ -22,6 +22,8 @@ class CocktailsView extends Component {
     cocktails: [],
     cocktailIngredients: [],
     userTab: [],
+    userTabProducts: {},
+    tabChoices: {},
     userInventory: [],
     userShoppingList: [],
     showSuccessMessage: false,
@@ -111,6 +113,34 @@ class CocktailsView extends Component {
     }
     return API.saveData("userTab", obj)
     .then(() => this.getUserTab())
+  }
+
+  getTabCocktailProductChoices = (c) => {
+    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
+      .then((ingredients) => {
+        let prodsObj = {}
+        // find that products available for each ingredient
+        ingredients.forEach(ingredient => {
+          let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
+          prodsObj[ingredient.ingredientId] = prods
+        })
+        return this.setState(prevState => {
+          let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
+          return {userTabProducts: userTabProductsObj}
+        })
+      })
+  }
+
+  makeWithThisIngredient = (e, tabCocktailId, ingredientId) => {
+    let obj = {
+      productId: Number(e.target.value),
+      tabCocktailId: Number(tabCocktailId),
+      ingredientId: Number(ingredientId)
+    }
+    this.setState(prevState => {
+      return { tabChoices: Object.assign({}, prevState.tabChoices, {[tabCocktailId]: {[ingredientId]: obj} }) }
+    })
+
   }
 
   makeCocktail = (c) => {
@@ -291,6 +321,11 @@ class CocktailsView extends Component {
               <BarTab
                 userTab={this.state.userTab}
                 getUserTab={this.getUserTab}
+                userInventory={userInventory}
+                cocktails={this.state.cocktails}
+                makeWithThisIngredient={this.makeWithThisIngredient}
+                getTabCocktailProductChoices={this.getTabCocktailProductChoices}
+                userTabProducts={this.state.userTabProducts}
                 makeCocktails={this.makeCocktails} />
             </Col>
           </Row>

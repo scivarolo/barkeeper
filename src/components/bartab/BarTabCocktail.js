@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Input } from 'reactstrap'
 import QuantityToggles from '../utils/QuantityToggles'
 import API from '../../modules/data/API'
 
@@ -22,17 +23,44 @@ class BarTabCocktail extends Component {
     }
   }
 
+  renderIngredientOptions = () => {
+    let cocktailProducts = this.props.cocktailProducts
+    for(let i in cocktailProducts) {
+      if(cocktailProducts[i].length > 1) {
+        return (
+          <div>
+            Choose: <Input onChange={(e) => this.props.makeWithThisIngredient(e, this.props.cocktail.id, Number(i))} bsSize="sm" type="select" style={{width:"125px", display: "inline"}}>
+              {
+                cocktailProducts[i].map(product => {
+                  return <option value={product.productId} key={product.productId}>{product.product.name}</option>
+                })
+              }
+            </Input>
+          </div>
+        )
+      } else {
+        return null
+      }
+    }
+    // if an ingredient has multiple options,
+    // return an input with the options
+  }
+
   render() {
     return (
       <tr>
-        <td>{this.props.cocktail.cocktail.name}</td>
+        <td>
+          <div>{this.props.cocktail.cocktail.name}</div>
+          {this.renderIngredientOptions()}
+        </td>
+
         <td>
           <div className="d-flex">
           {this.props.cocktail.quantity}
           <QuantityToggles
             increase={this.increaseQuantity}
             decrease={this.decreaseQuantity} />
-            </div>
+          </div>
         </td>
       </tr>
     )
