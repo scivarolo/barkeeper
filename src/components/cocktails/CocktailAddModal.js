@@ -29,11 +29,6 @@ class CocktailAddModal extends Component {
     });
   }
 
-  loadCocktails() {
-    return API.getAll("cocktails")
-    .then(cocktails => this.setState({cocktails: cocktails}))
-  }
-
   addCocktails() {
     let userId = sessionStorage.getItem("id")
     let cocktailsArray = this.state.selectedCocktails
@@ -62,7 +57,7 @@ class CocktailAddModal extends Component {
   }
 
   componentDidMount() {
-    this.loadCocktails()
+    this.props.loadAllCocktails()
   }
 
   render() {
@@ -74,7 +69,7 @@ class CocktailAddModal extends Component {
           <ModalBody>
             <ListGroup className="addProductsList">
               {
-                this.state.cocktails.map(c => {
+                this.props.allCocktails.map(c => {
                   if(!this.props.userCocktails.find(userC => userC.cocktailId === c.id)) {
                     return (
                       <ListGroupItem
