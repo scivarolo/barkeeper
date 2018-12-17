@@ -46,7 +46,7 @@ class CocktailItem extends Component {
 
   deleteItem(id) {
     return API.deleteData("userCocktails", id)
-    .then(() => this.props.getCocktailData())
+    .then(() => this.props.getUserCocktailData())
   }
 
   canMakeRecipe = () => {
@@ -187,7 +187,7 @@ class CocktailItem extends Component {
                 buttonLabel="Edit"
                 cocktail={cocktail}
                 ingredientNames={ingredients}
-                getCocktailData={this.props.getCocktailData}  />
+                getUserCocktailData={this.props.getUserCocktailData}  />
               : null
             }
             <Button size="sm" className="ml-2" color="danger" outline onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>

@@ -36,7 +36,7 @@ class CocktailsList extends Component {
                 userInventory={userInventory}
                 userShoppingList={userShoppingList}
                 getShoppingList={this.props.getShoppingList}
-                getCocktailData={this.props.getCocktailData}
+                getUserCocktailData={this.props.getUserCocktailData}
                 addToUserTab={this.props.addToUserTab}
                 showOnlyMakeable={showOnlyMakeable} />
             )

@@ -24,7 +24,6 @@ class CocktailsView extends Component {
     userCocktails: [],
     userCocktailIngredients: [],
     cocktails: [],
-    cocktailsToShow: [],
     cocktailIngredients: [],
     userTab: [],
     userTabProducts: {},
@@ -35,6 +34,19 @@ class CocktailsView extends Component {
     showSuccessMessage: false,
     showOnlyMakeable: false,
     viewAllCocktails: false
+  }
+
+  componentDidMount() {
+    this.getUserCocktailData()
+    .then(() => this.getUserInventory())
+    .then(() => this.getShoppingList())
+    .then(() => this.getUserTab())
+    .then(() => this.setState({isLoaded: true}))
+
+    //If a new cocktail was just created, show the success message
+    if(this.props.location.hasOwnProperty('successMessage')) {
+      this.toggleSuccessMessage(this.props.location.successMessage)
+    }
   }
 
   toggleMakeable = () => {
@@ -53,7 +65,7 @@ class CocktailsView extends Component {
     .then(data => this.setState({allCocktails: data}))
   }
 
-  getCocktailData = () => {
+  getUserCocktailData = () => {
     let userId = user.getId()
     let newState = {}
     //get userCocktails
@@ -262,19 +274,6 @@ class CocktailsView extends Component {
       .then(() => this.getUserTab())
   }
 
-  componentDidMount() {
-    this.getCocktailData()
-    .then(() => this.getUserInventory())
-    .then(() => this.getShoppingList())
-    .then(() => this.getUserTab())
-    .then(() => this.setState({isLoaded: true}))
-
-    //If a new cocktail was just created, show the success message
-    if(this.props.location.hasOwnProperty('successMessage')) {
-      this.toggleSuccessMessage(this.props.location.successMessage)
-    }
-  }
-
   render() {
 
     /* cocktails contains the ingredient Ids
@@ -285,12 +284,18 @@ class CocktailsView extends Component {
      */
 
     let {
+      allCocktails,
       userCocktailIngredients,
       userCocktails,
       userCocktailsRelations,
       userShoppingList,
       userInventory,
       showOnlyMakeable } = this.state
+
+    let cocktailsToShow = userCocktails
+    if(this.state.viewAllCocktails) {
+      cocktailsToShow = allCocktails
+    }
 
     if(this.state.isLoaded) {
       return (
@@ -306,7 +311,7 @@ class CocktailsView extends Component {
                   <div className="ml-auto">
                     <CocktailAddModal
                       buttonLabel="Add Cocktails"
-                      getCocktailData={this.getCocktailData}
+                      getUserCocktailData={this.getUserCocktailData}
                       userCocktails={this.state.userCocktailsRelations}
                       loadAllCocktails={this.loadAllCocktails}
                       allCocktails={this.state.allCocktails}
@@ -329,13 +334,13 @@ class CocktailsView extends Component {
 
               <Row>
                 <CocktailsList
-                  cocktailsToShow={userCocktails}
+                  cocktailsToShow={cocktailsToShow}
                   userCocktailIngredients={userCocktailIngredients}
                   userInventory={userInventory}
                   userCocktailsRelations={userCocktailsRelations}
                   userShoppingList={userShoppingList}
                   getShoppingList={this.getShoppingList}
-                  getCocktailData={this.getCocktailData}
+                  getUserCocktailData={this.getUserCocktailData}
                   addToUserTab={this.addToUserTab}
                   showOnlyMakeable={showOnlyMakeable}
                 />
