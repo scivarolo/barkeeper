@@ -13,25 +13,25 @@ class CocktailsList extends Component {
   render() {
 
     let {
-      cocktailsToShow,
+      cocktails,
+      cocktailIngredients,
       userCocktailsRelations,
       userInventory,
       userShoppingList,
-      userCocktailIngredients,
       showOnlyMakeable
     } = this.props
 
     return (
       <ListGroup>
         {
-          cocktailsToShow.map((cocktail, i) => {
+          cocktails.map((cocktail, i) => {
             //Find the userCocktail relationship that goes with the cocktail.
             let thisUserCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === cocktail.id)
             return (
               <CocktailItem
                 key={thisUserCocktail.id}
                 cocktail={cocktail}
-                ingredients={userCocktailIngredients[i]}
+                ingredients={cocktailIngredients[i]}
                 userCocktail={thisUserCocktail}
                 userInventory={userInventory}
                 userShoppingList={userShoppingList}

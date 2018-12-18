@@ -182,7 +182,7 @@ class CocktailItem extends Component {
         <Row>
           <Col className="d-flex justify-content-end">
             {
-              this.props.userCocktail.userId === user.getId()
+              this.props.cocktail.createdBy === user.getId()
               ? <CocktailEditModal
                 buttonLabel="Edit"
                 cocktail={cocktail}

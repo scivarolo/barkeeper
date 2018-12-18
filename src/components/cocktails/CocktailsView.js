@@ -6,20 +6,19 @@ import {
   Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import API from '../../modules/data/API'
-import CocktailAddModal from './CocktailAddModal'
 import { Alert, AlertContainer } from 'react-bs-notifier'
 import user from '../../modules/data/user'
 import BarTab from '../bartab/BarTab'
 import Units from '../../modules/UnitConverter'
 import CocktailsList from './CocktailsList';
-
-//TODO: In state, store the expanded usersCocktails in something other than 'cocktails', maybe 'userCocktails' (now that we have userCocktailsRelations instead of userCocktails)
+import DiscoverList from './discover/DiscoverList'
 
 class CocktailsView extends Component {
 
   state = {
     isLoaded: false,
     allCocktails: [],
+    allMinusUserCocktails: [],
     userCocktailsRelations: [],
     userCocktails: [],
     userCocktailIngredients: [],
@@ -33,7 +32,7 @@ class CocktailsView extends Component {
     successMessage: "",
     showSuccessMessage: false,
     showOnlyMakeable: false,
-    viewAllCocktails: false
+    discoverCocktails: false
   }
 
   componentDidMount() {
@@ -53,6 +52,11 @@ class CocktailsView extends Component {
     this.setState({showOnlyMakeable: !this.state.showOnlyMakeable})
   }
 
+  toggleDiscover = () => {
+    /* Switches between user's cocktails and cocktail discover */
+    this.setState({discoverCocktails: !this.state.discoverCocktails})
+  }
+
   toggleSuccessMessage = (message) => {
     this.setState({showSuccessMessage: true, successMessage: message})
     setTimeout(function(){
@@ -61,8 +65,46 @@ class CocktailsView extends Component {
   }
 
   loadAllCocktails = () => {
-    return API.getAll("cocktails")
+    return API.getWithEmbed("cocktails", "cocktailIngredients")
     .then(data => this.setState({allCocktails: data}))
+  }
+
+  allMinusUserCocktails = () => {
+    let filtered = this.state.allCocktails.filter(cocktail => {
+      if(!this.state.userCocktails.find(userC => userC.id === cocktail.id)) {
+        return cocktail
+      } else {
+        return null
+      }
+    })
+
+    filtered.sort((a, b) => {
+      let aName = a.name.toUpperCase()
+      let bName = b.name.toUpperCase()
+      return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
+    })
+    return this.getIngredientData(filtered)
+    .then((ingredients) => this.setState({
+      allMinusUserCocktails: filtered,
+      allMinusUserCocktailIngredients: ingredients
+    })
+    )
+
+  }
+
+  getIngredientData = (cocktails) => {
+    let ingredients = []
+    cocktails.forEach(c => {
+      //build query string for getting ingredient names of each cocktail
+      let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
+      ingredients.push(API.getWithFilters(`ingredients`, queryString))
+    })
+    return Promise.all(ingredients)
+  }
+
+  getDiscoverCocktails = () => {
+    return this.loadAllCocktails()
+    .then(() => this.allMinusUserCocktails())
   }
 
   getUserCocktailData = () => {
@@ -82,8 +124,8 @@ class CocktailsView extends Component {
     .then(cocktails => {
       newState.userCocktails = cocktails.sort((a,b) => {
         let aName = a.name.toUpperCase()
-        let bName = b.name.toUpperCase();
-        return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+        let bName = b.name.toUpperCase()
+        return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
       })
 
       //for each cocktail, loop through array of ingredients to build fetchs for each ingredient
@@ -284,7 +326,7 @@ class CocktailsView extends Component {
      */
 
     let {
-      allCocktails,
+      allMinusUserCocktails,
       userCocktailIngredients,
       userCocktails,
       userCocktailsRelations,
@@ -293,8 +335,8 @@ class CocktailsView extends Component {
       showOnlyMakeable } = this.state
 
     let cocktailsToShow = userCocktails
-    if(this.state.viewAllCocktails) {
-      cocktailsToShow = allCocktails
+    if(this.state.discoverCocktails) {
+      cocktailsToShow = allMinusUserCocktails
     }
 
     if(this.state.isLoaded) {
@@ -306,44 +348,54 @@ class CocktailsView extends Component {
               <Row className="mb-5">
                 <Col className="d-flex">
                   <div>
-                    <h1>My Cocktails</h1>
+                    <h1>{this.state.discoverCocktails ? `Discover` : `My Cocktails`}</h1>
                   </div>
                   <div className="ml-auto">
-                    <CocktailAddModal
-                      buttonLabel="Add Cocktails"
-                      getUserCocktailData={this.getUserCocktailData}
-                      userCocktails={this.state.userCocktailsRelations}
-                      loadAllCocktails={this.loadAllCocktails}
-                      allCocktails={this.state.allCocktails}
-                      showSuccessMessage={this.toggleSuccessMessage} />
+                    <Button color="warning" onClick={this.toggleDiscover}>Discover</Button>
                     <Button color="primary" tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
                 </Col>
               </Row>
-              <Row className="mb-4">
-                <Col>
-                  <Button color="warning" onClick={this.toggleMakeable}>
-                  {
-                    this.state.showOnlyMakeable
-                    ? "Show All My Cocktails"
-                    : "Show Only Cocktails I Can Make"
-                  }
-                  </Button>
-                </Col>
-              </Row>
+                {this.state.discoverCocktails
+                ? null
+                : <Row className="mb-4">
+                    <Col>
+
+                      <Button color="warning" onClick={this.toggleMakeable}>
+                      {
+                        this.state.showOnlyMakeable
+                        ? "Show All My Cocktails"
+                        : "Show Only Cocktails I Can Make"
+                      }
+                      </Button>
+                    </Col>
+                  </Row>
+                }
 
               <Row>
-                <CocktailsList
-                  cocktailsToShow={cocktailsToShow}
-                  userCocktailIngredients={userCocktailIngredients}
-                  userInventory={userInventory}
-                  userCocktailsRelations={userCocktailsRelations}
-                  userShoppingList={userShoppingList}
-                  getShoppingList={this.getShoppingList}
-                  getUserCocktailData={this.getUserCocktailData}
-                  addToUserTab={this.addToUserTab}
-                  showOnlyMakeable={showOnlyMakeable}
-                />
+                {
+                  this.state.discoverCocktails
+                  ? <DiscoverList
+                      cocktails={this.state.allMinusUserCocktails}
+                      cocktailIngredients={this.state.allMinusUserCocktailIngredients}
+                      getDiscoverCocktails={this.getDiscoverCocktails}
+                      getUserCocktailData={this.getUserCocktailData}
+                      userCocktails={userCocktails}
+                      allMinusUserCocktails={this.allMinusUserCocktails}
+                    />
+                  : <CocktailsList
+                      cocktails={cocktailsToShow}
+                      cocktailIngredients={userCocktailIngredients}
+                      userInventory={userInventory}
+                      userCocktailsRelations={userCocktailsRelations}
+                      userShoppingList={userShoppingList}
+                      getShoppingList={this.getShoppingList}
+                      getUserCocktailData={this.getUserCocktailData}
+                      addToUserTab={this.addToUserTab}
+                      showOnlyMakeable={showOnlyMakeable}
+                    />
+                }
+
               </Row>
 
             </Col>
