@@ -16,6 +16,7 @@ import DiscoverList from './discover/DiscoverList'
 class CocktailsView extends Component {
 
   state = {
+    userId: user.getId(),
     isLoaded: false,
     allCocktails: [],
     allMinusUserCocktails: [],
@@ -89,9 +90,9 @@ class CocktailsView extends Component {
       allMinusUserCocktailIngredients: ingredients
     })
     )
-
   }
 
+  /* for use after a fetch. Doesn't set state, so set it in the appropriate function. */
   getIngredientData = (cocktails) => {
     let ingredients = []
     cocktails.forEach(c => {
@@ -108,10 +109,9 @@ class CocktailsView extends Component {
   }
 
   getUserCocktailData = () => {
-    let userId = user.getId()
     let newState = {}
     //get userCocktails
-    return API.getWithExpand("userCocktails", "cocktail", userId)
+    return API.getWithExpand("userCocktails", "cocktail", this.state.userId)
     .then(userCocktails => {
       newState.userCocktailsRelations = userCocktails
       //use cocktailId to get cocktails
@@ -144,25 +144,23 @@ class CocktailsView extends Component {
   }
 
   getUserInventory() {
-    let userId = user.getId()
-    API.getWithExpand("userProducts", "product", userId)
+    API.getWithExpand("userProducts", "product", this.state.userId)
     .then(data => this.setState({userInventory: data}))
   }
 
   getShoppingList = () => {
-    let userId = user.getId()
-    API.getWithExpands("userShopping", userId, "product", "ingredient")
+    API.getWithExpands("userShopping", this.state.userId, "product", "ingredient")
     .then(data => this.setState({userShoppingList: data}))
   }
 
   getUserTab = () => {
-    let userId = user.getId()
-    API.getWithExpands("userTab", userId, "cocktail")
+    API.getWithExpands("userTab", this.state.userId, "cocktail")
     .then(data => this.setState({userTab: data}))
   }
 
   addToUserTab = (cocktailId) => {
     let inTab = this.state.userTab.find(tabCocktail => tabCocktail.cocktailId === cocktailId)
+
     if (inTab) {
       let obj = {
         quantity: inTab.quantity + 1
@@ -171,7 +169,7 @@ class CocktailsView extends Component {
       .then(() => this.getUserTab())
     }
 
-    // Not in tab already
+    // else not already in tab
     let obj = {
       userId: user.getId(),
       cocktailId: cocktailId,
@@ -183,18 +181,18 @@ class CocktailsView extends Component {
 
   getTabCocktailProductChoices = (c) => {
     return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
-      .then((ingredients) => {
-        let prodsObj = {}
-        // find the products available for each ingredient
-        ingredients.forEach(ingredient => {
-          let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
-          prodsObj[ingredient.ingredientId] = prods
-        })
-        return this.setState(prevState => {
-          let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
-          return {userTabProducts: userTabProductsObj}
-        })
+    .then((ingredients) => {
+      let prodsObj = {}
+      // find the products available for each ingredient
+      ingredients.forEach(ingredient => {
+        let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
+        prodsObj[ingredient.ingredientId] = prods
       })
+      return this.setState(prevState => {
+        let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
+        return {userTabProducts: userTabProductsObj}
+      })
+    })
   }
 
   makeWithThisIngredient = (e, tabCocktailId, ingredientId) => {
@@ -210,7 +208,7 @@ class CocktailsView extends Component {
   }
 
   makeCocktail = (c) => {
-    //c = the cocktail.
+    // c = the cocktail being made
     return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
       .then((ingredients) => {
         /**
