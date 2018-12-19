@@ -22,7 +22,9 @@ class CocktailSearch extends Component {
 
   render() {
     return (
-      <Input type="text" id="searchQuery" placeholder={this.props.placeholder} value={this.state.searchQuery} onChange={e => this.handleFieldChange(e)}></Input>
+      <div>
+        <Input type="text" id="searchQuery" placeholder={this.props.placeholder} value={this.state.searchQuery} onChange={e => this.handleFieldChange(e)}></Input>
+      </div>
     )
   }
 

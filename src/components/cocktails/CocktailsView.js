@@ -13,6 +13,7 @@ import Units from '../../modules/UnitConverter'
 import CocktailsList from './CocktailsList'
 import DiscoverList from './discover/DiscoverList'
 import CocktailSearch from './CocktailSearch'
+import IngredientFilter from './IngredientFilter'
 
 class CocktailsView extends Component {
 
@@ -20,6 +21,7 @@ class CocktailsView extends Component {
     userId: user.getId(),
     isLoaded: false,
     allCocktails: [],
+    allIngredients: [],
     allMinusUserCocktails: [],
     userCocktailsRelations: [],
     userCocktails: [],
@@ -36,6 +38,7 @@ class CocktailsView extends Component {
     showOnlyMakeable: false,
     discoverCocktails: false,
     searching: false,
+    filtering: false,
     searchResults: []
   }
 
@@ -59,9 +62,11 @@ class CocktailsView extends Component {
   toggleDiscover = () => {
     /* Switches between user's cocktails and cocktail discover */
     this.cocktailSearch.clear()
+    this.cocktailFilter.clear()
     this.setState({
       //reset search results when switching view
       searching: false,
+      filtering: false,
       searchResults: [],
       searchIngredients: [],
       discoverCocktails: !this.state.discoverCocktails
@@ -341,8 +346,28 @@ class CocktailsView extends Component {
     }
     return this.setState({
       searching: searching,
+      filtering: false,
       searchIngredients: ingredientResults,
       searchResults: results
+    })
+  }
+
+  filterByIngredient = (cocktailsToFilter, cocktailIngredients, ingredientId) => {
+    this.cocktailSearch.clear()
+    let matchingIngredients = []
+    let results = cocktailsToFilter.filter((cocktail, i) => {
+      if(cocktail.cocktailIngredients.find(cocktailIngredient => cocktailIngredient.ingredientId === ingredientId)) {
+        matchingIngredients.push(cocktailIngredients[i])
+        return cocktail
+      } else {
+        return null
+      }
+    })
+    return this.setState({
+      filtering: true,
+      searching: false,
+      searchResults: results,
+      searchIngredients: matchingIngredients
     })
   }
 
@@ -365,6 +390,7 @@ class CocktailsView extends Component {
       userShoppingList,
       userInventory,
       searching,
+      filtering,
       searchResults,
       searchIngredients,
       showOnlyMakeable } = this.state
@@ -380,7 +406,7 @@ class CocktailsView extends Component {
       cocktailsToSearch = allMinusUserCocktails
       ingredientsToSearch = allMinusUserCocktailIngredients
     }
-    if (searching) {
+    if (searching || filtering) {
       cocktailsToShow = searchResults
       ingredientsToShow = searchIngredients
     }
@@ -399,6 +425,12 @@ class CocktailsView extends Component {
                 search={this.searchCocktails}
                 searchResults={searchResults}
                 placeholder="Filter Cocktails" />
+              <IngredientFilter
+                ref={cocktailFilter => this.cocktailFilter = cocktailFilter}
+                cocktails={cocktailsToSearch}
+                cocktailIngredients={ingredientsToSearch}
+                filterByIngredient={this.filterByIngredient}
+              />
             </Col>
             <Col md={7}>
               <Row className="mb-5">
@@ -407,7 +439,7 @@ class CocktailsView extends Component {
                     <h1>{this.state.discoverCocktails ? `Discover` : `My Cocktails`}</h1>
                   </div>
                   <div className="ml-auto">
-                    <Button color="warning" onClick={this.toggleDiscover}>Discover</Button>
+                    <Button color="warning" onClick={this.toggleDiscover}>{!this.state.discoverCocktails ? `Discover` : `My Cocktails`}</Button>
                     <Button color="primary" tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
                 </Col>
@@ -452,7 +484,7 @@ class CocktailsView extends Component {
                       showOnlyMakeable={showOnlyMakeable}
                     />
                 }
-                { (searching && !searchResults.length)
+                { ((searching || filtering) && !searchResults.length)
                   ? (discoverCocktails)
                     ? <>
                         <h1>No cocktails match your search.</h1>
@@ -460,7 +492,7 @@ class CocktailsView extends Component {
                       </>
                     : <>
                         <h1>No cocktails found in your list.</h1>
-                        <p>Perhaps try searching in <a onClick={this.toggleDiscover} href="#">Discover Cocktails</a>?</p>
+                        <p>Perhaps try searching in <Button onClick={this.toggleDiscover}>Discover Cocktails</Button>?</p>
                       </>
                   : null
 
