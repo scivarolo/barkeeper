@@ -10,8 +10,9 @@ import { Alert, AlertContainer } from 'react-bs-notifier'
 import user from '../../modules/data/user'
 import BarTab from '../bartab/BarTab'
 import Units from '../../modules/UnitConverter'
-import CocktailsList from './CocktailsList';
+import CocktailsList from './CocktailsList'
 import DiscoverList from './discover/DiscoverList'
+import CocktailSearch from './CocktailSearch'
 
 class CocktailsView extends Component {
 
@@ -33,7 +34,9 @@ class CocktailsView extends Component {
     successMessage: "",
     showSuccessMessage: false,
     showOnlyMakeable: false,
-    discoverCocktails: false
+    discoverCocktails: false,
+    searching: false,
+    searchResults: []
   }
 
   componentDidMount() {
@@ -55,7 +58,14 @@ class CocktailsView extends Component {
 
   toggleDiscover = () => {
     /* Switches between user's cocktails and cocktail discover */
-    this.setState({discoverCocktails: !this.state.discoverCocktails})
+    this.cocktailSearch.clear()
+    this.setState({
+      //reset search results when switching view
+      searching: false,
+      searchResults: [],
+      searchIngredients: [],
+      discoverCocktails: !this.state.discoverCocktails
+    })
   }
 
   toggleSuccessMessage = (message) => {
@@ -314,6 +324,28 @@ class CocktailsView extends Component {
       .then(() => this.getUserTab())
   }
 
+  searchCocktails = (cocktailsToSearch, ingredientsToSearch, query) => {
+    query = query.toLowerCase()
+    let searching = true
+    let ingredientResults = []
+    let results = cocktailsToSearch.filter((result, index) => {
+      let found = result.name.toLowerCase().includes(query)
+      if (found) ingredientResults.push(ingredientsToSearch[index])
+      return found
+    })
+
+    if (query === "") {
+      results = []
+      ingredientResults = []
+      searching = false
+    }
+    return this.setState({
+      searching: searching,
+      searchIngredients: ingredientResults,
+      searchResults: results
+    })
+  }
+
   render() {
 
     /* cocktails contains the ingredient Ids
@@ -325,24 +357,50 @@ class CocktailsView extends Component {
 
     let {
       allMinusUserCocktails,
+      allMinusUserCocktailIngredients,
+      discoverCocktails,
       userCocktailIngredients,
       userCocktails,
       userCocktailsRelations,
       userShoppingList,
       userInventory,
+      searching,
+      searchResults,
+      searchIngredients,
       showOnlyMakeable } = this.state
 
     let cocktailsToShow = userCocktails
-    if(this.state.discoverCocktails) {
+    let ingredientsToShow = userCocktailIngredients
+    let cocktailsToSearch = userCocktails
+    let ingredientsToSearch = userCocktailIngredients
+
+    if (discoverCocktails) {
       cocktailsToShow = allMinusUserCocktails
+      ingredientsToShow = allMinusUserCocktailIngredients
+      cocktailsToSearch = allMinusUserCocktails
+      ingredientsToSearch = allMinusUserCocktailIngredients
+    }
+    if (searching) {
+      cocktailsToShow = searchResults
+      ingredientsToShow = searchIngredients
     }
 
-    if(this.state.isLoaded) {
-      return (
-        <Container>
-          <Row className="pt-5">
 
-            <Col md={8}>
+    if (this.state.isLoaded) {
+      return (
+        <Container fluid>
+          <Row className="pt-5">
+            <Col md={2}>
+              <CocktailSearch
+                ref={cocktailSearch => this.cocktailSearch = cocktailSearch}
+                searchData={cocktailsToSearch}
+                searchIngredients={ingredientsToSearch}
+                searching={searching}
+                search={this.searchCocktails}
+                searchResults={searchResults}
+                placeholder="Filter Cocktails" />
+            </Col>
+            <Col md={7}>
               <Row className="mb-5">
                 <Col className="d-flex">
                   <div>
@@ -371,11 +429,12 @@ class CocktailsView extends Component {
                 }
 
               <Row>
+                <Col>
                 {
                   this.state.discoverCocktails
                   ? <DiscoverList
-                      cocktails={this.state.allMinusUserCocktails}
-                      cocktailIngredients={this.state.allMinusUserCocktailIngredients}
+                      cocktails={cocktailsToShow}
+                      cocktailIngredients={ingredientsToShow}
                       getDiscoverCocktails={this.getDiscoverCocktails}
                       getUserCocktailData={this.getUserCocktailData}
                       userCocktails={userCocktails}
@@ -383,7 +442,7 @@ class CocktailsView extends Component {
                     />
                   : <CocktailsList
                       cocktails={cocktailsToShow}
-                      cocktailIngredients={userCocktailIngredients}
+                      cocktailIngredients={ingredientsToShow}
                       userInventory={userInventory}
                       userCocktailsRelations={userCocktailsRelations}
                       userShoppingList={userShoppingList}
@@ -393,11 +452,24 @@ class CocktailsView extends Component {
                       showOnlyMakeable={showOnlyMakeable}
                     />
                 }
+                { (searching && !searchResults.length)
+                  ? (discoverCocktails)
+                    ? <>
+                        <h1>No cocktails match your search.</h1>
+                        <p>Want to add a <a href="cocktails/new">new cocktail recipe</a>?</p>
+                      </>
+                    : <>
+                        <h1>No cocktails found in your list.</h1>
+                        <p>Perhaps try searching in <a onClick={this.toggleDiscover} href="#">Discover Cocktails</a>?</p>
+                      </>
+                  : null
 
+                }
+                </Col>
               </Row>
 
             </Col>
-            <Col>
+            <Col md={3}>
               <BarTab
                 userTab={this.state.userTab}
                 getUserTab={this.getUserTab}
