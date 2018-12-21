@@ -353,6 +353,15 @@ class CocktailsView extends Component {
   }
 
   filterByIngredient = (cocktailsToFilter, cocktailIngredients, ingredientId) => {
+    if (ingredientId === "noFilter") {
+      return this.setState({
+        filtering: false,
+        searching: false,
+        searchResults: [],
+        searchIngredients: []
+      })
+    }
+
     this.cocktailSearch.clear()
     let matchingIngredients = []
     let results = cocktailsToFilter.filter((cocktail, i) => {

@@ -5,6 +5,7 @@ import {
   Input
   } from "reactstrap"
 import API from '../../modules/data/API';
+import './ingredientFilter.scss'
 
 class IngredientFilter extends Component {
 
@@ -25,8 +26,10 @@ class IngredientFilter extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ingredientFilter: Number(e.target.id)})
-    this.props.filterByIngredient(this.props.cocktails, this.props.cocktailIngredients, Number(e.target.id))
+    let id = e.target.id
+    if (id !== "noFilter") id = Number(e.target.id)
+    this.setState({ingredientFilter: id})
+    this.props.filterByIngredient(this.props.cocktails, this.props.cocktailIngredients, id)
   }
 
   clear = () => {
@@ -38,7 +41,7 @@ class IngredientFilter extends Component {
 
     return (
       <div className="mt-3">
-        <FormGroup id="ingredientFilter" tag="fieldset">
+        <FormGroup className="ingredient-filter" id="ingredientFilter" tag="fieldset">
           <legend>Filter by Ingredient</legend>
           {
             ingredients.map(ingredient => {
@@ -58,7 +61,16 @@ class IngredientFilter extends Component {
               )
             })
           }
+          <FormGroup key="none" check>
+            <Label check>
+              <Input
+                type="radio"
+                name="ingredientFilter"
+                id="noFilter"
+                onChange={e => this.handleChange(e)} />{` Reset`}
+            </Label>
           </FormGroup>
+        </FormGroup>
       </div>
     )
   }
