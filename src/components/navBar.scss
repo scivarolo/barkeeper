@@ -1,0 +1,12 @@
+@import "../variables";
+
+.nav-link {
+  transition: background-color 0.125s ease-in-out;
+  &.active,
+  &.active:hover {
+    background-color: $warning;
+  }
+  &:hover {
+    background-color: lighten($primary, 5%);
+  }
+}

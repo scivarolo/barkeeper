@@ -1,31 +1,32 @@
 import React, { Component } from 'react'
-import { Link } from "react-router-dom"
+import { NavLink as RouterNavLink } from "react-router-dom"
 import {
   Nav,
   Navbar,
   NavbarBrand,
   NavItem,
   NavLink } from 'reactstrap'
-import user from '../modules/data/user';
+import user from '../modules/data/user'
+import './navBar.scss'
 
 class NavBar extends Component {
 
   render() {
     return (
       <Navbar color="primary" expand="sm">
-        <NavbarBrand tag={Link} to="/"><h3 className="text-white">Barkeeper</h3></NavbarBrand>
+        <NavbarBrand tag={RouterNavLink} to="/"><h3 className="text-white">Barkeeper</h3></NavbarBrand>
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink className="text-white" tag={Link} to="/cocktails">Cocktails</NavLink>
+            <NavLink className="text-white" tag={RouterNavLink} to="/cocktails">Cocktails</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className="text-white" tag={Link} to="/bar">Bar Inventory</NavLink>
+            <NavLink className="text-white" tag={RouterNavLink} to="/bar">Bar Inventory</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className="text-white" tag={Link} to="/shopping-list">Shopping List</NavLink>
+            <NavLink className="text-white" tag={RouterNavLink} to="/shopping-list">Shopping List</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink tag={Link} to="/" className="text-white" onClick={() => {
+            <NavLink className="text-white" onClick={() => {
               user.logout()
               this.props.authenticate()
             }} >Logout</NavLink>
