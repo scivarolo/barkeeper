@@ -18,7 +18,7 @@ class Barkeeper extends Component {
         <NavBar authenticate={this.props.authenticate} />
         <Switch>
           <Route exact path="/" render={() => {
-              return <Dashboard />
+              return <Redirect to ="/cocktails" />
           }} />
 
           <Route path="/cocktails/new" render={props => {
