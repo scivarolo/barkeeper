@@ -1,3 +1,9 @@
-.ingredient-filter label {
-  font-size: 14px;
+.ingredient-filter {
+  legend {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  label {
+    font-size: 14px;
+  }
 }
