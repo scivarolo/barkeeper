@@ -32,7 +32,7 @@ class CocktailEditModal extends React.Component {
           <ModalBody>
             <EditCocktail cocktail={this.props.cocktail}
               ingredientNames={this.props.ingredientNames}
-              getCocktailData={this.props.getCocktailData}
+              getUserCocktailData={this.props.getUserCocktailData}
               toggle={this.toggle} />
           </ModalBody>
           <ModalFooter>

@@ -46,7 +46,7 @@ class CocktailItem extends Component {
 
   deleteItem(id) {
     return API.deleteData("userCocktails", id)
-    .then(() => this.props.getCocktailData())
+    .then(() => this.props.getUserCocktailData())
   }
 
   canMakeRecipe = () => {
@@ -147,8 +147,8 @@ class CocktailItem extends Component {
                   <Button
                     onClick={() => this.props.addToUserTab(cocktail.id)}
                     size="sm"
-                    className="mr-2">Add to my Tab</Button>
-                  <Badge color="success">You can make this!</Badge>
+                    className="mt-1"
+                    color="warning">Add to my Tab</Button>
                 </div>
               : <Badge color="danger">Missing ingredients!</Badge>
             }
@@ -182,12 +182,12 @@ class CocktailItem extends Component {
         <Row>
           <Col className="d-flex justify-content-end">
             {
-              this.props.userCocktail.userId === user.getId()
+              this.props.cocktail.createdBy === user.getId()
               ? <CocktailEditModal
                 buttonLabel="Edit"
                 cocktail={cocktail}
                 ingredientNames={ingredients}
-                getCocktailData={this.props.getCocktailData}  />
+                getUserCocktailData={this.props.getUserCocktailData}  />
               : null
             }
             <Button size="sm" className="ml-2" color="danger" outline onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>

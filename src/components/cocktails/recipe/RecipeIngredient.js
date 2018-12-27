@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'reactstrap'
 
-//TODO: check if an ingredient or a product for that ingredient is already in the shopping list and show a message instead of add to shopping list button.
 class RecipeIngredient extends Component {
 
   state = {
@@ -31,7 +30,7 @@ class RecipeIngredient extends Component {
 
   render() {
 
-    let canMake = this.props.canMake
+    let { canMake } = this.props
 
     return (
       <li className={canMake ? "" : "text-danger ingredient--cant-make"}>

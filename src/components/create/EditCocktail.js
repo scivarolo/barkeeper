@@ -190,7 +190,7 @@ class EditCocktail extends Component {
         return Promise.all(ingredientUpdates)
       })
       .then(() => {
-        this.props.getCocktailData()
+        this.props.getUserCocktailData()
         this.props.toggle()
       })
   }
