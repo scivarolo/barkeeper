@@ -147,8 +147,8 @@ class CocktailItem extends Component {
                   <Button
                     onClick={() => this.props.addToUserTab(cocktail.id)}
                     size="sm"
-                    className="mr-2">Add to my Tab</Button>
-                  <Badge color="success">You can make this!</Badge>
+                    className="mt-1"
+                    color="warning">Add to my Tab</Button>
                 </div>
               : <Badge color="danger">Missing ingredients!</Badge>
             }
