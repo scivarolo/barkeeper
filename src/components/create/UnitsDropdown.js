@@ -2,16 +2,14 @@ import React, { Component } from 'react'
 import { Input } from 'reactstrap'
 class UnitsDropdown extends Component {
 
-// props: isRequired (state), onChange
-
   render() {
     return (
-      <Input disabled={this.props.isDisabled} id="unitsDropdown" type="select" required={this.props.isRequired} defaultValue={this.props.initialUnit}
+      <Input disabled={this.props.isDisabled} id="unitsDropdown" type="select" required={this.props.isRequired} defaultValue={this.props.initialUnit} value={this.props.isDisabled ? "count" : ""}
         onChange={this.props.onChangeFn}>
         {
           this.props.isDisabled
           ? <>
-              <option value="count" selected>count</option>
+              <option value="count">count</option>
             </>
           : null
         }
