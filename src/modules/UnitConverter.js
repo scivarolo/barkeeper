@@ -29,7 +29,7 @@ class Units {
   }
 
   convert(startValue, startUnit, toUnit) {
-
+    // If its non-liquid, just return the value.
     if (startUnit === "count") return startValue
 
     let base = this.units.find(unit => unit.label === startUnit).base
