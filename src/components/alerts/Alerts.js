@@ -3,11 +3,6 @@ import { Alert, AlertContainer } from 'react-bs-notifier'
 
 class Alerts extends Component {
 
-  state = {
-    showSuccessMessage: true,
-    successMessage: "Hey!"
-  }
-
   render() {
     return (
       <AlertContainer>
