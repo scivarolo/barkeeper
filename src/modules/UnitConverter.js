@@ -29,6 +29,9 @@ class Units {
   }
 
   convert(startValue, startUnit, toUnit) {
+
+    if (startUnit === "count") return startValue
+
     let base = this.units.find(unit => unit.label === startUnit).base
     let toUnitBase = this.units.find(unit => unit.label === toUnit).base
 
