@@ -52,7 +52,9 @@ class IngredientInput extends Component {
                 this.props.ingredientToState(stateKey, "ingredient", selected[0])
                 this.props.ingredientToState(stateKey, "sortOrder", ingredientId)
                 if (selected.length && selected[0].liquid === false) this.props.ingredientToState(stateKey, "unit", "count")
-                selected[0].customOption ? this.setState({isNew: true}) : this.setState({isNew: false})
+                selected.length && selected[0].customOption
+                  ? this.setState({isNew: true})
+                  : this.setState({isNew: false})
                 }} />
               <Input
                 type="number"
