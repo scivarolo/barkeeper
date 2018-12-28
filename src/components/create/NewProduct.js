@@ -34,14 +34,19 @@ class NewProduct extends Component {
   }
 
   handleTypeaheadChange = (selected) => {
-    let invalid = false
-    if(!selected.length) {
-      invalid = true
-    }
-    this.setState({
+    let newState = {
       newProductIngredient: selected,
-      typeaheadInvalid: invalid
-    })
+      typeaheadInvalid: false,
+      disableUnits: false
+    }
+    if(!selected.length) {
+      newState.typeaheadInvalid = true
+    }
+    if(selected.length && selected[0].liquid === false) {
+      newState.disableUnits = true
+      newState.unitsDropdown = "count"
+    }
+    this.setState(newState)
   }
 
   createProduct = (e) => {
@@ -49,18 +54,25 @@ class NewProduct extends Component {
     if(this.state.typeaheadInvalid) {
       return
     }
+
     let obj = {
       name: this.state.newProductName,
       ingredientId: this.state.newProductIngredient[0].id,
       unit: this.state.unitsDropdown,
       fullAmount: Number(this.state.newProductSize),
-      quantity: 1,
       createdBy: user.getId()
     }
+
+    if(this.state.unitsDropdown === "count") {
+      obj.unit = "count"
+      obj.fullAmount = 1
+    }
+
     return API.saveData("products", obj)
       .then((r) => API.saveData("userProducts", {
         userId: user.getId(),
         productId: r.id,
+        quantity: Number(this.state.newProductSize),
         amountAvailable: r.fullAmount
       }))
       .then(() => this.props.getInventoryData())
@@ -97,7 +109,10 @@ class NewProduct extends Component {
               type="number"
               onChange={e => this.handleFieldChange(e)}
               placeholder="Size" />
-            <UnitsDropdown isRequired={true} onChangeFn={e => this.handleFieldChange(e)} />
+            <UnitsDropdown
+              isRequired={true}
+              isDisabled={this.state.disableUnits}
+              onChangeFn={e => this.handleFieldChange(e)} />
             <Button type="submit">Create Product</Button>
             <Button onClick={this.props.toggle}>Cancel</Button>
           </InputGroup>
