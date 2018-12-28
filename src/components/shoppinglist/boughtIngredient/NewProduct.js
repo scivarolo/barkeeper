@@ -12,24 +12,24 @@ class NewProduct extends Component {
 
   state = {
     newProductName: "",
-    newProductIngredient: "",
     newProductSize: "",
-    unitsDropdown: ""
+    unitsDropdown: "",
+    disableUnits: false
+  }
+
+  componentDidMount() {
+    if (this.props.ingredient.liquid === false) {
+      this.setState({
+        unitsDropdown: "count",
+        disableUnits: true
+      })
+    } else {
+      this.setState({disableUnits: false})
+    }
   }
 
   handleFieldChange = (e) => {
     this.setState({[e.target.id]: e.target.value || e.target.defaultValue})
-  }
-
-  handleTypeaheadChange = (selected) => {
-    let invalid = false
-    if(!selected.length) {
-      invalid = true
-    }
-    this.setState({
-      newProductIngredient: selected,
-      typeaheadInvalid: invalid
-    })
   }
 
   createProduct = (e) => {
@@ -42,6 +42,12 @@ class NewProduct extends Component {
       fullAmount: Number(this.state.newProductSize),
       createdBy: user.getId()
     }
+
+    if(this.state.unitsDropdown === "count") {
+      obj.unit = "count"
+      obj.fullAmount = 1
+    }
+
     return API.saveData("products", obj)
       .then((r) => API.saveData("userProducts", {
         userId: user.getId(),
@@ -50,7 +56,6 @@ class NewProduct extends Component {
         quantity: this.props.item.quantity
       }))
       .then(() => {
-        // this.props.toggleSuccessMessage(`${this.state.newProductName} successfully created and added to your bar`)
         this.props.toggle()
         this.props.deleteItem()
       })
@@ -72,7 +77,10 @@ class NewProduct extends Component {
               type="number"
               onChange={e => this.handleFieldChange(e)}
               placeholder="Size" />
-            <UnitsDropdown isRequired={true} onChangeFn={e => this.handleFieldChange(e)} />
+            <UnitsDropdown
+              isDisabled={this.state.disableUnits}
+              isRequired={true}
+              onChangeFn={e => this.handleFieldChange(e)} />
             <Button type="submit">Create</Button>
           </InputGroup>
         </Form>
