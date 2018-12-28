@@ -6,14 +6,25 @@ class UnitsDropdown extends Component {
 
   render() {
     return (
-      <Input id="unitsDropdown" type="select" required={this.props.isRequired} defaultValue={this.props.initialUnit}
+      <Input disabled={this.props.isDisabled} id="unitsDropdown" type="select" required={this.props.isRequired} defaultValue={this.props.initialUnit}
         onChange={this.props.onChangeFn}>
+        {
+          this.props.isDisabled
+          ? <>
+              <option value="count" selected>count</option>
+            </>
+          : null
+        }
         <option value="">unit</option>
         <option>oz</option>
         <option>ml</option>
         <option>dashes</option>
         <option>tbsp</option>
         <option>barspoon</option>
+        {
+          this.props.isNewIngredient ? <option>count</option> : null
+        }
+
       </Input>
     )
   }

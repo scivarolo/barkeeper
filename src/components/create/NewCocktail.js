@@ -85,18 +85,21 @@ class NewCocktail extends Component {
     // Check if any new ingredients and create entries in ingredients table.
     .then(() => {
       let newIngredients = []
-      for(let i in cocktailIngredients) {
-        if(cocktailIngredients[i].ingredient.customOption) {
-          newIngredients.push(API.saveData("ingredients", {
+      for (let i in cocktailIngredients) {
+        if (cocktailIngredients[i].ingredient.customOption) {
+          let obj = {
             label: cocktailIngredients[i].ingredient.label,
+            liquid: true,
             createdBy: user.getId()
-          }))
+          }
+          if (cocktailIngredients[i].unit === "count") obj.liquid = false
+          newIngredients.push(API.saveData("ingredients", obj))
         }
       }
       if (newIngredients.length) {
         return Promise.all(newIngredients)
           .then(newIngredients => {
-            //Setstate with the new ingredient IDs
+            // setState with the new ingredient IDs
             this.setState({
               newIngredientIds: newIngredients
             })
