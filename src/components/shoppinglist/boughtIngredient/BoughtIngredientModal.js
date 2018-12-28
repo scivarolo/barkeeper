@@ -58,16 +58,18 @@ class BoughtIngredientModal extends Component {
                   ingredient={this.props.ingredient}
                   toggle={this.toggle}
                   deleteItem={() => this.props.deleteItem(this.props.item.id)} />
-              : this.state.productsOfIngredient.map(product => {
-                return <Button
-                          key={product.id}
-                          block
-                          onClick={() => {
-                            this.props.boughtIngredientProduct(product, this.props.item)
-                            this.toggle()
-                          }}
-                          className="mb-2 text-left">{product.name}</Button>
-              })
+              : this.state.productsOfIngredient.length
+                ? this.state.productsOfIngredient.map(product => {
+                    return <Button
+                              key={product.id}
+                              block
+                              onClick={() => {
+                                this.props.boughtIngredientProduct(product, this.props.item)
+                                this.toggle()
+                              }}
+                              className="mb-2 text-left">{product.name}</Button>
+                    })
+                : `There are no products in the database matching this ingredient. Add a new product.`
             }
           </ModalBody>
           <ModalFooter>

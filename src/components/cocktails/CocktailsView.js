@@ -276,7 +276,10 @@ class CocktailsView extends Component {
             const quantityLeft = amountLeft / prodFullAmount
             const quantityCeil = Math.ceil(quantityLeft)
             let newAmountAvailable = amountLeft % prodFullAmount
-            if(prod.product.unit !== "ml") {
+            if(newAmountAvailable === 0) {
+              newAmountAvailable = prodFullAmount
+            }
+            if(prod.product.unit !== "ml" && prod.product.unit !== "count") {
               newAmountAvailable = Units.convert(newAmountAvailable, "ml", prod.product.unit)
             }
 

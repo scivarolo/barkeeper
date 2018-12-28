@@ -136,11 +136,12 @@ class EditCocktail extends Component {
               }))
             } else if (editedIngredients[i].ingredientId !== "") {
               //we're making a new one!
-              //need ingredient name here.
               let newIngredientObj = {
                 label: editedIngredients[i].ingredientName,
+                liquid: true,
                 createdBy: user.getId()
               }
+              if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
               ingredientUpdates.push(
                 API.saveData("ingredients", newIngredientObj)
                 .then(r => API.saveData("cocktailIngredients", {
@@ -155,7 +156,7 @@ class EditCocktail extends Component {
               )
             }
           } else {
-            //we're editing an exisiting cocktailIngredient!
+            //we're editing an existing cocktailIngredient!
             if (Number(editedIngredients[i].ingredientId)) {
               let editObj = {
                 ingredientId: editedIngredients[i].ingredientId,
@@ -170,8 +171,10 @@ class EditCocktail extends Component {
               // we need to create an ingredient first!
               let newIngredientObj = {
                 label: editedIngredients[i].ingredientName,
+                liquid: true,
                 createdBy: user.getId()
               }
+              if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
               ingredientUpdates.push(
                 API.saveData("ingredients", newIngredientObj)
                 .then(r => API.editData("cocktailIngredients", editedIngredients[i].id, {

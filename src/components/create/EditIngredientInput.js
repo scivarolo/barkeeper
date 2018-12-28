@@ -18,13 +18,29 @@ import UnitsDropdown from './UnitsDropdown'
 class EditIngredientInput extends Component {
 
   state = {
-    isRequired: false
+    isRequired: false,
+    disableUnits: false
   }
 
   componentDidMount() {
     if(!this.props.initialIngredient) {
       this.props.ingredientToState(`ingredient${this.props.ingredientId}`, "additionalIngredient", true)
     }
+  }
+
+  checkSelection = (selected) => {
+    let newState = {}
+    if (selected.length) {
+      newState.isRequired = true
+      if (selected[0].liquid === false) {
+        newState.disableUnits = true
+      } else {
+        newState.disableUnits = false
+      }
+    } else {
+      newState.isRequired = false
+    }
+    this.setState(newState)
   }
 
   render() {
@@ -45,9 +61,11 @@ class EditIngredientInput extends Component {
               defaultSelected={this.props.initialIngredientName ? [this.props.initialIngredientName] : []}
               onChange={selected => {
                 if (selected.length) {
-                  this.setState({isRequired: true})
+                  this.checkSelection(selected)
                   this.props.ingredientToState(stateKey, "ingredientId", selected[0].id)
                   this.props.ingredientToState(stateKey, "ingredientName", selected[0].label)
+                  if (selected.length && selected[0].liquid === false) this.props.ingredientToState(stateKey, "unit", "count")
+                  selected[0].customOption ? this.setState({isNew: true}) : this.setState({isNew: false})
                 }
                 else {
                   this.setState({isRequired:false})
@@ -66,7 +84,10 @@ class EditIngredientInput extends Component {
                 onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
                 required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
-                <UnitsDropdown isRequired={this.state.isRequired}
+                <UnitsDropdown
+                  isDisabled={this.state.disableUnits}
+                  isRequired={this.state.isRequired}
+                  isNewIngredient={this.state.isNew}
                   initialUnit={this.props.initialIngredient ? this.props.initialIngredient.unit : ""}
                   onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
             </InputGroupAddon>
