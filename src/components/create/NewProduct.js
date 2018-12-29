@@ -78,14 +78,14 @@ class NewProduct extends Component {
       .then(() => this.props.getInventoryData())
       .then(() => this.props.loadProducts())
       .then(() => {
-        this.props.toggleSuccessMessage(`${this.state.newProductName} successfully created and added to your bar`)
+        this.props.toggleAlert("success", "Product Created", `${this.state.newProductName} successfully created and added to your bar.`)
         this.props.toggle()
       })
   }
 
   render() {
     return (
-      <div>
+      <div className="my-3" style={{width: "100%"}}>
         <h6>Create New Product</h6>
         <Form onSubmit={e => this.createProduct(e)}>
           <InputGroup>
