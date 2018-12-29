@@ -19,8 +19,6 @@ class BarView extends Component {
     inventory: [],
     isLoaded: false,
     showAddInput: false,
-    showSuccessMessage: false,
-    successMessage: ""
   }
 
   getInventoryData = () => {
@@ -43,18 +41,10 @@ class BarView extends Component {
     this.setState({showAddInput: !this.state.showAddInput})
   }
 
-  toggleSuccessMessage = (message) => {
-    this.setState({showSuccessMessage: true, successMessage: message})
-    setTimeout(function(){
-      this.setState({showSuccessMessage: false, successMessage: ""});
-    }.bind(this), 3000)
-  }
-
   componentDidMount() {
     this.getInventoryData()
     .then(() => this.setState({isLoaded: true}))
   }
-
 
   render() {
     let inventory = this.state.inventory
@@ -71,7 +61,6 @@ class BarView extends Component {
                 <InputGroup>
                   <AddToBar show={this.state.showAddInput}
                     toggle={this.toggleAdd}
-                    toggleSuccessMessage={this.toggleSuccessMessage}
                     inventory={this.state.inventory}
                     getInventoryData={this.getInventoryData}
                     toggleAlert={this.props.toggleAlert} />
@@ -102,12 +91,6 @@ class BarView extends Component {
               </ListGroup>
             </Col>
           </Row>
-          <AlertContainer>
-            {this.state.showSuccessMessage
-              ? ( <Alert type="success" headline="Successfully Added">
-                    {this.state.successMessage}
-                  </Alert> ) : null }
-          </AlertContainer>
         </Container>
       )
     }
