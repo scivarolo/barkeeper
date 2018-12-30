@@ -9,9 +9,6 @@ import user from '../../modules/data/user'
 import API from '../../modules/data/API'
 import NewProduct from '../create/NewProduct'
 
-//TODO: Disable Product Typeahead while new product is being created.
-//TODO: If they cancel creating new product, remove the entry from the Typeahead.
-
 class AddToBar extends Component {
 
   state = {
@@ -47,21 +44,22 @@ class AddToBar extends Component {
       }
     })
     return Promise.all(savePromises)
-      .then(() => this.setState({selected: []}))
       .then(() => this.props.getInventoryData())
       .then(() => {
-        this.props.toggleSuccessMessage("Products were successfully added to your bar.")
+        this.props.toggleAlert("success", "Products Added", `${this.state.selected.map(item => item.name)} successfully added to your bar inventory.`)
+        this.setState({selected: []})
         this.props.toggle()
       })
   }
 
   toggleCreateNewProduct = () => {
-    this.setState({showCreateNewProduct: !this.state.showCreateNewProduct})
+    this._typeahead.getInstance().clear()
+    this.setState({showCreateNewProduct: !this.state.showCreateNewProduct, selected: []})
   }
 
   dropdownChange(selected) {
     this.setState({selected: selected})
-    if(selected[selected.length - 1] && selected[selected.length - 1].customOption) {
+    if(selected.length && selected[0].customOption) {
       //If new, Toggle create product inputs, and remove it from the typeahead
       this.toggleCreateNewProduct()
       selected = selected.splice(-1)
@@ -81,13 +79,13 @@ class AddToBar extends Component {
             allowNew
             newSelectionPrefix="New: "
             labelKey="name"
-            multiple={true}
             options={this.state.allProducts.sort((a,b) => {
               let aName = a.name.toUpperCase()
               let bName = b.name.toUpperCase();
               return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
             })}
             placeholder="Search for products"
+            ref={(ref) => this._typeahead = ref}
             onChange={selected => this.dropdownChange(selected)} />
           <InputGroupAddon addonType="append">
             <Button onClick={this.addDropdownProducts}>Add</Button>
@@ -95,9 +93,9 @@ class AddToBar extends Component {
           {
             this.state.showCreateNewProduct
             ? <NewProduct
-                product={this.state.selected[this.state.selected.length - 1]}
+                product={this.state.selected[0]}
                 toggle={this.toggleCreateNewProduct}
-                toggleSuccessMessage={this.props.toggleSuccessMessage}
+                toggleAlert={this.props.toggleAlert}
                 getInventoryData={this.props.getInventoryData}
                 loadProducts={this.loadProducts} />
             : null

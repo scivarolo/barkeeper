@@ -4,7 +4,7 @@ class UnitsDropdown extends Component {
 
   render() {
     return (
-      <Input disabled={this.props.isDisabled} id="unitsDropdown" type="select" required={this.props.isRequired} defaultValue={this.props.initialUnit} value={this.props.isDisabled ? "count" : ""}
+      <Input disabled={this.props.isDisabled} id="unitsDropdown" type="select" required={this.props.isRequired} defaultValue={this.props.initialUnit} value={this.props.isDisabled ? "count" : undefined}
         onChange={this.props.onChangeFn}>
         {
           this.props.isDisabled

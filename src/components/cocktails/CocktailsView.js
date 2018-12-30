@@ -33,8 +33,6 @@ class CocktailsView extends Component {
     tabChoices: {},
     userInventory: [],
     userShoppingList: [],
-    successMessage: "",
-    showSuccessMessage: false,
     showOnlyMakeable: false,
     discoverCocktails: false,
     searching: false,
@@ -48,11 +46,6 @@ class CocktailsView extends Component {
     .then(() => this.getShoppingList())
     .then(() => this.getUserTab())
     .then(() => this.setState({isLoaded: true}))
-
-    //If a new cocktail was just created, show the success message
-    if(this.props.location.hasOwnProperty('successMessage')) {
-      this.toggleSuccessMessage(this.props.location.successMessage)
-    }
   }
 
   toggleMakeable = () => {
@@ -71,13 +64,6 @@ class CocktailsView extends Component {
       searchIngredients: [],
       discoverCocktails: !this.state.discoverCocktails
     })
-  }
-
-  toggleSuccessMessage = (message) => {
-    this.setState({showSuccessMessage: true, successMessage: message})
-    setTimeout(function(){
-      this.setState({showSuccessMessage: false, successMessage: ""});
-    }.bind(this), 3000)
   }
 
   loadAllCocktails = () => {
@@ -265,7 +251,7 @@ class CocktailsView extends Component {
             } else {
               prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
             }
-            if (!prod) return this.toggleSuccessMessage(`You don't have any __ingredient__`)
+            if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", `You're missing ingredients!`)
 
             const amountNeeded = ingredient.amount * c.quantity
             const amountUnit = ingredient.unit
@@ -290,7 +276,7 @@ class CocktailsView extends Component {
             }
 
             if (amountLeft < 0) {
-              return alert(`You don't have enough of an ingredient to make this many.`)
+              return this.props.toggleAlert("warning", "Bummer", `You don't have enough of an ingredient to make this many.`)
             } else if (amountLeft === 0) {
               return productUpdates.push(
                 API.deleteData("userProducts", userProductId)
@@ -306,15 +292,15 @@ class CocktailsView extends Component {
           .then(() => {
             let userCocktail = this.state.userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
             if(c.quantity > 1) {
-              this.toggleSuccessMessage(`You made ${c.quantity} ${c.cocktail.name}s!`)
+              this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}s!`)
             } else {
-              this.toggleSuccessMessage(`You made ${c.quantity} ${c.cocktail.name}!`)
+              this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
             }
             return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
           })
           .then(() => API.deleteData("userTab", c.id))
         } else {
-          this.toggleSuccessMessage(`You're missing ingredients needed to make ${c.cocktail.name}.`)
+          this.props.toggleAlert("warning", "Bummer", `You're missing ingredients needed to make ${c.cocktail.name}.`)
         }
 
       })
@@ -525,12 +511,6 @@ class CocktailsView extends Component {
                 makeCocktails={this.makeCocktails} />
             </Col>
           </Row>
-          <AlertContainer>
-            {this.state.showSuccessMessage
-              ? ( <Alert type="success" headline="Successfully Added">
-                    {this.state.successMessage}
-                  </Alert> ) : null }
-          </AlertContainer>
         </Container>
       )
     } else {

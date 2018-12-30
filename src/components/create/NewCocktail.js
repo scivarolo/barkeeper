@@ -141,10 +141,12 @@ class NewCocktail extends Component {
       makeCount: 0
     }))
     // Redirect and show success message
-    .then(() => this.props.history.push({
-      pathname: '/cocktails',
-      successMessage: `${this.state.cocktailName} was successfully created and added to your list.`
-    }))
+    .then(() => {
+      this.props.toggleAlert("success", `${this.state.cocktailname} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
+      this.props.history.push({
+        pathname: '/cocktails'
+      })
+    })
   }
 
   componentDidMount() {
