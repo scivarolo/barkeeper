@@ -6,6 +6,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import {
+  Button,
   Col,
   Row,
   InputGroup,
@@ -34,7 +35,7 @@ class IngredientInput extends Component {
 
   render() {
 
-    let { ingredientId, ingredients } = this.props
+    let { ingredientId, ingredients, sortOrder } = this.props
     let stateKey = `ingredient${ingredientId}`
 
     return (
@@ -50,7 +51,7 @@ class IngredientInput extends Component {
               onChange={selected => {
                 this.checkSelection(selected)
                 this.props.ingredientToState(stateKey, "ingredient", selected[0])
-                this.props.ingredientToState(stateKey, "sortOrder", ingredientId)
+                this.props.ingredientToState(stateKey, "sortOrder", sortOrder)
                 if (selected.length && selected[0].liquid === false) this.props.ingredientToState(stateKey, "unit", "count")
                 selected.length && selected[0].customOption
                   ? this.setState({isNew: true})
@@ -68,6 +69,16 @@ class IngredientInput extends Component {
                   isRequired={this.state.isRequired}
                   isNewIngredient={this.state.isNew}
                   onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
+                  {
+                    sortOrder !== 1
+                    ? <Button onClick={this.props.moveInputUp}>Up</Button>
+                    : null
+                  }
+                  {
+                    !this.props.last
+                    ? <Button onClick={this.props.moveInputDown}>Down</Button>
+                    : null
+                  }
             </InputGroupAddon>
           </InputGroup>
         </Col>
