@@ -10,6 +10,10 @@ class Units {
         "base": 1
       },
       {
+        "label": "dashes",
+        "base": 1
+      },
+      {
         "label": "barspoon",
         "base": 5
       },
