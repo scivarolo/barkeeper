@@ -7,6 +7,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import {
+  Button,
   Col,
   Row,
   InputGroup,
@@ -78,8 +79,8 @@ class EditIngredientInput extends Component {
               }} />
               <Input
                 type="number"
-                step="any"
                 placeholder="amount"
+                step="any"
                 defaultValue={this.props.initialIngredient ? this.props.initialIngredient.amount : ""}
                 onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
                 required={this.state.isRequired}></Input>
@@ -90,6 +91,16 @@ class EditIngredientInput extends Component {
                   isNewIngredient={this.state.isNew}
                   initialUnit={this.props.initialIngredient ? this.props.initialIngredient.unit : ""}
                   onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
+                  {
+                    this.props.sortOrder !== 1
+                    ? <Button onClick={this.props.moveInputUp}>Up</Button>
+                    : null
+                  }
+                  {
+                    !this.props.last
+                    ? <Button onClick={this.props.moveInputDown}>Down</Button>
+                    : null
+                  }
             </InputGroupAddon>
           </InputGroup>
         </Col>
