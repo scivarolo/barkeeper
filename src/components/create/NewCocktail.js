@@ -60,8 +60,6 @@ class NewCocktail extends Component {
     let array = []
     for (let i = 1; i <= this.state.ingredientRows; i++) {
       array.push({
-        ingredientToState: this.ingredientToState,
-        ingredients: this.state.ingredients,
         sortOrder: i,
         key: `ingredient${i}`,
         ingredientId: i
@@ -78,8 +76,6 @@ class NewCocktail extends Component {
       let array = prevState.ingredientInputs
       let i = array.length + 1
       array.push({
-        ingredientToState: this.ingredientToState,
-        ingredients: this.state.ingredients,
         sortOrder: i,
         key: `ingredient${i}`,
         ingredientId: i
@@ -109,7 +105,7 @@ class NewCocktail extends Component {
       if (data[`ingredient${otherEl.ingredientId}`]) {
         obj[`ingredient${otherEl.ingredientId}`].sortOrder = oldPosition + 1
       }
-      return obj
+      return {cocktailIngredients: obj}
     })
 
     // Reorder inputs
@@ -229,8 +225,8 @@ class NewCocktail extends Component {
               {
                 this.state.ingredientInputs.map((input, index) => {
                   return <IngredientInput
-                    ingredientToState={input.ingredientToState}
-                    ingredients={input.ingredients}
+                    ingredientToState={this.ingredientToState}
+                    ingredients={this.state.ingredients}
                     moveInputUp={() => this.moveInput("up", index)}
                     moveInputDown={() => this.moveInput("down", index)}
                     sortOrder={input.sortOrder}
