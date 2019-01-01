@@ -13,13 +13,13 @@ import {
   import IngredientInput from './IngredientInput'
   import user from '../../modules/data/user'
 
-// TODO: Prevent already used recipe name?
-// TODO: Make an ingredient "optional" (won't count against ability to make it)
+// TODO: Prevent already used recipe name
 
 class NewCocktail extends Component {
 
   state = {
     ingredients: [],
+    ingredientInputs: [],
     cocktailIngredients: {},
     cocktailName: "",
     cocktailInstructions: "",
@@ -28,8 +28,12 @@ class NewCocktail extends Component {
     newIngredientIds: []
   }
 
+  componentDidMount() {
+    this.loadIngredients().then(() => this.generateInitialInputs())
+  }
+
   loadIngredients = () => {
-    API.getAll("ingredients")
+    return API.getAll("ingredients")
     .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -38,8 +42,8 @@ class NewCocktail extends Component {
   }
 
   ingredientToState = (ingredientId, key, value) => {
-    //store the values for each ingredient in object together
-    //store all ingredient objects in an object together
+    // store the values for each ingredient in object together
+    // and store all ingredient objects in an object together
     this.setState(prevState => {
       let obj = Object.assign({}, prevState.cocktailIngredients)
 
@@ -52,22 +56,68 @@ class NewCocktail extends Component {
     })
   }
 
+  generateInitialInputs = () => {
+    let array = []
+    for (let i = 1; i <= this.state.ingredientRows; i++) {
+      array.push({
+        sortOrder: i,
+        key: `ingredient${i}`,
+        ingredientId: i
+      })
+    }
+    return this.setState({ingredientInputs: array})
+  }
+
   addIngredientInput = () => {
     this.setState({
       ingredientRows: this.state.ingredientRows + 1
     })
+    this.setState(prevState => {
+      let array = prevState.ingredientInputs
+      let i = array.length + 1
+      array.push({
+        sortOrder: i,
+        key: `ingredient${i}`,
+        ingredientId: i
+      })
+    })
   }
 
-  outputIngredientInputs = () => {
-    let array = []
-    for (let i = 1; i <= this.state.ingredientRows; i++) {
-      array.push(<IngredientInput
-        ingredientToState={this.ingredientToState}
-        ingredients={this.state.ingredients}
-        key={`ingredient${i}`}
-        ingredientId={i} />)
+  moveInput = (direction, oldPosition) => {
+    let array = this.state.ingredientInputs
+    let newPosition = oldPosition - 1
+    if (direction === "down") newPosition = oldPosition + 1
+
+    let element = array[oldPosition]
+    element.sortOrder = newPosition + 1
+
+    let otherEl = array[newPosition]
+    otherEl.sortOrder = oldPosition + 1
+
+    let data = this.state.cocktailIngredients
+
+    // check if either input has data and if sortOrder needs to be updated in state
+    this.setState(prevState => {
+      let obj = Object.assign({}, prevState.cocktailIngredients)
+      if (data[`ingredient${element.ingredientId}`]) {
+        obj[`ingredient${element.ingredientId}`].sortOrder = newPosition + 1
+      }
+      if (data[`ingredient${otherEl.ingredientId}`]) {
+        obj[`ingredient${otherEl.ingredientId}`].sortOrder = oldPosition + 1
+      }
+      return {cocktailIngredients: obj}
+    })
+
+    // Reorder inputs
+    if (direction === "down") {
+      array.splice(oldPosition, 2)
+      array.splice(oldPosition, 0, otherEl, element)
+    } else {
+      array.splice(newPosition, 2)
+      array.splice(newPosition, 0, element, otherEl)
     }
-    return array
+
+    return this.setState({ingredientInputs: array})
   }
 
   saveRecipe = (e) => {
@@ -149,10 +199,6 @@ class NewCocktail extends Component {
     })
   }
 
-  componentDidMount() {
-    this.loadIngredients()
-  }
-
   render() {
     return (
       <Container>
@@ -163,7 +209,6 @@ class NewCocktail extends Component {
             </div>
           </Col>
         </Row>
-
 
         <Form onSubmit={e => this.saveRecipe(e)}>
           <Row>
@@ -177,7 +222,21 @@ class NewCocktail extends Component {
           <Row className="mt-3">
             <Col md={7} className="mb-3">
               <Label>Ingredients</Label>
-              {this.outputIngredientInputs()}
+              {
+                this.state.ingredientInputs.map((input, index) => {
+                  return <IngredientInput
+                    ingredientToState={this.ingredientToState}
+                    ingredients={this.state.ingredients}
+                    moveInputUp={() => this.moveInput("up", index)}
+                    moveInputDown={() => this.moveInput("down", index)}
+                    sortOrder={input.sortOrder}
+                    key={input.key}
+                    last={index === this.state.ingredientInputs.length - 1 ? true : false}
+                    ingredientId={input.ingredientId} />
+
+                })
+              }
+
               <Button size="sm" onClick={this.addIngredientInput}>Additional Ingredient</Button>
             </Col>
 
