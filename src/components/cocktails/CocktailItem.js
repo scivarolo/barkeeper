@@ -137,8 +137,13 @@ class CocktailItem extends Component {
     if(!this.state.userCanMake && this.props.showOnlyMakeable) {
       hide = "d-none"
     }
+    let canMake = "can-make"
+    if(!this.state.userCanMake) {
+      canMake = "cant-make"
+    }
+
     return (
-      <ListGroupItem className={`mb-3 ${hide} cocktail-item`} key={cocktail.id}>
+      <ListGroupItem className={`mb-3 cocktail-item ${canMake} ${hide}`} key={cocktail.id}>
         <div className="d-flex mb-3 justify-content-between cocktail-header">
           <div>
             <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>

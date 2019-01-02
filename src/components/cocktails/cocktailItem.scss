@@ -96,3 +96,30 @@
     opacity: 1;
   }
 }
+
+.bookmark-recipe {
+  color: $warning;
+  font-size: 24px;
+  margin-top: 6px;
+  position: relative;
+  transition: all .125s ease-in-out;
+  &:hover {
+    color: darken($warning, 15%);
+    transform: scale(1.125);
+  }
+}
+
+.cocktail-item.cant-make {
+  color: darken($secondary, 25%);
+}
+
+.cocktail-item.can-make {
+  border-bottom: 4px solid $warning;
+}
+
+.cocktail-item {
+  transition: box-shadow .125s ease-in-out;
+  &:hover {
+    box-shadow: 0 0 15px rgba($secondary, 0.25);
+  }
+}
