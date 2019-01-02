@@ -1,3 +1,5 @@
+@import "../../variables.scss";
+
 .item-amount-chart {
   height: 7px;
   margin-top: 9px;
@@ -5,4 +7,32 @@
 
 .updateItem {
   display: inline-block;
+}
+
+.bar-edit-icon {
+  color: $secondary;
+  &:hover {
+    color: $warning;
+  }
+}
+
+.bar-item-delete {
+  opacity: 0;
+  color: $secondary;
+  transition: all .25s ease-in-out;
+  &:hover {
+    color: $danger;
+  }
+  .bar-item:hover & {
+    opacity: 1;
+  }
+}
+
+.bar-item {
+  transition: all .15s ease-in-out 0.025s;
+  &:hover {
+    box-shadow: 0 0 15px rgba($secondary, 0.45);
+    transform: scale(1.03);
+    transition: all .125s ease-in-out 0s;
+  }
 }

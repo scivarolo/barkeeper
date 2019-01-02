@@ -10,6 +10,7 @@ import {
 import QuantityToggles from '../utils/QuantityToggles'
 import API from '../../modules/data/API'
 import './barItem.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class BarItem extends Component {
 
@@ -85,7 +86,7 @@ class BarItem extends Component {
   render() {
     let item = this.props.item
     return (
-      <ListGroupItem className="mb-2" id={item.id}>
+      <ListGroupItem className="mb-2 bar-item" id={item.id}>
         <h4>{item.product.name} ({item.product.fullAmount} {item.product.unit})</h4>
         <div className="d-flex">
           { item.product.unit !== "count"
@@ -102,36 +103,39 @@ class BarItem extends Component {
                 </div>
                 <div className="mx-3">
                   <span>{item.amountAvailable} {item.product.unit}</span>
+                  { this.state.showUpdateForm
+                    ? <div className="updateItem mx-2">
+                        <InputGroup size="sm">
+                          <Input size="sm" type="number" min="0" step="any" max={item.product.fullAmount} value={this.state.updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
+                            placeholder={item.amountAvailable} onChange={e => this.handleFieldChange(e)} />
+                          <InputGroupAddon addonType="append">
+                            <InputGroupText>{item.product.unit}</InputGroupText>
+                          </InputGroupAddon>
+                          <InputGroupAddon addonType="append">
+                            <Button onClick={this.updateItemAmount} color="warning">
+                              <FontAwesomeIcon icon="check" />
+                            </Button>
+                            <Button onClick={this.toggleUpdate} color="danger">
+                              <FontAwesomeIcon icon="times" />
+                            </Button>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </div>
+                    : <FontAwesomeIcon icon="pen" className="mx-2 bar-edit-icon"
+                        onClick={this.toggleUpdate} />
+                  }
                 </div>
               </>
             : null
           }
-          <div className="mr-3">
+          <div className={item.product.unit === "count" ? "mr-auto" : "ml-auto"}>
             <span className="d-flex">
               <span>Quantity: {item.quantity}</span>
               <QuantityToggles increase={this.increaseQuantity} decrease={this.decreaseQuantity} />
             </span>
           </div>
-          <div className="ml-auto">
-            { this.state.showUpdateForm
-              ? <div className="updateItem mr-2">
-                  <InputGroup size="sm">
-                    <Input type="number" min="0" step="any" max={item.product.fullAmount} value={this.state.updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
-                      placeholder={item.amountAvailable} onChange={e => this.handleFieldChange(e)} />
-                    <InputGroupAddon addonType="append">
-                      <InputGroupText>{item.product.unit}</InputGroupText>
-                    </InputGroupAddon>
-                    <InputGroupAddon addonType="append">
-                      <Button onClick={this.updateItemAmount}>Save</Button>
-                    </InputGroupAddon>
-                  </InputGroup>
-                </div>
-              : null
-            }
-            <Button outline color="warning" size="sm" className="mr-2" onClick={this.toggleUpdate}>
-              {this.state.showUpdateForm ? "Cancel" : "Update"}
-            </Button>
-            <Button outline color="danger" size="sm" onClick={() => this.deleteItem(item.id)}>Delete</Button>
+          <div className="ml-2">
+            <FontAwesomeIcon icon="trash" className="bar-item-delete" onClick={() => this.deleteItem(item.id)} />
           </div>
         </div>
       </ListGroupItem>
