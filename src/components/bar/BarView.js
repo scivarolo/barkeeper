@@ -5,7 +5,6 @@ import {
   Row,
   Col,
   InputGroup,
-  InputGroupAddon,
   ListGroup } from 'reactstrap'
 import API from '../../modules/data/API'
 import user from '../../modules/data/user'

@@ -11,6 +11,7 @@ import {
   import API from '../../modules/data/API'
   import EditIngredientInput from './EditIngredientInput'
   import user from '../../modules/data/user'
+  import './newCocktail.scss'
 
 class EditCocktail extends Component {
 
@@ -265,9 +266,9 @@ class EditCocktail extends Component {
 
           <Button onClick={this.addIngredientInput}>Additional Ingredient</Button>
           <Row>
-            <Col>
+            <Col className="mt-3">
               <Label for="cocktailInstructions">Instructions</Label>
-              <Input type="textarea"
+              <Input type="textarea" rows="4"
                 defaultValue={this.props.cocktail.instructions}
                 id="cocktailInstructions"
                 onChange={e => this.valueToState(e.target.id, e.target.value)}

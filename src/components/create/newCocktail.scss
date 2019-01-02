@@ -1,0 +1,16 @@
+@import '../../variables.scss';
+
+.move-ingredients {
+  line-height: 1;
+  justify-content: center;
+}
+
+.move-ingredients > div {
+  &:hover {
+    color: $warning;
+  }
+}
+
+.input-group .ingredient-typeahead {
+  flex: 3 3;
+}

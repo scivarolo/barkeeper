@@ -12,6 +12,7 @@ import {
   import API from '../../modules/data/API'
   import IngredientInput from './IngredientInput'
   import user from '../../modules/data/user'
+  import './newCocktail.scss'
 
 // TODO: Prevent already used recipe name
 

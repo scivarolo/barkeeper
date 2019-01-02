@@ -7,7 +7,6 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import {
-  Button,
   Col,
   Row,
   InputGroup,
@@ -15,6 +14,7 @@ import {
   InputGroupAddon
 } from 'reactstrap'
 import UnitsDropdown from './UnitsDropdown'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class EditIngredientInput extends Component {
 
@@ -54,6 +54,7 @@ class EditIngredientInput extends Component {
         <Col>
           <InputGroup>
             <Typeahead
+              className="ingredient-typeahead"
               allowNew
               newSelectionPrefix="Add New: "
               labelKey="label"
@@ -91,16 +92,22 @@ class EditIngredientInput extends Component {
                   isNewIngredient={this.state.isNew}
                   initialUnit={this.props.initialIngredient ? this.props.initialIngredient.unit : ""}
                   onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
+                  <span className="move-ingredients ml-2 d-flex align-items-center flex-column">
                   {
                     this.props.sortOrder !== 1
-                    ? <Button onClick={this.props.moveInputUp}>Up</Button>
+                    ? <div className="ingredient-up">
+                        <FontAwesomeIcon icon="chevron-up" onClick={this.props.moveInputUp} />
+                      </div>
                     : null
                   }
                   {
                     !this.props.last
-                    ? <Button onClick={this.props.moveInputDown}>Down</Button>
+                    ? <div className="ingredient-down">
+                        <FontAwesomeIcon icon="chevron-down" onClick={this.props.moveInputDown} />
+                      </div>
                     : null
                   }
+                  </span>
             </InputGroupAddon>
           </InputGroup>
         </Col>

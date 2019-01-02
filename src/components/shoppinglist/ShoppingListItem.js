@@ -3,7 +3,6 @@ import {
   Row,
   Col,
   Badge,
-  Button,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API'
 import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal'
