@@ -4,9 +4,6 @@
   font-size: 16px;
   padding: 8px 8px 8px 10px;
   margin-top: 2px;
-  // border-top-right-radius: 0;
-  // border-bottom-right-radius: 0;
-  //margin-right: -20px;
 }
 
 .ingredient--cant-make {
@@ -69,4 +66,33 @@
 
 .cocktail-header {
   border-bottom: 1px solid lightgray;
+}
+
+.cocktail-edit,
+.cocktail-remove {
+  transition: all 0.125s ease-in-out;
+}
+
+.cocktail-remove {
+  color: $danger;
+  &:hover {
+    color: darken($danger, 15%);
+  }
+}
+
+.cocktail-edit {
+  color: $warning;
+  &:hover {
+    color: darken($warning, 15%);
+  }
+}
+
+.cocktail-utils {
+  opacity: 0;
+  transition: opacity .125s ease-in-out;
+  position: relative;
+  top: -10%;
+  .cocktail-item:hover & {
+    opacity: 1;
+  }
 }

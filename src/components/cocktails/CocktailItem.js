@@ -11,6 +11,8 @@ import user from '../../modules/data/user'
 import Units from '../../modules/UnitConverter'
 import CocktailEditModal from './CocktailEditModal'
 import "./cocktailItem.scss"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 class CocktailItem extends Component {
 
@@ -136,10 +138,25 @@ class CocktailItem extends Component {
       hide = "d-none"
     }
     return (
-      <ListGroupItem className={`mb-3 ${hide}`} key={cocktail.id}>
+      <ListGroupItem className={`mb-3 ${hide} cocktail-item`} key={cocktail.id}>
         <div className="d-flex mb-3 justify-content-between cocktail-header">
           <div>
-            <h2 className="mb-3 cocktail-name">{cocktail.name}</h2>
+            <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
+            <span className="cocktail-utils">
+              {
+                this.props.cocktail.createdBy === user.getId()
+                ? <CocktailEditModal
+                  buttonLabel="Edit"
+                  cocktail={cocktail}
+                  ingredientNames={ingredients}
+                  getUserCocktailData={this.props.getUserCocktailData}  />
+                : null
+              }
+              <FontAwesomeIcon
+                icon="trash"
+                className="cocktail-remove ml-2"
+                onClick={() => this.deleteItem(this.props.userCocktail.id)} />
+            </span>
           </div>
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
@@ -158,7 +175,7 @@ class CocktailItem extends Component {
         <Row>
           <Col md={5}>
             <h5>Ingredients</h5>
-            <ul className="recipe-ingredients">
+            <ul className="recipe-ingredients mb-2">
               {
                 cocktail.cocktailIngredients.map((ingredient, i) => {
                   return (
@@ -177,20 +194,6 @@ class CocktailItem extends Component {
           <Col>
             <h5>Instructions</h5>
             <p>{cocktail.instructions}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="d-flex justify-content-end">
-            {
-              this.props.cocktail.createdBy === user.getId()
-              ? <CocktailEditModal
-                buttonLabel="Edit"
-                cocktail={cocktail}
-                ingredientNames={ingredients}
-                getUserCocktailData={this.props.getUserCocktailData}  />
-              : null
-            }
-            <Button size="sm" className="ml-2" color="danger" outline onClick={() => this.deleteItem(this.props.userCocktail.id)}>Remove</Button>
           </Col>
         </Row>
       </ListGroupItem>
