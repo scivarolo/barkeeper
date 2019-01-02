@@ -28,7 +28,7 @@ class CocktailEditModal extends React.Component {
   render() {
     return (
       <>
-        <FontAwesomeIcon className="cocktail-edit ml-3" icon="edit" onClick={this.toggle} />
+        <FontAwesomeIcon className="cocktail-edit ml-3" icon="pen" onClick={this.toggle} />
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Edit {this.props.cocktail.name}</ModalHeader>
           <ModalBody>

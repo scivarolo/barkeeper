@@ -118,8 +118,9 @@
 }
 
 .cocktail-item {
-  transition: box-shadow .125s ease-in-out;
+  transition: all .125s ease-in-out;
   &:hover {
-    box-shadow: 0 0 15px rgba($secondary, 0.25);
+    box-shadow: 0 0 15px rgba($secondary, 0.45);
+    transform: scale(1.02);
   }
 }

@@ -78,7 +78,7 @@ class ShoppingListItem extends Component {
   render() {
     let item = this.props.item
     return (
-      <ListGroupItem className="mb-2" id={item.id}>
+      <ListGroupItem className="mb-1 shopping-item" id={item.id}>
         <Row>
           <Col className="d-flex justify-content-between align-items-center">
             <h5 className="mb-0">
