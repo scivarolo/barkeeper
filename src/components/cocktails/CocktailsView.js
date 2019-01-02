@@ -6,7 +6,6 @@ import {
   Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import API from '../../modules/data/API'
-import { Alert, AlertContainer } from 'react-bs-notifier'
 import user from '../../modules/data/user'
 import BarTab from '../bartab/BarTab'
 import Units from '../../modules/UnitConverter'

@@ -11,7 +11,6 @@ import API from '../../modules/data/API'
 import user from '../../modules/data/user'
 import BarItem from './BarItem'
 import AddToBar from './AddToBar'
-import { Alert, AlertContainer } from 'react-bs-notifier'
 
 class BarView extends Component {
 
