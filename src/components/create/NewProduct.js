@@ -10,6 +10,7 @@ import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import UnitsDropdown from './UnitsDropdown'
 import API from '../../modules/data/API'
 import user from '../../modules/data/user'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 //TODO: Allow new ingredient to be created when a new product is being created.
 
@@ -113,8 +114,12 @@ class NewProduct extends Component {
               isRequired={true}
               isDisabled={this.state.disableUnits}
               onChangeFn={e => this.handleFieldChange(e)} />
-            <Button type="submit">Create Product</Button>
-            <Button onClick={this.props.toggle}>Cancel</Button>
+            <Button type="submit" color="warning">
+              <FontAwesomeIcon icon="check" />
+            </Button>
+            <Button onClick={this.props.toggle} color="danger">
+              <FontAwesomeIcon icon="times" />
+            </Button>
           </InputGroup>
         </Form>
       </div>

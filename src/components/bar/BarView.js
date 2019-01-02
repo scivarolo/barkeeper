@@ -52,26 +52,23 @@ class BarView extends Component {
       return (
         <Container>
           <Row className="my-5">
-            <Col className="d-flex">
-              <div>
+            <Col className="d-flex" md={4}>
                 <h1>Your Bar</h1>
-              </div>
-              <div className="ml-auto">
-                <InputGroup>
+            </Col>
+            <Col md={8}>
+                <InputGroup className="d-flex">
                   <AddToBar show={this.state.showAddInput}
                     toggle={this.toggleAdd}
                     inventory={this.state.inventory}
                     getInventoryData={this.getInventoryData}
                     toggleAlert={this.props.toggleAlert} />
-                  <InputGroupAddon addonType="append">
-                    <Button onClick={this.toggleAdd}>
+
+                  <Button onClick={this.toggleAdd} color="warning" className="ml-auto">
                     {
-                      this.state.showAddInput ? "Nevermind" : "Add Products"
+                      this.state.showAddInput ? "Cancel" : "Add Products"
                     }
-                    </Button>
-                  </InputGroupAddon>
+                  </Button>
                 </InputGroup>
-              </div>
             </Col>
           </Row>
           <Row>
