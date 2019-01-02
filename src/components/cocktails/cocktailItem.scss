@@ -11,21 +11,22 @@
 
 .ingredient--cant-make {
   position: relative;
-  .btn {
+  .ingredient-add-button {
     opacity: 0;
-    position: absolute;
     display: none;
-    transition: opacity 0.125s ease-in-out .5s;
+    transition: all 0.125s ease-in-out .5s;
     z-index: 100;
-    top: -5px;
-    transform: scale(.85);
-    transform-origin: left center;
+    color: $success;
   }
-  &:hover .btn {
+  &:hover .ingredient-add-button {
     opacity: 1;
     display: inline-block;
-    transition: opacity .125s ease-in-out 0s;
+    transition: all .125s ease-in-out 0s;
   }
+}
+
+.ingredient-add-button:hover {
+  color: $warning;
 }
 
 .in-shopping-list {
