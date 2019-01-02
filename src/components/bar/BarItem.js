@@ -88,17 +88,29 @@ class BarItem extends Component {
       <ListGroupItem className="mb-2" id={item.id}>
         <h4>{item.product.name} ({item.product.fullAmount} {item.product.unit})</h4>
         <div className="d-flex">
+          { item.product.unit !== "count"
+            ? <>
+                <div style={{width: '150px'}}>
+                  <Progress
+                    className="item-amount-chart"
+                    color={
+                      (item.amountAvailable / item.product.fullAmount <= 0.25) && item.quantity === 1
+                      ? "danger"
+                      : "primary"}
+                    value={item.amountAvailable}
+                    max={item.product.fullAmount} />
+                </div>
+                <div className="mx-3">
+                  <span>{item.amountAvailable} {item.product.unit}</span>
+                </div>
+              </>
+            : null
+          }
           <div className="mr-3">
             <span className="d-flex">
               <span>Quantity: {item.quantity}</span>
               <QuantityToggles increase={this.increaseQuantity} decrease={this.decreaseQuantity} />
             </span>
-          </div>
-          <div className="mr-3">
-            <span>Available: {item.amountAvailable} {item.product.unit}</span>
-          </div>
-          <div style={{width: '150px'}}>
-            <Progress className="item-amount-chart" value={item.amountAvailable} max={item.product.fullAmount} />
           </div>
           <div className="ml-auto">
             { this.state.showUpdateForm
