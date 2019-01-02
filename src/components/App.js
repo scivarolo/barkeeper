@@ -9,10 +9,11 @@ import {
   faEdit,
   faTrash,
   faCheckCircle,
+  faCheck,
   faCartPlus,
   faBookmark} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark)
+library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faCheck)
 class App extends Component {
 
   constructor(props) {

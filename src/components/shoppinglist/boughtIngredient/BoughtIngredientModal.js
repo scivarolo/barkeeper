@@ -8,6 +8,7 @@ import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import API from '../../../modules/data/API'
 import NewProduct from './NewProduct'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 //TODO: replace with Typeahead to filter existing products and create a new one from there.
 
@@ -48,7 +49,10 @@ class BoughtIngredientModal extends Component {
   render() {
     return (
       <>
-        <Button outline color="warning" size="sm" onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <FontAwesomeIcon
+          icon="check"
+          className="ml-2 shopping-bought"
+          onClick={this.toggle} />
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.label} Product</ModalHeader>
           <ModalBody>
