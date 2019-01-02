@@ -13,7 +13,7 @@ import {
   faCartPlus,
   faPen,
   faTimes,
-  faBookmark} from '@fortawesome/free-solid-svg-icons'
+  faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faTimes, faCheck, faPen)
 class App extends Component {
