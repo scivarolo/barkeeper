@@ -193,7 +193,7 @@ class NewCocktail extends Component {
     }))
     // Redirect and show success message
     .then(() => {
-      this.props.toggleAlert("success", `${this.state.cocktailname} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
+      this.props.toggleAlert("success", `${this.state.cocktailName} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
       this.props.history.push({
         pathname: '/cocktails'
       })
