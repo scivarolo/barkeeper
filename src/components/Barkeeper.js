@@ -65,6 +65,7 @@ class Barkeeper extends Component {
             return <Redirect to="/" />
           }} />
         </Switch>
+        <div className="mb-5"><br></br></div>
         <Alerts
           showAlert={this.state.showAlert}
           alertHeadline={this.state.alertHeadline}
