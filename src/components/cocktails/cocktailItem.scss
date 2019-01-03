@@ -74,16 +74,16 @@
 }
 
 .cocktail-remove {
-  color: $danger;
+  color: $secondary;
   &:hover {
-    color: darken($danger, 15%);
+    color: $danger;
   }
 }
 
 .cocktail-edit {
-  color: $warning;
+  color: $secondary;
   &:hover {
-    color: darken($warning, 15%);
+    color: $warning;
   }
 }
 
