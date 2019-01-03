@@ -70,12 +70,18 @@ class NewProduct extends Component {
     }
 
     return API.saveData("products", obj)
-      .then((r) => API.saveData("userProducts", {
-        userId: user.getId(),
-        productId: r.id,
-        quantity: Number(this.state.newProductSize),
-        amountAvailable: r.fullAmount
-      }))
+      .then((r) => {
+        let quantity = 1
+        if(this.state.unitsDropdown === "count") {
+          quantity = Number(this.state.newProductSize)
+        }
+        return API.saveData("userProducts", {
+          userId: user.getId(),
+          productId: r.id,
+          quantity: quantity,
+          amountAvailable: r.fullAmount
+        })
+      })
       .then(() => this.props.getInventoryData())
       .then(() => this.props.loadProducts())
       .then(() => {
