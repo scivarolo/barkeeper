@@ -75,7 +75,7 @@ class ShoppingListView extends Component {
                   toggle={this.toggleAddProduct}
                   shoppingList={this.state.shoppingProducts}
                   getShoppingData={this.getShoppingData} />
-                <Button className="mx-2" onClick={this.toggleAddProduct}>
+                <Button className="mx-2" color="warning" onClick={this.toggleAddProduct}>
                   {this.state.showAddProduct ? "Cancel" : "Add Products"}
                 </Button>
                 <AddIngredient
@@ -83,7 +83,7 @@ class ShoppingListView extends Component {
                   toggle={this.toggleAddIngredient}
                   shoppingList={this.state.shoppingProducts}
                   getShoppingData={this.getShoppingData} />
-                <Button className="ml-2" onClick={this.toggleAddIngredient}>
+                <Button className="ml-2" color="warning" onClick={this.toggleAddIngredient}>
                   {this.state.showAddIngredient ? "Cancel" : "Add Ingredients"}
                 </Button>
               </InputGroup>

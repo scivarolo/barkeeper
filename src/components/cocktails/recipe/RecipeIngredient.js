@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'reactstrap'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class RecipeIngredient extends Component {
 
   state = {
@@ -43,11 +42,13 @@ class RecipeIngredient extends Component {
         <span className="ingredient__label">{this.props.label}</span>
         {(!canMake)
           ? !this.state.inShoppingList
-            ? <Button color="success" size="sm"
-              onClick={() => this.props.addToShoppingList(ingredient)}
-              className="ml-2 ingredient-add-button">+ Shopping List</Button>
-            : <span className="in-shopping-list">Added</span>
-          : "" }
+            ? <FontAwesomeIcon className="ingredient-add-button"
+                onClick={() => this.props.addToShoppingList(ingredient)}
+                icon="cart-plus" />
+            : <FontAwesomeIcon
+                className="in-shopping-list"
+                icon="check-circle" />
+          : null }
       </li>
     )
   }

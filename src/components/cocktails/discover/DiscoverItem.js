@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-  Button,
   Col,
   Row,
   ListGroupItem } from 'reactstrap'
@@ -9,6 +8,9 @@ import RecipeIngredient from '../recipe/RecipeIngredient'
 import user from '../../../modules/data/user'
 import CocktailEditModal from '../CocktailEditModal'
 import "../cocktailItem.scss"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+
 
 class DiscoverItem extends Component {
 
@@ -31,23 +33,34 @@ class DiscoverItem extends Component {
     let { cocktail, ingredients } = this.props
 
     return (
-      <ListGroupItem className={`mb-3`} key={cocktail.id}>
+      <ListGroupItem className={`mb-3 cocktail-item`} key={cocktail.id}>
         <div className="d-flex mb-3 justify-content-between cocktail-header">
           <div>
-            <h2 className="mb-3 cocktail-name">{cocktail.name}</h2>
+            <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
+            <span className="cocktail-utils">
+              {
+                this.props.cocktail.createdBy === user.getId()
+                ? <CocktailEditModal
+                  buttonLabel="Edit"
+                  cocktail={cocktail}
+                  ingredientNames={ingredients}
+                  getUserCocktailData={this.props.getUserCocktailData}  />
+                : null
+              }
+            </span>
           </div>
           <div className="mt-1 recipe-badge">
-            <Button
-              onClick={() => this.userAddsCocktail()}
-              size="sm"
-              className="mr-2">Save</Button>
+            <FontAwesomeIcon
+              icon="bookmark"
+              className="bookmark-recipe"
+              onClick={this.userAddsCocktail} />
           </div>
         </div>
 
         <Row>
           <Col md={5}>
             <h5>Ingredients</h5>
-            <ul className="recipe-ingredients">
+            <ul className="recipe-ingredients mb-2">
               {
                 cocktail.cocktailIngredients.map((cIngredient, i) => {
                   return (
@@ -64,19 +77,6 @@ class DiscoverItem extends Component {
           <Col>
             <h5>Instructions</h5>
             <p>{cocktail.instructions}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="d-flex justify-content-end">
-            {
-              this.props.cocktail.createdBy === user.getId()
-              ? <CocktailEditModal
-                buttonLabel="Edit"
-                cocktail={cocktail}
-                ingredientNames={ingredients}
-                getUserCocktailData={this.props.getUserCocktailData}  />
-              : null
-            }
           </Col>
         </Row>
       </ListGroupItem>

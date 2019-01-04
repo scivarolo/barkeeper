@@ -3,9 +3,21 @@ import { Redirect } from 'react-router-dom'
 import Login from './login/Login';
 import Barkeeper from './Barkeeper';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import {
+  faPlusCircle,
+  faMinusCircle,
+  faEdit,
+  faTrash,
+  faCheckCircle,
+  faCheck,
+  faCartPlus,
+  faPen,
+  faTimes,
+  faChevronUp,
+  faChevronDown,
+  faBookmark } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faPlusCircle, faMinusCircle)
+library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faTimes, faCheck, faPen, faChevronUp, faChevronDown)
 class App extends Component {
 
   constructor(props) {

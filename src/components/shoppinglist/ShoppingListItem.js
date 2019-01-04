@@ -3,11 +3,11 @@ import {
   Row,
   Col,
   Badge,
-  Button,
   ListGroupItem } from 'reactstrap'
 import API from '../../modules/data/API'
 import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal'
 import QuantityToggles from '../utils/QuantityToggles'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class ShoppingListItem extends Component {
 
@@ -77,30 +77,26 @@ class ShoppingListItem extends Component {
   render() {
     let item = this.props.item
     return (
-      <ListGroupItem className="mb-2" id={item.id}>
+      <ListGroupItem className="mb-1 shopping-item" id={item.id}>
         <Row>
-          <Col>
-            <div className="border-bottom mb-2">
-              <h4>{
-                item.productId
-                ? <>{item.product.name} <Badge className="shopping-badge" color="primary">Product</Badge></>
-                : <>{item.ingredient.label} <Badge className="shopping-badge" color="danger">Ingredient</Badge></>
-              }
-              </h4>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="d-flex">
+          <Col className="d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">
+            {
+              item.productId
+              ? <>{item.product.name} <Badge className="ml-1 shopping-badge" color="primary">Product</Badge></>
+              : <>{item.ingredient.label} <Badge className="ml-1 shopping-badge" color="danger">Ingredient</Badge></>
+            }
+            </h5>
             <span className="d-flex">
               <span>Quantity: {item.quantity}</span>
               <QuantityToggles
                 increase={this.increaseQuantity}
                 decrease={this.decreaseQuantity} />
             </span>
-            <div className="ml-auto">
+            <div className="shopping-utils">
               { item.productId
-                ? <Button outline color="warning" className="btn-sm ml-2" onClick={() => this.boughtProduct(item)}>Bought</Button>
+                ? <FontAwesomeIcon icon="check" className="ml-2 shopping-bought"
+                    onClick={() => this.boughtProduct(item)} />
                 : <BoughtIngredientModal
                     buttonLabel="Bought"
                     ingredient={this.props.item.ingredient}
@@ -108,7 +104,8 @@ class ShoppingListItem extends Component {
                     item={item}
                     deleteItem={this.props.deleteItem} />
               }
-              <Button outline color="danger" className="btn-sm ml-2" onClick={() => this.props.deleteItem(item.id)}>Delete</Button>
+              <FontAwesomeIcon icon="trash" className="ml-2 shopping-remove"
+                onClick={() => this.props.deleteItem(item.id)} />
             </div>
           </Col>
 

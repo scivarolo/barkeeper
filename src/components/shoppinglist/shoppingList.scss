@@ -1,7 +1,9 @@
+@import "../../variables.scss";
+
 .shopping-badge {
   font-size: .65em;
   position:relative;
-  top: -4px;
+  top: -2px;
 }
 
 @media (min-width: 900px) {
@@ -9,5 +11,28 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 1em;
+  }
+}
+
+.shopping-bought {
+  color: $primary;
+  &:hover {
+    color: $warning;
+  }
+}
+
+.shopping-remove {
+  color: $primary;
+  &:hover {
+    color: $danger;
+  }
+}
+
+.shopping-item {
+  transition: all .125s ease-in-out 0.125s;
+  &:hover {
+    box-shadow: 0 0 15px rgba($secondary, 0.45);
+    transform: scale(1.03);
+    transition: all .125s ease-in-out 0s;
   }
 }

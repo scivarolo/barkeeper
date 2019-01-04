@@ -6,6 +6,8 @@ import {
   ModalBody,
   ModalFooter } from 'reactstrap'
 import EditCocktail from '../create/EditCocktail'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 class CocktailEditModal extends React.Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class CocktailEditModal extends React.Component {
   render() {
     return (
       <>
-        <Button size="sm" outline color="warning" onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <FontAwesomeIcon className="cocktail-edit ml-3" icon="pen" onClick={this.toggle} />
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Edit {this.props.cocktail.name}</ModalHeader>
           <ModalBody>
