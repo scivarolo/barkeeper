@@ -5,7 +5,7 @@
 class API {
 
   constructor() {
-    this.baseUrl = "http://localhost:5002"
+    this.baseUrl = "https://barkeeper-db.herokuapp.com"
   }
 
   getAll(resource, userId) {
