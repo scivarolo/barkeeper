@@ -87,7 +87,7 @@ class ShoppingListItem extends Component {
               : <>{item.ingredient.label} <Badge className="ml-1 shopping-badge" color="danger">Ingredient</Badge></>
             }
             </h5>
-            <span className="d-flex">
+            <span className="d-flex ml-auto mr-2">
               <span>Quantity: {item.quantity}</span>
               <QuantityToggles
                 increase={this.increaseQuantity}

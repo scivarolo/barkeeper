@@ -15,14 +15,14 @@
 }
 
 .shopping-bought {
-  color: $primary;
+  color: $warning;
   &:hover {
-    color: $warning;
+    color: darken($warning, 10%);
   }
 }
 
 .shopping-remove {
-  color: $primary;
+  color: $secondary;
   &:hover {
     color: $danger;
   }
