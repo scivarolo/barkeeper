@@ -41,6 +41,10 @@ class AddIngredient extends Component {
       }
     })
     return Promise.all(savePromises)
+      .then(() => {
+        let products = this.state.selected.map(product => product.label)
+        this.props.toggleAlert("success", `Product(s) Added to Shopping List`, `${products.join(" & ")} successfully added.`)
+      })
       .then(() => this.setState({selected: []}))
       .then(() => this.props.getShoppingData())
       .then(() => this.props.toggle())

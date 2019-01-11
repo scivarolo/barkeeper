@@ -73,6 +73,7 @@ class ShoppingListView extends Component {
                 <AddProduct
                   show={this.state.showAddProduct}
                   toggle={this.toggleAddProduct}
+                  toggleAlert={this.props.toggleAlert}
                   shoppingList={this.state.shoppingProducts}
                   getShoppingData={this.getShoppingData} />
                 <Button className="mx-2" color="warning" onClick={this.toggleAddProduct}>
@@ -81,6 +82,7 @@ class ShoppingListView extends Component {
                 <AddIngredient
                   show={this.state.showAddIngredient}
                   toggle={this.toggleAddIngredient}
+                  toggleAlert={this.props.toggleAlert}
                   shoppingList={this.state.shoppingProducts}
                   getShoppingData={this.getShoppingData} />
                 <Button className="ml-2" color="warning" onClick={this.toggleAddIngredient}>
