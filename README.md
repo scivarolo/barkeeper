@@ -4,11 +4,15 @@ Do you like to make cocktails at home, but struggle with knowing what to make be
 ## Bar Inventory
 Manage your bar inventory: Add products, and update quantities and amount left.
 
+![Bar Inventory GIF](https://github.com/scivarolo/barkeeper/blob/master/bar-inventory.gif)
+
 ## Cocktails
 Save your favorite recipes, see which cocktails can be made with your current inventory, add missing ingredients to your shopping list, and make cocktails. When you make a cocktail, the ingredients used are deducted from your inventory.
 
 ## Shopping List
 Once an item is purchased, you can add the product to your inventory.
+
+![Shopping list GIF](https://github.com/scivarolo/barkeeper/blob/master/shopping-list.gif)
 
 ## ERD
 
