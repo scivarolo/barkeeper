@@ -96,7 +96,10 @@ class ShoppingListItem extends Component {
             <div className="shopping-utils">
               { item.productId
                 ? <FontAwesomeIcon icon="check" className="ml-2 shopping-bought"
-                    onClick={() => this.boughtProduct(item)} />
+                    onClick={() => {
+                      this.boughtProduct(item)
+                      this.props.toggleAlert("success", `${item.product.name} added to Inventory.`, "Go make a cocktail!")
+                    }} />
                 : <BoughtIngredientModal
                     buttonLabel="Bought"
                     ingredient={this.props.item.ingredient}
