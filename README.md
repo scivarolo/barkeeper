@@ -25,7 +25,7 @@ Barkeeper is a front-end application built with React, utilizing SCSS and a few 
 
 ## Try It Out
 
-Clone the repo to your computer and run `npm install` in the directory
+Clone the repo to your computer and run `npm install` in the directory<br>
 If you don't have json-server you'll also need to run `npm install -g json-server` to install it globally.
 
 Rename `api/db.json` to `api/database.json`
