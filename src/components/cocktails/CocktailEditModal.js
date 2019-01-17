@@ -1,3 +1,7 @@
+/**
+ * Modal for editing a recipe created by this user
+ */
+
 import React from 'react'
 import {
   Button,
