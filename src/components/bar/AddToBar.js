@@ -1,3 +1,7 @@
+/**
+ * Handles Adding products to Bar Inventory.
+ */
+
 import React, { Component } from 'react'
 import {
   Button,
@@ -17,11 +21,13 @@ class AddToBar extends Component {
     showCreateNewProduct: false
   }
 
+  // Load all products and set state.
   loadProducts = () => {
     return API.getAll("products")
       .then(products => this.setState({allProducts: products}))
   }
 
+  // Selected products are added to the user's inventory
   addDropdownProducts = () => {
     if(!this.state.selected.length) return
     let userId = user.getId()
