@@ -12,9 +12,6 @@ import AddIngredient from './AddIngredient'
 import user from '../../modules/data/user'
 import './shoppingList.scss'
 
-// TODO: Show success alert when product added to shopping list.
-// TODO: Show success alert when product is created and added to shopping list.
-// TODO: Show success alert when ingredient is added to shopping list.
 // TODO: Ability to create Ingredient on the fly.
 // TODO: Ability to create Product on the fly.
 

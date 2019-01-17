@@ -10,8 +10,6 @@ import API from '../../../modules/data/API'
 import NewProduct from './NewProduct'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-//TODO: replace with Typeahead to filter existing products and create a new one from there.
-
 class BoughtIngredientModal extends Component {
 
   constructor(props) {
