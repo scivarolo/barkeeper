@@ -8,10 +8,6 @@ import API from '../../modules/data/API'
 
 class BarTab extends Component {
 
-  state = {
-
-  }
-
   removeFromUserTab = (userTabId) => {
     return API.deleteData("userTab", userTabId)
       .then(() => this.props.getUserTab())
