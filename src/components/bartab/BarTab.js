@@ -1,3 +1,7 @@
+/**
+ * Main Bar Tab component where cocktails to be made are displayed and then made.
+ */
+
 import React, { Component } from 'react'
 import {
   Button,
