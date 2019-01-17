@@ -48,16 +48,6 @@ class BarItem extends Component {
     }
   }
 
-  totalProductAmount = (item) => {
-    if(item.quantity === 1) {
-      return this.setState({totalAmount: item.amountAvailable})
-    }
-    if(item.quantity > 1) {
-      let totalAmount = item.amountAvailable + (item.product.fullAmount * (item.quantity - 1))
-      return this.setState({totalAmount: totalAmount})
-    }
-  }
-
   deleteItem = (id) => {
     return API.deleteData("userProducts", id)
     .then(() => this.props.getInventoryData())
@@ -77,10 +67,6 @@ class BarItem extends Component {
         quantity: this.props.item.quantity - 1
       }).then(() => this.props.getInventoryData())
     }
-  }
-
-  componentDidMount() {
-    this.totalProductAmount(this.props.item)
   }
 
   render() {
