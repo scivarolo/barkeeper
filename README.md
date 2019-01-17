@@ -9,16 +9,20 @@ Manage your bar inventory: Add products, and update quantities and amount left.
 ## Cocktails
 Save your favorite recipes, see which cocktails can be made with your current inventory, add missing ingredients to your shopping list, and make cocktails. When you make a cocktail, the ingredients used are deducted from your inventory.
 
+![Cocktails GIF](https://github.com/scivarolo/barkeeper/blob/master/cocktails.gif)
+
 ## Shopping List
 Once an item is purchased, you can add the product to your inventory.
 
 ![Shopping list GIF](https://github.com/scivarolo/barkeeper/blob/master/shopping-list.gif)
 
-## ERD
+## Tech Talk
+Barkeeper is a front-end application built with React, utilizing SCSS and a few third-party packages: Bootstrap, Reactstrap, react-bootstrap-typeahead, and react-bs-notifier. All data is user-generated and stored in a JSON database with a flat data structure.
+
+### ERD
 
 ![Barkeeper ERD](https://github.com/scivarolo/barkeeper/blob/master/barkeeper-erd.png)
 
-## React Things
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
