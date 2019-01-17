@@ -69,6 +69,7 @@ class BoughtIngredientModal extends Component {
                               block
                               onClick={() => {
                                 this.props.boughtIngredientProduct(product, this.props.item)
+                                this.props.toggleAlert("success", `${product.name} Added To Inventory`, `Go make a cocktail!`)
                                 this.toggle()
                               }}
                               className="mb-2 text-left">{product.name}</Button>

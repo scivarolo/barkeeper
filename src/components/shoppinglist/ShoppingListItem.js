@@ -102,6 +102,7 @@ class ShoppingListItem extends Component {
                     ingredient={this.props.item.ingredient}
                     boughtIngredientProduct={this.boughtIngredientProduct}
                     item={item}
+                    toggleAlert={this.props.toggleAlert}
                     deleteItem={this.props.deleteItem} />
               }
               <FontAwesomeIcon icon="trash" className="ml-2 shopping-remove"

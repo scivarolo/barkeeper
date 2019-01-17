@@ -101,6 +101,7 @@ class ShoppingListView extends Component {
                     return <ShoppingListItem
                             key={item.id}
                             item={item}
+                            toggleAlert={this.props.toggleAlert}
                             getShoppingData={this.getShoppingData}
                             deleteItem={this.deleteItem} />
                   })
