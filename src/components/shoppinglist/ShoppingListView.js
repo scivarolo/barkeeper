@@ -12,9 +12,6 @@ import AddIngredient from './AddIngredient'
 import user from '../../modules/data/user'
 import './shoppingList.scss'
 
-// TODO: Show success alert when product added to shopping list.
-// TODO: Show success alert when product is created and added to shopping list.
-// TODO: Show success alert when ingredient is added to shopping list.
 // TODO: Ability to create Ingredient on the fly.
 // TODO: Ability to create Product on the fly.
 
@@ -73,6 +70,7 @@ class ShoppingListView extends Component {
                 <AddProduct
                   show={this.state.showAddProduct}
                   toggle={this.toggleAddProduct}
+                  toggleAlert={this.props.toggleAlert}
                   shoppingList={this.state.shoppingProducts}
                   getShoppingData={this.getShoppingData} />
                 <Button className="mx-2" color="warning" onClick={this.toggleAddProduct}>
@@ -81,6 +79,7 @@ class ShoppingListView extends Component {
                 <AddIngredient
                   show={this.state.showAddIngredient}
                   toggle={this.toggleAddIngredient}
+                  toggleAlert={this.props.toggleAlert}
                   shoppingList={this.state.shoppingProducts}
                   getShoppingData={this.getShoppingData} />
                 <Button className="ml-2" color="warning" onClick={this.toggleAddIngredient}>
@@ -99,6 +98,7 @@ class ShoppingListView extends Component {
                     return <ShoppingListItem
                             key={item.id}
                             item={item}
+                            toggleAlert={this.props.toggleAlert}
                             getShoppingData={this.getShoppingData}
                             deleteItem={this.deleteItem} />
                   })

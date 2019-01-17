@@ -10,8 +10,6 @@ import API from '../../../modules/data/API'
 import NewProduct from './NewProduct'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-//TODO: replace with Typeahead to filter existing products and create a new one from there.
-
 class BoughtIngredientModal extends Component {
 
   constructor(props) {
@@ -69,6 +67,7 @@ class BoughtIngredientModal extends Component {
                               block
                               onClick={() => {
                                 this.props.boughtIngredientProduct(product, this.props.item)
+                                this.props.toggleAlert("success", `${product.name} Added To Inventory`, `Go make a cocktail!`)
                                 this.toggle()
                               }}
                               className="mb-2 text-left">{product.name}</Button>

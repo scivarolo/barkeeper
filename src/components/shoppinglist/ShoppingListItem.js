@@ -87,7 +87,7 @@ class ShoppingListItem extends Component {
               : <>{item.ingredient.label} <Badge className="ml-1 shopping-badge" color="danger">Ingredient</Badge></>
             }
             </h5>
-            <span className="d-flex">
+            <span className="d-flex ml-auto mr-2">
               <span>Quantity: {item.quantity}</span>
               <QuantityToggles
                 increase={this.increaseQuantity}
@@ -96,12 +96,16 @@ class ShoppingListItem extends Component {
             <div className="shopping-utils">
               { item.productId
                 ? <FontAwesomeIcon icon="check" className="ml-2 shopping-bought"
-                    onClick={() => this.boughtProduct(item)} />
+                    onClick={() => {
+                      this.boughtProduct(item)
+                      this.props.toggleAlert("success", `${item.product.name} added to Inventory.`, "Go make a cocktail!")
+                    }} />
                 : <BoughtIngredientModal
                     buttonLabel="Bought"
                     ingredient={this.props.item.ingredient}
                     boughtIngredientProduct={this.boughtIngredientProduct}
                     item={item}
+                    toggleAlert={this.props.toggleAlert}
                     deleteItem={this.props.deleteItem} />
               }
               <FontAwesomeIcon icon="trash" className="ml-2 shopping-remove"

@@ -1,0 +1,1131 @@
+{
+  "userProducts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "productId": 1,
+      "amountAvailable": 392.5,
+      "quantity": 1
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "productId": 4,
+      "amountAvailable": 27,
+      "quantity": 1
+    },
+    {
+      "id": 7,
+      "userId": 1,
+      "productId": 5,
+      "amountAvailable": 365,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "userId": 1,
+      "quantity": 2,
+      "amountAvailable": 375,
+      "id": 11
+    },
+    {
+      "productId": 1,
+      "userId": 3,
+      "quantity": 1,
+      "amountAvailable": 1750,
+      "id": 14
+    },
+    {
+      "productId": 3,
+      "userId": 1,
+      "quantity": 1,
+      "amountAvailable": 745,
+      "id": 15
+    },
+    {
+      "productId": 7,
+      "userId": 1,
+      "quantity": 1,
+      "amountAvailable": 152.5,
+      "id": 16
+    },
+    {
+      "productId": 9,
+      "userId": 1,
+      "quantity": 1,
+      "amountAvailable": 20,
+      "id": 17
+    },
+    {
+      "userId": 1,
+      "productId": 11,
+      "quantity": 19,
+      "amountAvailable": 1,
+      "id": 18
+    },
+    {
+      "userId": 1,
+      "productId": 13,
+      "amountAvailable": 750,
+      "quantity": 1,
+      "id": 19
+    },
+    {
+      "userId": 1,
+      "productId": 14,
+      "quantity": 11,
+      "amountAvailable": 1,
+      "id": 20
+    },
+    {
+      "userId": 1,
+      "productId": 15,
+      "quantity": 5,
+      "amountAvailable": 22.5,
+      "id": 21
+    },
+    {
+      "userId": 1,
+      "productId": 16,
+      "quantity": 1,
+      "amountAvailable": 10.75,
+      "id": 22
+    },
+    {
+      "userId": 1,
+      "productId": 17,
+      "amountAvailable": 330,
+      "quantity": 7,
+      "id": 23
+    },
+    {
+      "userId": 1,
+      "productId": 6,
+      "amountAvailable": 962.5,
+      "quantity": 4,
+      "id": 24
+    }
+  ],
+  "products": [
+    {
+      "id": false
+    },
+    {
+      "id": 1,
+      "name": "Hendrick's Gin",
+      "ingredientId": 1,
+      "unit": "ml",
+      "fullAmount": 1750,
+      "createdBy": 2
+    },
+    {
+      "id": 2,
+      "name": "Green Chartreuse",
+      "ingredientId": 3,
+      "unit": "ml",
+      "fullAmount": 750,
+      "createdBy": 1
+    },
+    {
+      "id": 3,
+      "name": "Maraschino Liqueur",
+      "ingredientId": 2,
+      "unit": "ml",
+      "fullAmount": 750,
+      "createdBy": 1
+    },
+    {
+      "id": 4,
+      "name": "Lime",
+      "ingredientId": 4,
+      "unit": "ml",
+      "fullAmount": 30,
+      "createdBy": 1
+    },
+    {
+      "id": 5,
+      "name": "Bombay Sapphire Gin",
+      "ingredientId": 1,
+      "unit": "ml",
+      "fullAmount": 1750,
+      "createdBy": 1
+    },
+    {
+      "id": 6,
+      "name": "Campari",
+      "ingredientId": 5,
+      "unit": "ml",
+      "fullAmount": 1000,
+      "createdBy": 1
+    },
+    {
+      "id": 7,
+      "name": "Martini Sweet Vermouth",
+      "ingredientId": 6,
+      "unit": "ml",
+      "fullAmount": 1000,
+      "createdBy": 1
+    },
+    {
+      "name": "Smirnoff",
+      "ingredientId": 7,
+      "unit": "ml",
+      "fullAmount": 1000,
+      "createdBy": 1,
+      "id": 8
+    },
+    {
+      "name": "Schweppes Club Soda",
+      "ingredientId": 10,
+      "unit": "oz",
+      "fullAmount": 20,
+      "createdBy": 1,
+      "id": 9
+    },
+    {
+      "name": "Dulce Vida Tequila",
+      "ingredientId": 15,
+      "unit": "ml",
+      "fullAmount": 750,
+      "createdBy": 1,
+      "id": 10
+    },
+    {
+      "name": "Cucumber Slices",
+      "ingredientId": 24,
+      "unit": "count",
+      "fullAmount": 1,
+      "createdBy": 1,
+      "id": 11
+    },
+    {
+      "name": "Orange Slices",
+      "ingredientId": 25,
+      "unit": "count",
+      "fullAmount": 1,
+      "createdBy": 1,
+      "id": 12
+    },
+    {
+      "name": "Cointreau",
+      "ingredientId": 17,
+      "unit": "ml",
+      "fullAmount": 750,
+      "createdBy": 1,
+      "id": 13
+    },
+    {
+      "name": "Egg",
+      "ingredientId": 28,
+      "unit": "count",
+      "fullAmount": 1,
+      "createdBy": 1,
+      "id": 14
+    },
+    {
+      "name": "Lemon",
+      "ingredientId": 9,
+      "unit": "ml",
+      "fullAmount": 30,
+      "createdBy": 1,
+      "id": 15
+    },
+    {
+      "name": "Simple Syrup",
+      "ingredientId": 16,
+      "unit": "oz",
+      "fullAmount": 16,
+      "createdBy": 1,
+      "id": 16
+    },
+    {
+      "name": "Woodford Reserve",
+      "ingredientId": 29,
+      "unit": "ml",
+      "fullAmount": 750,
+      "createdBy": 1,
+      "id": 17
+    }
+  ],
+  "ingredients": [
+    {
+      "id": false
+    },
+    {
+      "id": 1,
+      "label": "Gin",
+      "liquid": true,
+      "createdBy": 1
+    },
+    {
+      "id": 2,
+      "label": "Maraschino Liqueur",
+      "liquid": true,
+      "createdBy": 1
+    },
+    {
+      "id": 3,
+      "label": "Green Chartreuse",
+      "liquid": true,
+      "createdBy": 1
+    },
+    {
+      "id": 4,
+      "label": "Lime Juice",
+      "liquid": true,
+      "createdBy": 1
+    },
+    {
+      "id": 5,
+      "label": "Campari",
+      "liquid": true,
+      "createdBy": 1
+    },
+    {
+      "id": 6,
+      "label": "Sweet Vermouth",
+      "liquid": true,
+      "createdBy": 1
+    },
+    {
+      "label": "Vodka",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 7
+    },
+    {
+      "label": "Rum",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 8
+    },
+    {
+      "label": "Lemon Juice",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 9
+    },
+    {
+      "label": "Club Soda",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 10
+    },
+    {
+      "label": "Honey Syrup",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 11
+    },
+    {
+      "label": "Orange Bitters",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 12
+    },
+    {
+      "label": "Rye Whiskey",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 13
+    },
+    {
+      "label": "Angostura Bitters",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 14
+    },
+    {
+      "label": "Tequila",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 15
+    },
+    {
+      "label": "Simple Syrup",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 16
+    },
+    {
+      "label": "Triple Sec",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 17
+    },
+    {
+      "label": "Boker's Bitters",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 18
+    },
+    {
+      "label": "Watermelon Juice",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 19
+    },
+    {
+      "label": "Aperol",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 20
+    },
+    {
+      "label": "Ginger Beer",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 21
+    },
+    {
+      "label": "Sweet and Sour Mix",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 22
+    },
+    {
+      "label": "Cola",
+      "createdBy": 1,
+      "liquid": true,
+      "id": 23
+    },
+    {
+      "label": "Cucumber Slices",
+      "createdBy": 1,
+      "liquid": false,
+      "id": 24
+    },
+    {
+      "label": "Orange Slices",
+      "createdBy": 1,
+      "liquid": false,
+      "id": 25
+    },
+    {
+      "label": "Peychaud's Bitters",
+      "liquid": true,
+      "createdBy": 1,
+      "id": 26
+    },
+    {
+      "label": "Demerara Sugar Cube",
+      "liquid": false,
+      "createdBy": 1,
+      "id": 27
+    },
+    {
+      "label": "Egg White",
+      "liquid": false,
+      "createdBy": 1,
+      "id": 28
+    },
+    {
+      "label": "Bourbon Whiskey",
+      "liquid": true,
+      "createdBy": 1,
+      "id": 29
+    }
+  ],
+  "userCocktails": [
+    {
+      "id": 2,
+      "userId": 1,
+      "cocktailId": 2,
+      "wantToMake": false,
+      "makeCount": 18
+    },
+    {
+      "userId": 3,
+      "cocktailId": 1,
+      "wantToMake": false,
+      "makeCount": 0,
+      "id": 13
+    },
+    {
+      "userId": 3,
+      "cocktailId": 2,
+      "wantToMake": false,
+      "makeCount": 0,
+      "id": 14
+    },
+    {
+      "userId": 3,
+      "cocktailId": 3,
+      "wantToMake": false,
+      "makeCount": 0,
+      "id": 15
+    },
+    {
+      "userId": 1,
+      "cocktailId": 1,
+      "wantToMake": true,
+      "makeCount": 5,
+      "id": 28
+    },
+    {
+      "userId": 1,
+      "cocktailId": 7,
+      "wantToMake": true,
+      "makeCount": 0,
+      "id": 33
+    },
+    {
+      "cocktailId": 15,
+      "userId": 1,
+      "wantToMake": true,
+      "makeCount": 6,
+      "id": 36
+    },
+    {
+      "userId": 1,
+      "cocktailId": 3,
+      "wantToMake": true,
+      "makeCount": 0,
+      "id": 37
+    },
+    {
+      "userId": 1,
+      "cocktailId": 4,
+      "wantToMake": true,
+      "makeCount": 0,
+      "id": 38
+    }
+  ],
+  "cocktails": [
+    {
+      "id": 1,
+      "name": "Last Word",
+      "instructions": "Shake with ice and strain into a chilled coupe.",
+      "createdBy": 1
+    },
+    {
+      "id": 2,
+      "name": "Negroni",
+      "instructions": "Stir with ice and strain into chilled coupe or over ice in a chilled rocks glass.",
+      "createdBy": 1
+    },
+    {
+      "name": "Americano Highball",
+      "instructions": "Build in a chilled Collins glass.\nAdd ice and top with 2.5 oz. Club Soda.\nGarnish with half an orange wheel.",
+      "createdBy": 1,
+      "id": 3
+    },
+    {
+      "name": "Bee's Knees",
+      "instructions": "Shake with ice and strain into a chilled coupe.\nNo garnish.",
+      "createdBy": 1,
+      "id": 4
+    },
+    {
+      "name": "Bijou",
+      "instructions": "Stir with ice and strain into a chilled coupe.\nGarnish with a cherry and a lemon twist.",
+      "createdBy": 1,
+      "id": 5
+    },
+    {
+      "name": "Manhattan",
+      "instructions": "Stir with ice and strain into a chilled coupe.\nGarish with three brandied cherries on a pick.",
+      "createdBy": 1,
+      "id": 6
+    },
+    {
+      "name": "Margarita",
+      "instructions": "Shake with ice and strain into a chilled rocks glass filled with ice with a salted rim.\nGarnish with a lime wheel.",
+      "createdBy": 1,
+      "id": 7
+    },
+    {
+      "name": "Martinez",
+      "instructions": "Stir with ice and strain into a chilled coupe.\nGarnish with an orange twist.",
+      "createdBy": 1,
+      "id": 8
+    },
+    {
+      "name": "Melon Stand",
+      "instructions": "Shake with ice and stain into a chilled Collins glass filled with pebble ice.\nGarnish with three watermelon balls on a pick.",
+      "createdBy": 1,
+      "id": 9
+    },
+    {
+      "name": "Moscow Mule",
+      "instructions": "Shake with ice and strain into a chilled mule cup filled with ice.\nGarnish with a lime wheel and candied ginger.",
+      "createdBy": 1,
+      "id": 10
+    },
+    {
+      "name": "Long Island Iced Tea",
+      "instructions": "Fill a cocktail shaker with ice. \nPour vodka, rum, gin, tequila, triple sec, and sour mix over ice; cover and shake. \nPour cocktail into a Collins or hurricane glass; top with splash of cola for color. \nGarnish with a lemon slice.",
+      "createdBy": 1,
+      "id": 11
+    },
+    {
+      "name": "Tom Collins",
+      "instructions": "Mix it all together",
+      "createdBy": 1,
+      "id": 13
+    },
+    {
+      "name": "Sazerac",
+      "instructions": "Muddle the sugar and bitters, then add the whiskey and ice.\nStir and strain into a chilled, Vieux Pontarlier Absinthe-rinsed rocks glass.\nTwist a lemon peel over the surface and discard.",
+      "createdBy": 1,
+      "id": 14
+    },
+    {
+      "name": "Whiskey Sour",
+      "instructions": "Dry shake all ingredients in a cocktail shaker. Add ice and shake again. Strain into a chilled cocktail glass.",
+      "createdBy": 1,
+      "id": 15
+    }
+  ],
+  "cocktailIngredients": [
+    {
+      "id": 1,
+      "cocktailId": 1,
+      "ingredientId": 1,
+      "amount": 0.75,
+      "unit": "oz",
+      "sortOrder": 1,
+      "isRequired": true
+    },
+    {
+      "id": 2,
+      "cocktailId": 1,
+      "ingredientId": 2,
+      "amount": 0.75,
+      "unit": "oz",
+      "sortOrder": 2,
+      "isRequired": true
+    },
+    {
+      "id": 3,
+      "cocktailId": 1,
+      "ingredientId": 3,
+      "amount": 0.75,
+      "unit": "oz",
+      "sortOrder": 3,
+      "isRequired": true
+    },
+    {
+      "id": 4,
+      "cocktailId": 1,
+      "ingredientId": 4,
+      "amount": 0.75,
+      "unit": "oz",
+      "sortOrder": 4,
+      "isRequired": true
+    },
+    {
+      "id": 5,
+      "cocktailId": 2,
+      "ingredientId": 1,
+      "amount": 1.25,
+      "unit": "oz",
+      "sortOrder": 1,
+      "isRequired": true
+    },
+    {
+      "id": 6,
+      "cocktailId": 2,
+      "ingredientId": 5,
+      "amount": 1.25,
+      "unit": "oz",
+      "sortOrder": 2,
+      "isRequired": true
+    },
+    {
+      "id": 7,
+      "cocktailId": 2,
+      "ingredientId": 6,
+      "amount": 1.25,
+      "unit": "oz",
+      "sortOrder": 3,
+      "isRequired": true
+    },
+    {
+      "cocktailId": 3,
+      "ingredientId": 6,
+      "sortOrder": 1,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 8
+    },
+    {
+      "cocktailId": 3,
+      "ingredientId": 5,
+      "sortOrder": 2,
+      "amount": "1",
+      "unit": "oz",
+      "isRequired": true,
+      "id": 9
+    },
+    {
+      "cocktailId": 3,
+      "ingredientId": 10,
+      "sortOrder": 3,
+      "amount": 2.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 10
+    },
+    {
+      "cocktailId": 4,
+      "ingredientId": 1,
+      "sortOrder": 1,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 11
+    },
+    {
+      "cocktailId": 4,
+      "ingredientId": 11,
+      "sortOrder": 3,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 12
+    },
+    {
+      "cocktailId": 4,
+      "ingredientId": 9,
+      "sortOrder": 2,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 13
+    },
+    {
+      "cocktailId": 5,
+      "ingredientId": 1,
+      "sortOrder": 1,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 14
+    },
+    {
+      "cocktailId": 5,
+      "ingredientId": 6,
+      "sortOrder": 2,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 15
+    },
+    {
+      "cocktailId": 5,
+      "ingredientId": 12,
+      "sortOrder": 4,
+      "amount": 1,
+      "unit": "dashes",
+      "isRequired": true,
+      "id": 16
+    },
+    {
+      "cocktailId": 5,
+      "ingredientId": 3,
+      "sortOrder": 3,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 17
+    },
+    {
+      "cocktailId": 6,
+      "ingredientId": 13,
+      "sortOrder": 1,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 18
+    },
+    {
+      "cocktailId": 6,
+      "ingredientId": 6,
+      "sortOrder": 2,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 19
+    },
+    {
+      "cocktailId": 6,
+      "ingredientId": 14,
+      "sortOrder": 3,
+      "amount": 2,
+      "unit": "dashes",
+      "isRequired": true,
+      "id": 20
+    },
+    {
+      "cocktailId": 7,
+      "ingredientId": 15,
+      "sortOrder": 1,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 21
+    },
+    {
+      "cocktailId": 7,
+      "ingredientId": 17,
+      "sortOrder": 2,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 22
+    },
+    {
+      "cocktailId": 7,
+      "ingredientId": 4,
+      "sortOrder": 3,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 23
+    },
+    {
+      "cocktailId": 7,
+      "ingredientId": 16,
+      "sortOrder": 4,
+      "amount": 0.25,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 24
+    },
+    {
+      "cocktailId": 8,
+      "ingredientId": 1,
+      "sortOrder": 1,
+      "amount": 1.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 25
+    },
+    {
+      "cocktailId": 8,
+      "ingredientId": 6,
+      "sortOrder": 2,
+      "amount": 1.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 26
+    },
+    {
+      "cocktailId": 8,
+      "ingredientId": 2,
+      "sortOrder": 3,
+      "amount": 0.25,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 27
+    },
+    {
+      "cocktailId": 8,
+      "ingredientId": 18,
+      "sortOrder": 4,
+      "amount": 2,
+      "unit": "dashes",
+      "isRequired": true,
+      "id": 28
+    },
+    {
+      "cocktailId": 9,
+      "ingredientId": 1,
+      "sortOrder": 1,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 29
+    },
+    {
+      "cocktailId": 9,
+      "ingredientId": 19,
+      "sortOrder": 2,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 30
+    },
+    {
+      "cocktailId": 9,
+      "ingredientId": 20,
+      "sortOrder": 4,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 31
+    },
+    {
+      "cocktailId": 9,
+      "ingredientId": 16,
+      "sortOrder": 5,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 32
+    },
+    {
+      "cocktailId": 9,
+      "ingredientId": 9,
+      "sortOrder": 3,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 33
+    },
+    {
+      "cocktailId": 10,
+      "ingredientId": 7,
+      "sortOrder": 1,
+      "amount": 1.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 34
+    },
+    {
+      "cocktailId": 10,
+      "ingredientId": 21,
+      "sortOrder": 2,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 35
+    },
+    {
+      "cocktailId": 10,
+      "ingredientId": 4,
+      "sortOrder": 4,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 36
+    },
+    {
+      "cocktailId": 10,
+      "ingredientId": 16,
+      "sortOrder": 3,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 37
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 7,
+      "sortOrder": 1,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 38
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 8,
+      "sortOrder": 2,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 39
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 22,
+      "sortOrder": 6,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 40
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 1,
+      "sortOrder": 3,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 41
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 15,
+      "sortOrder": 4,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 42
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 17,
+      "sortOrder": 5,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 43
+    },
+    {
+      "cocktailId": 11,
+      "ingredientId": 23,
+      "sortOrder": 7,
+      "amount": 1,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 44
+    },
+    {
+      "cocktailId": 13,
+      "ingredientId": 1,
+      "sortOrder": 1,
+      "amount": 2.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 46
+    },
+    {
+      "cocktailId": 13,
+      "ingredientId": 9,
+      "sortOrder": 2,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 47
+    },
+    {
+      "cocktailId": 13,
+      "ingredientId": 16,
+      "sortOrder": 3,
+      "amount": 0.5,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 48
+    },
+    {
+      "cocktailId": 13,
+      "ingredientId": 10,
+      "sortOrder": 4,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 49
+    },
+    {
+      "cocktailId": 14,
+      "ingredientId": 13,
+      "sortOrder": 1,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 50
+    },
+    {
+      "cocktailId": 14,
+      "ingredientId": 26,
+      "sortOrder": 2,
+      "amount": 3,
+      "unit": "dashes",
+      "isRequired": true,
+      "id": 51
+    },
+    {
+      "cocktailId": 14,
+      "ingredientId": 27,
+      "sortOrder": 4,
+      "amount": 1,
+      "unit": "count",
+      "isRequired": true,
+      "id": 52
+    },
+    {
+      "cocktailId": 14,
+      "ingredientId": 14,
+      "sortOrder": 3,
+      "amount": 2,
+      "unit": "dashes",
+      "isRequired": true,
+      "id": 53
+    },
+    {
+      "cocktailId": 15,
+      "ingredientId": 29,
+      "sortOrder": 1,
+      "amount": 2,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 54
+    },
+    {
+      "cocktailId": 15,
+      "ingredientId": 9,
+      "sortOrder": 2,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 55
+    },
+    {
+      "cocktailId": 15,
+      "ingredientId": 16,
+      "sortOrder": 3,
+      "amount": 0.75,
+      "unit": "oz",
+      "isRequired": true,
+      "id": 56
+    },
+    {
+      "cocktailId": 15,
+      "ingredientId": 28,
+      "sortOrder": 4,
+      "amount": 1,
+      "unit": "count",
+      "isRequired": true,
+      "id": 57
+    }
+  ],
+  "userShopping": [
+    {
+      "productId": 2,
+      "ingredientId": false,
+      "userId": 3,
+      "quantity": 1,
+      "id": 7
+    },
+    {
+      "ingredientId": 12,
+      "productId": false,
+      "userId": 1,
+      "quantity": 1,
+      "id": 23
+    },
+    {
+      "ingredientId": 15,
+      "productId": false,
+      "userId": 1,
+      "quantity": 1,
+      "id": 24
+    },
+    {
+      "ingredientId": 11,
+      "productId": false,
+      "userId": 1,
+      "quantity": 1,
+      "id": 25
+    }
+  ],
+  "userTab": [],
+  "users": [
+    {
+      "id": 1,
+      "email": "user@barkeeper.com",
+      "password": "barkeeper",
+      "name": "Sebastian"
+    },
+    {
+      "id": 2,
+      "email": "user2@barkeeper.com",
+      "password": "barkeeper",
+      "name": "Joe"
+    }
+  ]
+}
