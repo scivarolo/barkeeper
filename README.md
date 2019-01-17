@@ -24,11 +24,9 @@ Barkeeper is a front-end application built with React, utilizing SCSS and a few 
 ![Barkeeper ERD](https://github.com/scivarolo/barkeeper/blob/master/barkeeper-erd.png)
 
 ## Try It Out
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Clone the repo to your computer and run
-#### `npm install` in the directory
-If you don't have json-server also run `npm install -g json-server` to install it globally.
+Clone the repo to your computer and run `npm install` in the directory
+If you don't have json-server you'll also need to run `npm install -g json-server` to install it globally.
 
 Rename `api/db.json` to `api/database.json`
 
@@ -38,3 +36,6 @@ When you're ready to start the server:
 Runs the app in the development mode and automatically starts json-server and loads the database.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+Create a new user or login with `user@barkeeper.com` password: `barkeeper`
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
