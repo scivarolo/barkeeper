@@ -8,8 +8,6 @@ import CocktailsView from './cocktails/CocktailsView'
 import NewCocktail from './create/NewCocktail'
 import Alerts from './alerts/Alerts';
 
-// TODO: Move Alert Container to Barkeeper to make available to all views as needed
-
 class Barkeeper extends Component {
 
   state = {

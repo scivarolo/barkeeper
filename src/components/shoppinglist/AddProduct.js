@@ -1,3 +1,7 @@
+/**
+ * Form for adding a product to the shopping list.
+ */
+
 import React, { Component } from 'react'
 import {
   Button,

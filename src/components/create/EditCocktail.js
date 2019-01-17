@@ -1,4 +1,6 @@
-
+/**
+ * Loaded by EditCocktailModal. This is the form to edit the cocktail.
+ */
 import React, { Component } from 'react'
 import {
   Button,

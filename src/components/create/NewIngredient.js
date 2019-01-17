@@ -1,4 +1,5 @@
-/* This component renders an input field with a save button
+/**
+ * This component renders an input field with a save button
  * that can be used when an ingredient does not exist
  * in the database, but is needed for the current step
  */

@@ -1,4 +1,5 @@
-/* This is used in NewCocktail for adding ingredients to a recipe.
+/**
+ * This is used in NewCocktail for adding ingredients to a recipe.
  */
 
 import React, { Component } from 'react'
