@@ -1,3 +1,7 @@
+/**
+ * Main Bar Inventory View component
+ */
+
 import React, { Component } from 'react'
 import {
   Button,
@@ -19,6 +23,7 @@ class BarView extends Component {
     showAddInput: false,
   }
 
+  // Load inventory data to state
   getInventoryData = () => {
     let userId = user.getId()
     return API.getWithExpand("userProducts", "product", userId)

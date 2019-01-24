@@ -1,3 +1,7 @@
+/**
+ * Used throughout the app to select units.
+ **/
+
 import React, { Component } from 'react'
 import { Input } from 'reactstrap'
 class UnitsDropdown extends Component {

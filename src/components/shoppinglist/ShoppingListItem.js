@@ -1,4 +1,8 @@
-import React, { Component } from 'react'
+/**
+ * Renders an individual shopping list item
+ **/
+
+ import React, { Component } from 'react'
 import {
   Row,
   Col,

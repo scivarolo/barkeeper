@@ -10,12 +10,10 @@ import CocktailEditModal from '../CocktailEditModal'
 import "../cocktailItem.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
-
 class DiscoverItem extends Component {
 
   state = { }
-
+  // Adds a cocktail receipe to the user's list.
   userAddsCocktail = () => {
     let obj = {
       "userId": user.getId(),

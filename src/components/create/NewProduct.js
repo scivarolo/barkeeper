@@ -1,3 +1,8 @@
+/**
+ * While adding Product to inventory from inventory view.
+ * If new product is triggered, this is the form to create it.
+ */
+
 import React, { Component } from 'react'
 import {
   Form,

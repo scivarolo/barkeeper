@@ -1,3 +1,7 @@
+/**
+ * Main component for each cocktail recipe in a user's list
+ */
+
 import React, { Component } from 'react'
 import {
   Badge,
@@ -51,6 +55,7 @@ class CocktailItem extends Component {
     .then(() => this.props.getUserCocktailData())
   }
 
+  //Checks status of each ingredient and decides if a cocktail can be made.
   canMakeRecipe = () => {
     let canMakeRecipe = true
     let statuses = Object.values(this.state.ingredientsStatus)
@@ -58,8 +63,9 @@ class CocktailItem extends Component {
       if (status.canMake === false) canMakeRecipe = false
     })
     this.setState({userCanMake: canMakeRecipe})
-
   }
+
+  // Checks if enough of a product for each ingredient is available to make this recipe
   checkIngredientsAgainstInventory = () => {
     let ingredientPromises = []
 
@@ -75,6 +81,8 @@ class CocktailItem extends Component {
     .then(() => this.canMakeRecipe())
 
   }
+
+  // Used by checkIngredientsAgainstInventory() to check each ingredient's availability
   checkSingleIngredientAgainstInventory = (ingredient, userInventory) => {
     let canMake
     //Find the items in the user's inventory that match the ingredient
@@ -103,8 +111,12 @@ class CocktailItem extends Component {
     this.ingredientAvailabilityToState(ingredient.ingredientId, canMake)
   }
 
+  /**
+   * Missing ingredients can be added to the shopping list.
+   * Rest operator to allow for option in future to bulk add missing ingredients.
+   */
   addToShoppingList = (...ingredients) => {
-    //Array of missing ingredients to add to shopping list.
+    //Array of missing ingredients objects to add to shopping list.
     let addArray = []
     ingredients.forEach(ingredient => {
       addArray.push(API.saveData("userShopping", {

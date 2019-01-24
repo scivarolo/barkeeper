@@ -1,3 +1,7 @@
+/**
+ * Renders the shopping list view
+ **/
+
 import React, { Component } from 'react'
 import {
   Button,

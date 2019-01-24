@@ -1,3 +1,7 @@
+/**
+ * Creates a new product when an ingredient is bought from the shopping list.
+ */
+
 import React, { Component } from 'react'
 import {
   Form,

@@ -1,3 +1,7 @@
+/**
+ * Component for a single item in the user's Bar Inventory
+ */
+
 import React, { Component } from 'react'
 import {
   Button,
@@ -20,6 +24,7 @@ class BarItem extends Component {
     totalAmount: "",
   }
 
+  // Toggle the update form for updating the volume of a liquor
   toggleUpdate = () => {
     this.setState({
       showUpdateForm: !this.state.showUpdateForm,
@@ -35,6 +40,7 @@ class BarItem extends Component {
     this.setState({updateValue: val})
   }
 
+  // Update the volume of a product
   updateItemAmount = () => {
     if(this.state.updateValue) {
       let updatedObj = {
@@ -45,16 +51,6 @@ class BarItem extends Component {
           this.toggleUpdate()
           return this.props.getInventoryData()
         })
-    }
-  }
-
-  totalProductAmount = (item) => {
-    if(item.quantity === 1) {
-      return this.setState({totalAmount: item.amountAvailable})
-    }
-    if(item.quantity > 1) {
-      let totalAmount = item.amountAvailable + (item.product.fullAmount * (item.quantity - 1))
-      return this.setState({totalAmount: totalAmount})
     }
   }
 
@@ -77,10 +73,6 @@ class BarItem extends Component {
         quantity: this.props.item.quantity - 1
       }).then(() => this.props.getInventoryData())
     }
-  }
-
-  componentDidMount() {
-    this.totalProductAmount(this.props.item)
   }
 
   render() {

@@ -1,3 +1,9 @@
+/**
+ * Displays a single ingredient in a recipe
+ * with functionality for adding to shopping list
+ * if the ingredient is not available in the user's inventory
+ **/
+
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class RecipeIngredient extends Component {

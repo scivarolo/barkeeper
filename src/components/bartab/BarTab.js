@@ -1,3 +1,7 @@
+/**
+ * Main Bar Tab component where cocktails to be made are displayed and then made.
+ */
+
 import React, { Component } from 'react'
 import {
   Button,
@@ -7,10 +11,6 @@ import BarTabCocktail from './BarTabCocktail'
 import API from '../../modules/data/API'
 
 class BarTab extends Component {
-
-  state = {
-
-  }
 
   removeFromUserTab = (userTabId) => {
     return API.deleteData("userTab", userTabId)

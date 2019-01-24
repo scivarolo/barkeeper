@@ -1,3 +1,7 @@
+/**
+ * Checks if a user is authenticated, if not redirect to login.
+ */
+
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import Login from './login/Login';

@@ -1,3 +1,7 @@
+/**
+ * Used throughout when quantities can be updated. Renders the + and - buttons.
+ */
+
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './quantityToggles.scss'

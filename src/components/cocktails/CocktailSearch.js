@@ -1,5 +1,6 @@
 /**
- * Allows a user to search for a cocktail in their list, or in the global list by name (depending on which view they are in).
+ * Allows a user to search for a cocktail in their list,
+ * or in the global list by name (depending on which view they are in).
  */
 
 import React, { Component } from 'react'
