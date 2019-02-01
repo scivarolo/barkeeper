@@ -202,7 +202,13 @@ class CocktailsView extends Component {
       ingredientId: Number(ingredientId)
     }
     this.setState(prevState => {
-      return { tabChoices: Object.assign({}, prevState.tabChoices, {[tabCocktailId]: {[ingredientId]: obj} }) }
+      return {
+        tabChoices: Object.assign({}, prevState.tabChoices, {
+          [tabCocktailId]: {
+            [ingredientId]: obj
+          }
+        })
+      }
     })
 
   }
@@ -219,27 +225,35 @@ class CocktailsView extends Component {
          */
         let productUpdates = []
 
-        //Check if all ingredients are available
+        // Check if all ingredients are available
         let canMake = true
         ingredients.forEach(ingredient => {
           let prod
-          //If multiple product options, and user specified one. If not, just use the first one.
+          // If multiple product options, and user specified one. Else, use the first one.
           if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
             let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
             prod = this.state.userInventory.find(item => item.productId === productId)
           } else {
             prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
           }
-          if (!prod) return canMake = false
+          // If no product found, then cannot make it
+          if (!prod) {
+            canMake = false
+            return
+          }
 
+          // Check if there is enough of each ingredient to make the specified quantity.
           const amountNeeded = ingredient.amount * c.quantity
           const amountUnit = ingredient.unit
           const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
           const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * prod.quantity)), prod.product.unit, "ml")
 
           const amountLeft = prodAvailable - amountNeededMl
-          if (amountLeft < 0) canMake = false
+          if (amountLeft < 0) {
+            canMake = false
+          }
         })
+
         if (canMake) {
           ingredients.forEach(ingredient => {
             let prod
@@ -261,10 +275,10 @@ class CocktailsView extends Component {
             const quantityLeft = amountLeft / prodFullAmount
             const quantityCeil = Math.ceil(quantityLeft)
             let newAmountAvailable = amountLeft % prodFullAmount
-            if(newAmountAvailable === 0) {
+            if (newAmountAvailable === 0) {
               newAmountAvailable = prodFullAmount
             }
-            if(prod.product.unit !== "ml" && prod.product.unit !== "count") {
+            if (prod.product.unit !== "ml" && prod.product.unit !== "count") {
               newAmountAvailable = Units.convert(newAmountAvailable, "ml", prod.product.unit)
             }
 
@@ -290,7 +304,7 @@ class CocktailsView extends Component {
           return Promise.all(productUpdates)
           .then(() => {
             let userCocktail = this.state.userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
-            if(c.quantity > 1) {
+            if (c.quantity > 1) {
               this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}s!`)
             } else {
               this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
