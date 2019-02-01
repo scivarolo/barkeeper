@@ -17,17 +17,30 @@ class RegisterForm extends Component {
   render() {
 
     let validPassword = this.props.passwordMatch
-    let emailTaken = this.props.emailTaken
+
     return (
       <Form className="register-form" onSubmit={e => this.props.submitRegister(e)}>
         <h1 className="text-primary mb-3 font-weight-bold login-logo">Barkeeper</h1>
         <h6 className="mb-3 mt-5 text-success">Please make an account</h6>
+
+        {
+          this.props.registerError !== ""
+          ? <h6 className="text-danger">{this.props.registerError}</h6>
+          : null
+        }
+
         <FormGroup className="mb-3">
-          <Label className="sr-only" for="loginName">Name</Label>
-          <Input type="text" id="loginName" placeholder="Name" required onChange={this.props.handleFieldChange} />
+          <Label className="sr-only" for="loginFirstName">First Name</Label>
+          <Input type="text" id="loginFirstName" placeholder="First Name" required onChange={this.props.handleFieldChange} />
+
+          <Label className="sr-only" for="loginLastName">Last Name</Label>
+          <Input type="text" id="loginLastName" placeholder="Last Name" required onChange={this.props.handleFieldChange} />
+
+          <Label className="sr-only" for="loginUsername">Last Name</Label>
+          <Input type="text" id="loginUsername" placeholder="Username" required onChange={this.props.handleFieldChange} />
+
           <Label className="sr-only" for="loginEmail">Email address</Label>
-          <Input type="email" id="loginEmail" placeholder="Email address" required onChange={this.props.handleFieldChange} invalid={emailTaken} />
-          <FormFeedback invalid>Email is taken!</FormFeedback>
+          <Input type="email" id="loginEmail" placeholder="Email address" required onChange={this.props.handleFieldChange} />
         </FormGroup>
         <FormGroup>
           <Label className="sr-only" for="loginPassword">Password</Label>

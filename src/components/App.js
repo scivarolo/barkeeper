@@ -28,7 +28,8 @@ class App extends Component {
     super(props)
     this.state = {
       isAuthenticated: () => {
-        if(window.sessionStorage.geItem("id")) {
+        // TODO: Use only the token
+        if(window.sessionStorage.geItem("id") || window.localStorage.getItem("token")) {
           return true
         } else {
           return false
@@ -42,7 +43,8 @@ class App extends Component {
   }
 
   authenticate = () => {
-    if(window.sessionStorage.getItem("id")) {
+    // TODO: Use only the token
+    if(window.sessionStorage.getItem("id") || window.localStorage.getItem("token")) {
       this.setState({isAuthenticated: true})
     } else {
       this.setState({isAuthenticated: false})
@@ -61,8 +63,7 @@ class App extends Component {
       ? <Barkeeper authenticate={this.authenticate} />
       : <>
           <Redirect to="/login" />
-          <Login
-            authenticate={this.authenticate} />
+          <Login authenticate={this.authenticate} />
         </>
       }
       </>

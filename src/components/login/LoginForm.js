@@ -15,6 +15,7 @@ class LoginForm extends Component {
   render() {
     return (
       <Form className="login-form" onSubmit={e => this.props.submitLogin(e)}>
+        <Button color="primary" onClick={e => this.props.submitLogin(e)}>AUTH</Button>
         <h1 className="text-primary mb-3 font-weight-bold login-logo">Barkeeper</h1>
         <h6 className="mb-3 mt-5 text-success">Please sign in</h6>
         { this.props.registerSuccess
@@ -27,14 +28,12 @@ class LoginForm extends Component {
         }
 
         <FormGroup>
-          <Label className="sr-only" for="loginEmail">Email address</Label>
-          <Input type="email" id="loginEmail" placeholder="Email address" required onChange={this.props.handleFieldChange} />
+          <Label className="sr-only" for="loginUsername">Username</Label>
+          <Input type="text" id="loginUsername" placeholder="Username" required onChange={this.props.handleFieldChange} />
           <Label className="sr-only" for="loginPassword">Password</Label>
           <Input type="password" id="loginPassword" placeholder="Password" required onChange={this.props.handleFieldChange} />
         </FormGroup>
-        <div className="checkbox my-3">
-          <Label><Input type="checkbox" value="remember-me" onChange={this.props.handleFieldChange} />Remember Me</Label>
-        </div>
+
         <Button color="primary" block size="lg" type="submit">Sign In</Button>
         <p className="mt-2">Don&rsquo;t have an account? <span className="link" onClick={this.props.toggleForms}>Register</span></p>
       </Form>
