@@ -17,10 +17,7 @@ function LoginForm(props) {
     <Form className="login-form" onSubmit={e => props.submitLogin(e)}>
       <h1 className="text-primary mb-3 font-weight-bold login-logo">Barkeeper</h1>
       <h6 className="mb-3 mt-5 text-success">Please sign in</h6>
-      { props.registerSuccess
-        ? <p className="text-success">Your account was created successfully! Please log in.</p>
-        : null
-      }
+
       { props.loginFailed
         ? <p className="text-danger">Login failed. Please try again.</p>
         : null

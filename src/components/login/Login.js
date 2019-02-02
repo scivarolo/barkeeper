@@ -16,7 +16,6 @@ class Login extends Component {
     loginForm: true,
     passwordConfirm: "",
     passwordMatch: null,
-    registerSuccess: false,
     loginFailed: false,
     registerError: "",
   }
@@ -138,7 +137,6 @@ class Login extends Component {
             handleFieldChange={this.handleFieldChange}
             resetFormState={this.resetFormState}
             submitLogin={this.submitLogin}
-            registerSuccess={this.state.registerSuccess}
             loginFailed={this.state.loginFailed} />
           :
           <RegisterForm
