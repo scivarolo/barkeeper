@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Input } from 'reactstrap'
 import QuantityToggles from '../utils/QuantityToggles'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 
 class BarTabCocktail extends Component {
 
   state = {}
 
   increaseQuantity = () => {
-    return API.editData("userTab", this.props.cocktail.id, {
+    return jsonAPI.editData("userTab", this.props.cocktail.id, {
       quantity: this.props.cocktail.quantity + 1
     }).then(() => this.props.getUserTab())
   }
@@ -17,7 +17,7 @@ class BarTabCocktail extends Component {
     if (this.props.cocktail.quantity === 1) {
       return this.props.removeFromUserTab(this.props.cocktail.id)
     } else {
-      return API.editData("userTab", this.props.cocktail.id, {
+      return jsonAPI.editData("userTab", this.props.cocktail.id, {
         quantity: this.props.cocktail.quantity - 1
       }).then(() => this.props.getUserTab())
     }

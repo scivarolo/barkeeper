@@ -9,7 +9,7 @@ import {
   Input,
   Button } from "reactstrap"
 import UnitsDropdown from '../../create/UnitsDropdown'
-import API from '../../../modules/data/API'
+import jsonAPI from '../../../modules/data/API'
 import user from '../../../modules/data/user'
 
 class NewProduct extends Component {
@@ -52,8 +52,8 @@ class NewProduct extends Component {
       obj.fullAmount = 1
     }
 
-    return API.saveData("products", obj)
-      .then((r) => API.saveData("userProducts", {
+    return jsonAPI.saveData("products", obj)
+      .then((r) => jsonAPI.saveData("userProducts", {
         userId: user.getId(),
         productId: r.id,
         amountAvailable: r.fullAmount,

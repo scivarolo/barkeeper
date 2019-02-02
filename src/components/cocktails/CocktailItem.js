@@ -9,7 +9,7 @@ import {
   Col,
   Row,
   ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import RecipeIngredient from './recipe/RecipeIngredient'
 import user from '../../modules/data/user'
 import Units from '../../modules/UnitConverter'
@@ -51,7 +51,7 @@ class CocktailItem extends Component {
   }
 
   deleteItem(id) {
-    return API.deleteData("userCocktails", id)
+    return jsonAPI.deleteData("userCocktails", id)
     .then(() => this.props.getUserCocktailData())
   }
 
@@ -119,7 +119,7 @@ class CocktailItem extends Component {
     //Array of missing ingredients objects to add to shopping list.
     let addArray = []
     ingredients.forEach(ingredient => {
-      addArray.push(API.saveData("userShopping", {
+      addArray.push(jsonAPI.saveData("userShopping", {
         ingredientId: ingredient.ingredientId,
         productId: false,
         userId: user.getId(),

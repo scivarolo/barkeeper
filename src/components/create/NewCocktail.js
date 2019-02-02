@@ -11,7 +11,7 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
-  import API from '../../modules/data/API'
+  import jsonAPI from '../../modules/data/API'
   import IngredientInput from './IngredientInput'
   import user from '../../modules/data/user'
   import './newCocktail.scss'
@@ -36,7 +36,7 @@ class NewCocktail extends Component {
   }
 
   loadIngredients = () => {
-    return API.getAll("ingredients")
+    return jsonAPI.getAll("ingredients")
     .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -128,7 +128,7 @@ class NewCocktail extends Component {
 
     let {cocktailIngredients, cocktailName, cocktailInstructions} = this.state
     // Save Recipe Name and Instructions to "cocktails" resource
-    API.saveData("cocktails", {
+    jsonAPI.saveData("cocktails", {
       name: cocktailName,
       instructions: cocktailInstructions,
       createdBy: user.getId()
@@ -146,7 +146,7 @@ class NewCocktail extends Component {
             createdBy: user.getId()
           }
           if (cocktailIngredients[i].unit === "count") obj.liquid = false
-          newIngredients.push(API.saveData("ingredients", obj))
+          newIngredients.push(jsonAPI.saveData("ingredients", obj))
         }
       }
       if (newIngredients.length) {
@@ -181,13 +181,13 @@ class NewCocktail extends Component {
             unit: cocktailIngredients[i].unit,
             isRequired: true
           }
-          ingredients.push(API.saveData("cocktailIngredients", ingredientObj))
+          ingredients.push(jsonAPI.saveData("cocktailIngredients", ingredientObj))
         }
       }
       return Promise.all(ingredients)
     })
     // Save relationship to userCocktails with new recipe ID
-    .then(() => API.saveData("userCocktails", {
+    .then(() => jsonAPI.saveData("userCocktails", {
       cocktailId: this.state.newRecipeId,
       userId: user.getId(),
       wantToMake: true,

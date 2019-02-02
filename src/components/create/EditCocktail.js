@@ -10,7 +10,7 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
-  import API from '../../modules/data/API'
+  import jsonAPI from '../../modules/data/API'
   import EditIngredientInput from './EditIngredientInput'
   import user from '../../modules/data/user'
   import './newCocktail.scss'
@@ -58,7 +58,7 @@ class EditCocktail extends Component {
   }
 
   loadIngredients = () => {
-    return API.getAll("ingredients")
+    return jsonAPI.getAll("ingredients")
     .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -156,7 +156,7 @@ class EditCocktail extends Component {
     }
     if(this.state.cocktailName) patch.name = this.state.cocktailName
     if(this.state.cocktailInstructions) patch.instructions = this.state.cocktailInstructions
-    return API.editData("cocktails", this.props.cocktail.id, patch)
+    return jsonAPI.editData("cocktails", this.props.cocktail.id, patch)
 
     //End edit name and instructions
       .then(() => {
@@ -166,7 +166,7 @@ class EditCocktail extends Component {
           if(editedIngredients[i].additionalIngredient) {
             //this is an additional ingredient from the original.
             if(Number(editedIngredients[i].ingredientId)) {
-              ingredientUpdates.push(API.saveData("cocktailIngredients", {
+              ingredientUpdates.push(jsonAPI.saveData("cocktailIngredients", {
                 ingredientId: editedIngredients[i].ingredientId,
                 cocktailId: this.props.cocktail.id,
                 amount: editedIngredients[i].amount,
@@ -183,8 +183,8 @@ class EditCocktail extends Component {
               }
               if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
               ingredientUpdates.push(
-                API.saveData("ingredients", newIngredientObj)
-                .then(r => API.saveData("cocktailIngredients", {
+                jsonAPI.saveData("ingredients", newIngredientObj)
+                .then(r => jsonAPI.saveData("cocktailIngredients", {
                     ingredientId: r.id,
                     cocktailId: this.props.cocktail.id,
                     amount: editedIngredients[i].amount,
@@ -206,7 +206,7 @@ class EditCocktail extends Component {
                 sortOrder: editedIngredients[i].sortOrder,
                 isRequired: true
               }
-              ingredientUpdates.push(API.editData("cocktailIngredients", editedIngredients[i].id, editObj ))
+              ingredientUpdates.push(jsonAPI.editData("cocktailIngredients", editedIngredients[i].id, editObj ))
             } else if (editedIngredients[i].ingredientId !== "") {
               // we need to create an ingredient first!
               let newIngredientObj = {
@@ -216,8 +216,8 @@ class EditCocktail extends Component {
               }
               if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
               ingredientUpdates.push(
-                API.saveData("ingredients", newIngredientObj)
-                .then(r => API.editData("cocktailIngredients", editedIngredients[i].id, {
+                jsonAPI.saveData("ingredients", newIngredientObj)
+                .then(r => jsonAPI.editData("cocktailIngredients", editedIngredients[i].id, {
                     ingredientId: r.id,
                     cocktailId: this.props.cocktail.id,
                     amount: editedIngredients[i].amount,

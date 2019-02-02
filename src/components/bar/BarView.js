@@ -10,7 +10,7 @@ import {
   Col,
   InputGroup,
   ListGroup } from 'reactstrap'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import user from '../../modules/data/user'
 import BarItem from './BarItem'
 import AddToBar from './AddToBar'
@@ -26,7 +26,7 @@ class BarView extends Component {
   // Load inventory data to state
   getInventoryData = () => {
     let userId = user.getId()
-    return API.getWithExpand("userProducts", "product", userId)
+    return jsonAPI.getWithExpand("userProducts", "product", userId)
     .then(inventory => {
       let sortedArray = inventory.sort(function(a, b) {
         let textA = a.product.name.toUpperCase()

@@ -12,7 +12,7 @@ import {
   Progress,
   ListGroupItem } from 'reactstrap'
 import QuantityToggles from '../utils/QuantityToggles'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import './barItem.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -46,7 +46,7 @@ class BarItem extends Component {
       let updatedObj = {
         amountAvailable: parseInt(this.state.updateValue)
       }
-      return API.editData("userProducts", this.props.item.id, updatedObj)
+      return jsonAPI.editData("userProducts", this.props.item.id, updatedObj)
         .then(() => {
           this.toggleUpdate()
           return this.props.getInventoryData()
@@ -55,12 +55,12 @@ class BarItem extends Component {
   }
 
   deleteItem = (id) => {
-    return API.deleteData("userProducts", id)
+    return jsonAPI.deleteData("userProducts", id)
     .then(() => this.props.getInventoryData())
   }
 
   increaseQuantity = () => {
-    return API.editData("userProducts", this.props.item.id, {
+    return jsonAPI.editData("userProducts", this.props.item.id, {
       quantity: this.props.item.quantity + 1
     }).then(() => this.props.getInventoryData())
   }
@@ -69,7 +69,7 @@ class BarItem extends Component {
     if (this.props.item.quantity === 1) {
       return this.deleteItem(this.props.item.id)
     } else {
-      return API.editData("userProducts", this.props.item.id, {
+      return jsonAPI.editData("userProducts", this.props.item.id, {
         quantity: this.props.item.quantity - 1
       }).then(() => this.props.getInventoryData())
     }

@@ -11,7 +11,7 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText } from "reactstrap"
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import user from '../../modules/data/user'
 
 class NewIngredient extends Component {
@@ -29,7 +29,7 @@ class NewIngredient extends Component {
       label: this.state.label,
       createdBy: user.getId()
     }
-    return API.saveData("ingredients", obj)
+    return jsonAPI.saveData("ingredients", obj)
     .then(() => this.props.toggle())
   }
 

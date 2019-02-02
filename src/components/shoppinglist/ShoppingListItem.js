@@ -8,7 +8,7 @@ import {
   Col,
   Badge,
   ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import BoughtIngredientModal from './boughtIngredient/BoughtIngredientModal'
 import QuantityToggles from '../utils/QuantityToggles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,10 +18,10 @@ class ShoppingListItem extends Component {
   // When 'bought' is clicked on a PRODUCT
   boughtProduct = (item) => {
     //check if product is already in user inventory
-    return API.getWithFilters("userProducts", `productId=${item.productId}`, item.userId)
+    return jsonAPI.getWithFilters("userProducts", `productId=${item.productId}`, item.userId)
     .then(hasProduct => {
       if (hasProduct.length) {
-        return API.editData("userProducts", hasProduct[0].id, {
+        return jsonAPI.editData("userProducts", hasProduct[0].id, {
           quantity: hasProduct[0].quantity + item.quantity
         }).then(() => this.props.deleteItem(item.id))
       } else {
@@ -32,7 +32,7 @@ class ShoppingListItem extends Component {
           quantity: item.quantity
         }
         //add item to userProducts and delete from userShopping
-        return API.saveData("userProducts", userProductsObj)
+        return jsonAPI.saveData("userProducts", userProductsObj)
           .then(() => this.props.deleteItem(item.id))
       }
     })
@@ -42,10 +42,10 @@ class ShoppingListItem extends Component {
   //When 'bought' is clicked on an INGREDIENT, and an existing product is chosen
   boughtIngredientProduct = (product, item) => {
 
-    return API.getWithFilters("userProducts", `productId=${product.id}`, item.userId)
+    return jsonAPI.getWithFilters("userProducts", `productId=${product.id}`, item.userId)
     .then(hasProduct => {
       if(hasProduct.length) {
-        return API.editData("userProducts", hasProduct[0].id, {
+        return jsonAPI.editData("userProducts", hasProduct[0].id, {
           quantity: hasProduct[0].quantity + item.quantity
         }).then(() => this.props.deleteItem(item.id))
       } else {
@@ -55,7 +55,7 @@ class ShoppingListItem extends Component {
           amountAvailable: product.fullAmount,
           quantity: item.quantity
         }
-        return API.saveData("userProducts", userProductsObj)
+        return jsonAPI.saveData("userProducts", userProductsObj)
           .then(() => this.props.deleteItem(item.id))
       }
     })
@@ -63,7 +63,7 @@ class ShoppingListItem extends Component {
   }
 
   increaseQuantity = () => {
-    return API.editData("userShopping", this.props.item.id, {
+    return jsonAPI.editData("userShopping", this.props.item.id, {
       quantity: this.props.item.quantity + 1
     }).then(() => this.props.getShoppingData())
   }
@@ -72,7 +72,7 @@ class ShoppingListItem extends Component {
     if (this.props.item.quantity === 1) {
       return this.props.deleteItem(this.props.item.id)
     } else {
-      return API.editData("userShopping", this.props.item.id, {
+      return jsonAPI.editData("userShopping", this.props.item.id, {
         quantity: this.props.item.quantity - 1
       }).then(() => this.props.getShoppingData())
     }

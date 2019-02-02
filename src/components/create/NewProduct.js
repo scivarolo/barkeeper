@@ -13,7 +13,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import UnitsDropdown from './UnitsDropdown'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import user from '../../modules/data/user'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -31,7 +31,7 @@ class NewProduct extends Component {
   }
 
   componentDidMount() {
-    API.getAll("ingredients")
+    jsonAPI.getAll("ingredients")
     .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -74,13 +74,13 @@ class NewProduct extends Component {
       obj.fullAmount = 1
     }
 
-    return API.saveData("products", obj)
+    return jsonAPI.saveData("products", obj)
       .then((r) => {
         let quantity = 1
         if(this.state.unitsDropdown === "count") {
           quantity = Number(this.state.newProductSize)
         }
-        return API.saveData("userProducts", {
+        return jsonAPI.saveData("userProducts", {
           userId: user.getId(),
           productId: r.id,
           quantity: quantity,

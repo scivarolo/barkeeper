@@ -10,7 +10,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import user from '../../modules/data/user'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 
 class AddIngredient extends Component {
 
@@ -20,7 +20,7 @@ class AddIngredient extends Component {
   }
 
   loadIngredients() {
-    return API.getAll("ingredients")
+    return jsonAPI.getAll("ingredients")
       .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -32,11 +32,11 @@ class AddIngredient extends Component {
     let savePromises = ingredients.map(ingredient => {
       let haveIngredient = this.props.shoppingList.find(shopIngredient => shopIngredient.ingredientId === ingredient.id)
       if(haveIngredient) {
-        return API.editData("userShopping", haveIngredient.id, {
+        return jsonAPI.editData("userShopping", haveIngredient.id, {
           quantity: haveIngredient.quantity + 1
         })
       } else {
-        return API.saveData("userShopping", {
+        return jsonAPI.saveData("userShopping", {
           ingredientId: ingredient.id,
           productId: false,
           userId: userId,

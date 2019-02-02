@@ -5,7 +5,7 @@ import {
   Row,
   Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import user from '../../modules/data/user'
 import BarTab from '../bartab/BarTab'
 import Units from '../../modules/UnitConverter'
@@ -66,7 +66,7 @@ class CocktailsView extends Component {
   }
 
   loadAllCocktails = () => {
-    return API.getWithEmbed("cocktails", "cocktailIngredients")
+    return jsonAPI.getWithEmbed("cocktails", "cocktailIngredients")
     .then(data => this.setState({allCocktails: data}))
   }
 
@@ -98,7 +98,7 @@ class CocktailsView extends Component {
     cocktails.forEach(c => {
       //build query string for getting ingredient names of each cocktail
       let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
-      ingredients.push(API.getWithFilters(`ingredients`, queryString))
+      ingredients.push(jsonAPI.getWithFilters(`ingredients`, queryString))
     })
     return Promise.all(ingredients)
   }
@@ -111,12 +111,12 @@ class CocktailsView extends Component {
   getUserCocktailData = () => {
     let newState = {}
     //get userCocktails
-    return API.getWithExpand("userCocktails", "cocktail", this.state.userId)
+    return jsonAPI.getWithExpand("userCocktails", "cocktail", this.state.userId)
     .then(userCocktails => {
       newState.userCocktailsRelations = userCocktails
       //use cocktailId to get cocktails
       let cocktailQueries = userCocktails.map(
-        c => API.getWithEmbed(`cocktails/${c.cocktailId}`, "cocktailIngredients")
+        c => jsonAPI.getWithEmbed(`cocktails/${c.cocktailId}`, "cocktailIngredients")
       )
       //each Promise returns a cocktail with cocktailIngredients embedded
       return Promise.all(cocktailQueries)
@@ -133,7 +133,7 @@ class CocktailsView extends Component {
       cocktails.forEach(c => {
         //build query string for getting ingredient names of each cocktail
         let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
-        ingredientQueries.push(API.getWithFilters(`ingredients`, queryString))
+        ingredientQueries.push(jsonAPI.getWithFilters(`ingredients`, queryString))
       })
       return Promise.all(ingredientQueries)
     })
@@ -144,17 +144,17 @@ class CocktailsView extends Component {
   }
 
   getUserInventory() {
-    API.getWithExpand("userProducts", "product", this.state.userId)
+    jsonAPI.getWithExpand("userProducts", "product", this.state.userId)
     .then(data => this.setState({userInventory: data}))
   }
 
   getShoppingList = () => {
-    API.getWithExpands("userShopping", this.state.userId, "product", "ingredient")
+    jsonAPI.getWithExpands("userShopping", this.state.userId, "product", "ingredient")
     .then(data => this.setState({userShoppingList: data}))
   }
 
   getUserTab = () => {
-    API.getWithExpands("userTab", this.state.userId, "cocktail")
+    jsonAPI.getWithExpands("userTab", this.state.userId, "cocktail")
     .then(data => this.setState({userTab: data}))
   }
 
@@ -165,7 +165,7 @@ class CocktailsView extends Component {
       let obj = {
         quantity: inTab.quantity + 1
       }
-      return API.editData("userTab", inTab.id, obj)
+      return jsonAPI.editData("userTab", inTab.id, obj)
       .then(() => this.getUserTab())
     }
 
@@ -175,12 +175,12 @@ class CocktailsView extends Component {
       cocktailId: cocktailId,
       quantity: 1
     }
-    return API.saveData("userTab", obj)
+    return jsonAPI.saveData("userTab", obj)
     .then(() => this.getUserTab())
   }
 
   getTabCocktailProductChoices = (c) => {
-    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
+    return jsonAPI.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
     .then((ingredients) => {
       let prodsObj = {}
       // find the products available for each ingredient
@@ -215,7 +215,7 @@ class CocktailsView extends Component {
 
   makeCocktail = (c) => {
     // c = the cocktail being made
-    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
+    return jsonAPI.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
       .then((ingredients) => {
         /**
          * Loop through each of the cocktail's ingredients
@@ -292,11 +292,11 @@ class CocktailsView extends Component {
               return this.props.toggleAlert("warning", "Bummer", `You don't have enough of an ingredient to make this many.`)
             } else if (amountLeft === 0) {
               return productUpdates.push(
-                API.deleteData("userProducts", userProductId)
+                jsonAPI.deleteData("userProducts", userProductId)
               )
             } else {
               return productUpdates.push(
-                API.editData("userProducts", userProductId, userProductPatchObj)
+                jsonAPI.editData("userProducts", userProductId, userProductPatchObj)
               )
             }
 
@@ -309,9 +309,9 @@ class CocktailsView extends Component {
             } else {
               this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
             }
-            return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
+            return jsonAPI.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
           })
-          .then(() => API.deleteData("userTab", c.id))
+          .then(() => jsonAPI.deleteData("userTab", c.id))
         } else {
           this.props.toggleAlert("warning", "Bummer", `You're missing ingredients needed to make ${c.cocktail.name}.`)
         }

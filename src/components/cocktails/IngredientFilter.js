@@ -4,7 +4,7 @@ import {
   Label,
   Input
   } from "reactstrap"
-import API from '../../modules/data/API';
+import jsonAPI from '../../modules/data/API';
 import './ingredientFilter.scss'
 
 class IngredientFilter extends Component {
@@ -14,7 +14,7 @@ class IngredientFilter extends Component {
   }
 
   componentDidMount() {
-    API.getAll("ingredients")
+    jsonAPI.getAll("ingredients")
     .then(ingredients => {
       ingredients.sort((a,b) => {
         a = a.label.toLowerCase()

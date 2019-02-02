@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import API from '../../../modules/data/API'
+import jsonAPI from '../../../modules/data/API'
 import NewProduct from './NewProduct'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -30,7 +30,7 @@ class BoughtIngredientModal extends Component {
   }
 
   getIngredientProducts = (ingredientId) => {
-    API.getWithFilters("products", `ingredientId=${ingredientId}`)
+    jsonAPI.getWithFilters("products", `ingredientId=${ingredientId}`)
       .then(data => this.setState({productsOfIngredient: data}))
   }
 

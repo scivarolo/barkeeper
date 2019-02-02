@@ -10,7 +10,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
 import user from '../../modules/data/user'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 import NewProduct from '../create/NewProduct'
 
 class AddToBar extends Component {
@@ -23,7 +23,7 @@ class AddToBar extends Component {
 
   // Load all products and set state.
   loadProducts = () => {
-    return API.getAll("products")
+    return jsonAPI.getAll("products")
       .then(products => this.setState({allProducts: products}))
   }
 
@@ -36,12 +36,12 @@ class AddToBar extends Component {
 
       let haveProduct = this.props.inventory.find(invProduct => invProduct.productId === product.id)
       if(haveProduct) {
-        return API.editData("userProducts", haveProduct.id, {
+        return jsonAPI.editData("userProducts", haveProduct.id, {
           quantity: haveProduct.quantity + 1
         })
       }
       else {
-        return API.saveData("userProducts", {
+        return jsonAPI.saveData("userProducts", {
           productId: product.id,
           userId: userId,
           quantity: 1,

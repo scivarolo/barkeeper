@@ -8,12 +8,12 @@ import {
   Table } from 'reactstrap'
 import './bartab.scss'
 import BarTabCocktail from './BarTabCocktail'
-import API from '../../modules/data/API'
+import jsonAPI from '../../modules/data/API'
 
 class BarTab extends Component {
 
   removeFromUserTab = (userTabId) => {
-    return API.deleteData("userTab", userTabId)
+    return jsonAPI.deleteData("userTab", userTabId)
       .then(() => this.props.getUserTab())
   }
 

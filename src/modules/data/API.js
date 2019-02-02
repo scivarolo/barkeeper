@@ -2,7 +2,7 @@
  * Purpose: Highest Level API CLass in charge of get, creating, editing, and deleting data in the database
  */
 
-class API {
+class jsonAPI {
 
   constructor() {
     this.baseUrl = "http://localhost:5002"
@@ -77,4 +77,4 @@ class API {
 
 }
 
-export default new API()
+export default new jsonAPI()
