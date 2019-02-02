@@ -28,8 +28,7 @@ class App extends Component {
     super(props)
     this.state = {
       isAuthenticated: () => {
-        // TODO: Use only the token
-        if(window.sessionStorage.geItem("id") || window.localStorage.getItem("token")) {
+        if (window.localStorage.getItem("token")) {
           return true
         } else {
           return false
@@ -43,8 +42,7 @@ class App extends Component {
   }
 
   authenticate = () => {
-    // TODO: Use only the token
-    if(window.sessionStorage.getItem("id") || window.localStorage.getItem("token")) {
+    if (window.localStorage.getItem("token")) {
       this.setState({isAuthenticated: true})
     } else {
       this.setState({isAuthenticated: false})

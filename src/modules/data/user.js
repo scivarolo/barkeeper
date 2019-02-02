@@ -1,7 +1,7 @@
 const user = {
 
   getId() {
-    return parseInt(sessionStorage.getItem("id"))
+    return parseInt(1)
   },
 
   getToken() {
