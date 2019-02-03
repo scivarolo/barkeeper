@@ -1,3 +1,7 @@
+/*
+* Handles retrieving the user token from localStorage, and logging out a user
+*/
+
 const user = {
 
   getId() {
@@ -5,7 +9,7 @@ const user = {
   },
 
   getToken() {
-    return parseInt(localStorage.getItem("token"))
+    return localStorage.getItem("token")
   },
 
   logout() {
