@@ -22,6 +22,8 @@ import {
   faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faTimes, faCheck, faPen, faChevronUp, faChevronDown)
+
+// TODO: This can likely be refactored into a function component. isAuthenticated method is useless. Just read state directly!
 class App extends Component {
 
   constructor(props) {
