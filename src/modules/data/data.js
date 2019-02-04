@@ -43,7 +43,7 @@ class API {
 
   // Edits a single resource entry
   edit(resource, id, object) {
-    const url = `${baseUrl}/${resource}/${id}`
+    const url = `${baseUrl}/${resource}/${id}/`
     return this.fetchFactory(url, "PATCH", object)
   }
 
