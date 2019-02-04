@@ -27,13 +27,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAuthenticated: () => {
-        if (window.localStorage.getItem("token")) {
-          return true
-        } else {
-          return false
-        }
-      }
+      isAuthenticated: () => window.localStorage.getItem("token") ? true : false
     }
   }
 
