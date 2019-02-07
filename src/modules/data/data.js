@@ -50,7 +50,10 @@ class API {
   // Deletes a single resource entry
   delete(resource, id) {
     const url = `${baseUrl}/${resource}/${id}`
-    return this.fetchFactory(url, "DELETE")
+    return fetch(url, {
+      method: "DELETE",
+      headers: headers
+    })
   }
 
   // Send a search string with query
