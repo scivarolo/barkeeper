@@ -50,7 +50,7 @@ class AddToBar extends Component {
       }
     })
     return Promise.all(savePromises)
-      .then(() => this.props.getInventoryData())
+      .then(() => this.props.getInventory())
       .then(() => {
         this.props.toggleAlert("success", "Products Added", `${this.state.selected.map(item => item.name)} successfully added to your bar inventory.`)
         this.setState({selected: []})
@@ -102,7 +102,7 @@ class AddToBar extends Component {
                 product={this.state.selected[0]}
                 toggle={this.toggleCreateNewProduct}
                 toggleAlert={this.props.toggleAlert}
-                getInventoryData={this.props.getInventoryData}
+                getInventory={this.props.getInventory}
                 loadProducts={this.loadProducts} />
             : null
           }

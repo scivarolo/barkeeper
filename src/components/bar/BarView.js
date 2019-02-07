@@ -2,7 +2,7 @@
  * Main Bar Inventory View component
  */
 
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -10,97 +10,78 @@ import {
   Col,
   InputGroup,
   ListGroup } from 'reactstrap'
-import jsonAPI from '../../modules/data/API'
-import user from '../../modules/data/user'
+import API from '../../modules/data/data'
 import BarItem from './BarItem'
 import AddToBar from './AddToBar'
 
-class BarView extends Component {
+function BarView(props) {
 
-  state = {
-    inventory: [],
-    isLoaded: false,
-    showAddInput: false,
+  const [inventory, setInventory] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [showAddInput, setShowAddInput] = useState(false)
+
+  const getInventory = () => {
+    return API.getAll("user_products")
+    .then(inventory => setInventory(inventory))
   }
 
-  // Load inventory data to state
-  getInventoryData = () => {
-    let userId = user.getId()
-    return jsonAPI.getWithExpand("userProducts", "product", userId)
-    .then(inventory => {
-      let sortedArray = inventory.sort(function(a, b) {
-        let textA = a.product.name.toUpperCase()
-        let textB = b.product.name.toUpperCase()
-        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0
-      })
-      return sortedArray
-    })
-    .then(inventory => this.setState({
-      inventory: inventory
-    }))
+  const toggleAdd = () => {
+    setShowAddInput(!showAddInput)
   }
 
-  toggleAdd = () => {
-    this.setState({showAddInput: !this.state.showAddInput})
+  useEffect(() => {
+    getInventory()
+    .then(() => setIsLoaded(true))
+  }, [])
+
+  if (isLoaded) {
+    return (
+      <Container>
+        <Row className="my-5">
+          <Col className="d-flex" md={4}>
+              <h1>Your Bar</h1>
+          </Col>
+          <Col md={8}>
+              <InputGroup className="d-flex">
+                <AddToBar show={showAddInput}
+                  toggle={toggleAdd}
+                  inventory={inventory}
+                  getInventory={getInventory}
+                  toggleAlert={props.toggleAlert} />
+
+                <Button onClick={toggleAdd} color="warning" className="ml-auto">
+                  {
+                    showAddInput ? "Cancel" : "Add Products"
+                  }
+                </Button>
+              </InputGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <ListGroup>
+              { /* List items in inventory */
+                inventory.map(item => {
+                  return (
+                    <BarItem
+                      key={item.id}
+                      item={item}
+                      getInventory={getInventory} />
+                  )
+                })
+              }
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
+    )
   }
-
-  componentDidMount() {
-    this.getInventoryData()
-    .then(() => this.setState({isLoaded: true}))
-  }
-
-  render() {
-    let inventory = this.state.inventory
-
-    if(this.state.isLoaded) {
-      return (
-        <Container>
-          <Row className="my-5">
-            <Col className="d-flex" md={4}>
-                <h1>Your Bar</h1>
-            </Col>
-            <Col md={8}>
-                <InputGroup className="d-flex">
-                  <AddToBar show={this.state.showAddInput}
-                    toggle={this.toggleAdd}
-                    inventory={this.state.inventory}
-                    getInventoryData={this.getInventoryData}
-                    toggleAlert={this.props.toggleAlert} />
-
-                  <Button onClick={this.toggleAdd} color="warning" className="ml-auto">
-                    {
-                      this.state.showAddInput ? "Cancel" : "Add Products"
-                    }
-                  </Button>
-                </InputGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <ListGroup>
-                { /* List items in inventory */
-                  inventory.map(item => {
-                    return (
-                      <BarItem
-                        key={item.id}
-                        item={item}
-                        getInventoryData={this.getInventoryData} />
-                    )
-                  })
-                }
-              </ListGroup>
-            </Col>
-          </Row>
-        </Container>
-      )
-    }
-    else {
-      return (
-        <Container>
-          <div>Loading</div>
-        </Container>
-      )
-    }
+  else {
+    return (
+      <Container>
+        <div>Loading</div>
+      </Container>
+    )
   }
 
 }
