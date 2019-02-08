@@ -2,7 +2,7 @@
  * Component for a single item in the user's Bar Inventory
  */
 
-import React, { Component, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   InputGroup,
@@ -68,7 +68,6 @@ function BarItem(props) {
       }).then(() => props.getInventory())
     }
   }
-
 
   let item = props.item
   return (
