@@ -3,6 +3,7 @@
  */
 
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import {
   Button,
   InputGroup,
@@ -129,3 +130,8 @@ function BarItem(props) {
 }
 
 export default BarItem
+
+BarItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  getInventory: PropTypes.func.isRequired
+}
