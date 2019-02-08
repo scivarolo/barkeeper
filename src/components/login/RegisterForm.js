@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react"
 import {
   Button,
   Input,
   FormGroup,
   Label,
   Form,
-  FormFeedback } from 'reactstrap'
+  FormFeedback } from "reactstrap"
 import "./login.scss"
 
 function RegisterForm(props) {
@@ -23,8 +23,8 @@ function RegisterForm(props) {
 
       {
         props.registerError !== ""
-        ? <h6 className="text-danger">{props.registerError}</h6>
-        : null
+          ? <h6 className="text-danger">{props.registerError}</h6>
+          : null
       }
 
       <FormGroup className="mb-3">
@@ -63,7 +63,7 @@ function RegisterForm(props) {
             props.handleFieldChange(e)
             props.confirmPassword(e)
           }}
-            />
+        />
         <FormFeedback>Your passwords don&rsquo;t match</FormFeedback>
         <FormFeedback valid>Passwords match!</FormFeedback>
       </FormGroup>

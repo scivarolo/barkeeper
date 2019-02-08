@@ -2,19 +2,19 @@
  * Renders the shopping list view
  **/
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
   Col,
   Container,
   InputGroup,
-  Row, } from 'reactstrap'
-import jsonAPI from '../../modules/data/API'
-import ShoppingListItem from './ShoppingListItem'
-import AddProduct from './AddProduct'
-import AddIngredient from './AddIngredient'
-import user from '../../modules/data/user'
-import './shoppingList.scss'
+  Row, } from "reactstrap"
+import jsonAPI from "../../modules/data/API"
+import ShoppingListItem from "./ShoppingListItem"
+import AddProduct from "./AddProduct"
+import AddIngredient from "./AddIngredient"
+import user from "../../modules/data/user"
+import "./shoppingList.scss"
 
 // TODO: Ability to create Ingredient on the fly.
 // TODO: Ability to create Product on the fly.
@@ -31,12 +31,12 @@ class ShoppingListView extends Component {
   getShoppingData = () => {
     let userId = user.getId()
     return jsonAPI.getWithExpands("userShopping", userId, "product", "ingredient")
-    .then(items => {
-      this.setState({
-        shoppingProducts: items,
-        isLoaded: true
+      .then(items => {
+        this.setState({
+          shoppingProducts: items,
+          isLoaded: true
+        })
       })
-    })
   }
 
   toggleAddProduct = () => {
@@ -54,7 +54,7 @@ class ShoppingListView extends Component {
 
   componentDidMount() {
     this.getShoppingData()
-    .then(() => this.setState({isLoaded: true}))
+      .then(() => this.setState({isLoaded: true}))
   }
 
   render() {
@@ -70,26 +70,26 @@ class ShoppingListView extends Component {
                 <h1>Shopping List</h1>
               </div>
               <div className="ml-auto">
-              <InputGroup>
-                <AddProduct
-                  show={this.state.showAddProduct}
-                  toggle={this.toggleAddProduct}
-                  toggleAlert={this.props.toggleAlert}
-                  shoppingList={this.state.shoppingProducts}
-                  getShoppingData={this.getShoppingData} />
-                <Button className="mx-2" color="warning" onClick={this.toggleAddProduct}>
-                  {this.state.showAddProduct ? "Cancel" : "Add Products"}
-                </Button>
-                <AddIngredient
-                  show={this.state.showAddIngredient}
-                  toggle={this.toggleAddIngredient}
-                  toggleAlert={this.props.toggleAlert}
-                  shoppingList={this.state.shoppingProducts}
-                  getShoppingData={this.getShoppingData} />
-                <Button className="ml-2" color="warning" onClick={this.toggleAddIngredient}>
-                  {this.state.showAddIngredient ? "Cancel" : "Add Ingredients"}
-                </Button>
-              </InputGroup>
+                <InputGroup>
+                  <AddProduct
+                    show={this.state.showAddProduct}
+                    toggle={this.toggleAddProduct}
+                    toggleAlert={this.props.toggleAlert}
+                    shoppingList={this.state.shoppingProducts}
+                    getShoppingData={this.getShoppingData} />
+                  <Button className="mx-2" color="warning" onClick={this.toggleAddProduct}>
+                    {this.state.showAddProduct ? "Cancel" : "Add Products"}
+                  </Button>
+                  <AddIngredient
+                    show={this.state.showAddIngredient}
+                    toggle={this.toggleAddIngredient}
+                    toggleAlert={this.props.toggleAlert}
+                    shoppingList={this.state.shoppingProducts}
+                    getShoppingData={this.getShoppingData} />
+                  <Button className="ml-2" color="warning" onClick={this.toggleAddIngredient}>
+                    {this.state.showAddIngredient ? "Cancel" : "Add Ingredients"}
+                  </Button>
+                </InputGroup>
 
               </div>
             </Col>
@@ -100,11 +100,11 @@ class ShoppingListView extends Component {
                 {
                   shoppingProducts.map(item => {
                     return <ShoppingListItem
-                            key={item.id}
-                            item={item}
-                            toggleAlert={this.props.toggleAlert}
-                            getShoppingData={this.getShoppingData}
-                            deleteItem={this.deleteItem} />
+                      key={item.id}
+                      item={item}
+                      toggleAlert={this.props.toggleAlert}
+                      getShoppingData={this.getShoppingData}
+                      deleteItem={this.deleteItem} />
                   })
                 }
               </div>

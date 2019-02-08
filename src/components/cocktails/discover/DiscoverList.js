@@ -2,9 +2,9 @@
  * Displays a list of the cocktails that the user has not added.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import { ListGroup } from "reactstrap"
-import DiscoverItem from './DiscoverItem'
+import DiscoverItem from "./DiscoverItem"
 
 class DiscoverList extends Component {
 
@@ -14,7 +14,7 @@ class DiscoverList extends Component {
 
   componentDidMount() {
     this.props.getDiscoverCocktails()
-    .then(() => this.setState({loaded: true}))
+      .then(() => this.setState({loaded: true}))
   }
 
   render() {
@@ -37,7 +37,7 @@ class DiscoverList extends Component {
                   ingredients={cocktailIngredients[i]}
                   getUserCocktailData={this.props.getUserCocktailData}
                   allMinusUserCocktails={this.props.allMinusUserCocktails}
-                  />
+                />
               )
             })
           }

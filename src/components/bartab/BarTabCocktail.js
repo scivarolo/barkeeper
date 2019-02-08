@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Input } from 'reactstrap'
-import QuantityToggles from '../utils/QuantityToggles'
-import jsonAPI from '../../modules/data/API'
+import React, { Component } from "react"
+import { Input } from "reactstrap"
+import QuantityToggles from "../utils/QuantityToggles"
+import jsonAPI from "../../modules/data/API"
 
 class BarTabCocktail extends Component {
 
@@ -58,10 +58,10 @@ class BarTabCocktail extends Component {
 
         <td>
           <div className="d-flex">
-          {this.props.cocktail.quantity}
-          <QuantityToggles
-            increase={this.increaseQuantity}
-            decrease={this.decreaseQuantity} />
+            {this.props.cocktail.quantity}
+            <QuantityToggles
+              increase={this.increaseQuantity}
+              decrease={this.decreaseQuantity} />
           </div>
         </td>
       </tr>

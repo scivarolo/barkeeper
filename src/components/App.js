@@ -2,11 +2,11 @@
  * Checks if a user is authenticated, if not redirect to login.
  */
 
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import Login from './login/Login';
-import Barkeeper from './Barkeeper';
-import { library } from '@fortawesome/fontawesome-svg-core'
+import React, { Component } from "react"
+import { Redirect } from "react-router-dom"
+import Login from "./login/Login"
+import Barkeeper from "./Barkeeper"
+import { library } from "@fortawesome/fontawesome-svg-core"
 import {
   faPlusCircle,
   faMinusCircle,
@@ -19,7 +19,7 @@ import {
   faTimes,
   faChevronUp,
   faChevronDown,
-  faBookmark } from '@fortawesome/free-solid-svg-icons'
+  faBookmark } from "@fortawesome/free-solid-svg-icons"
 
 library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faTimes, faCheck, faPen, faChevronUp, faChevronDown)
 
@@ -54,15 +54,15 @@ class App extends Component {
     return (
       <>
       { this.isAuthenticated()
-      ? <Barkeeper authenticate={this.authenticate} />
-      : <>
+        ? <Barkeeper authenticate={this.authenticate} />
+        : <>
           <Redirect to="/login" />
           <Login authenticate={this.authenticate} />
         </>
       }
       </>
-    );
+    )
   }
 }
 
-export default App;
+export default App

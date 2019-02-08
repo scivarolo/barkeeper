@@ -2,8 +2,8 @@
  * Used throughout the app to select units.
  **/
 
-import React, { Component } from 'react'
-import { Input } from 'reactstrap'
+import React, { Component } from "react"
+import { Input } from "reactstrap"
 class UnitsDropdown extends Component {
 
   render() {
@@ -12,10 +12,10 @@ class UnitsDropdown extends Component {
         onChange={this.props.onChangeFn}>
         {
           this.props.isDisabled
-          ? <>
-              <option value="count">count</option>
-            </>
-          : null
+            ? <>
+                <option value="count">count</option>
+              </>
+            : null
         }
         <option value="">unit</option>
         <option>oz</option>

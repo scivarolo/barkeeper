@@ -3,8 +3,8 @@
  * Imported by Barkeeper.js
  */
 
-import React, { Component } from 'react'
-import { Alert, AlertContainer } from 'react-bs-notifier'
+import React, { Component } from "react"
+import { Alert, AlertContainer } from "react-bs-notifier"
 
 class Alerts extends Component {
 
@@ -13,10 +13,10 @@ class Alerts extends Component {
       <AlertContainer>
         {
           this.props.showAlert
-          ? ( <Alert type={this.props.alertType} headline={this.props.alertHeadline}>
-                {this.props.alertMessage}
-              </Alert> )
-          : null
+            ? ( <Alert type={this.props.alertType} headline={this.props.alertHeadline}>
+              {this.props.alertMessage}
+            </Alert> )
+            : null
         }
       </AlertContainer>
     )

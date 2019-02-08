@@ -2,15 +2,15 @@
  * Creates a new product when an ingredient is bought from the shopping list.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Form,
   InputGroup,
   Input,
   Button } from "reactstrap"
-import UnitsDropdown from '../../create/UnitsDropdown'
-import jsonAPI from '../../../modules/data/API'
-import user from '../../../modules/data/user'
+import UnitsDropdown from "../../create/UnitsDropdown"
+import jsonAPI from "../../../modules/data/API"
+import user from "../../../modules/data/user"
 
 class NewProduct extends Component {
 

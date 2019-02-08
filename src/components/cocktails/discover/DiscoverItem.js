@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Col,
   Row,
-  ListGroupItem } from 'reactstrap'
-import API from '../../../modules/data/API'
-import RecipeIngredient from '../recipe/RecipeIngredient'
-import user from '../../../modules/data/user'
-import CocktailEditModal from '../CocktailEditModal'
+  ListGroupItem } from "reactstrap"
+import API from "../../../modules/data/API"
+import RecipeIngredient from "../recipe/RecipeIngredient"
+import user from "../../../modules/data/user"
+import CocktailEditModal from "../CocktailEditModal"
 import "../cocktailItem.scss"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 class DiscoverItem extends Component {
 
@@ -22,8 +22,8 @@ class DiscoverItem extends Component {
       "makeCount": 0
     }
     return API.saveData("userCocktails", obj)
-    .then(() => this.props.getUserCocktailData())
-    .then(() => this.props.allMinusUserCocktails())
+      .then(() => this.props.getUserCocktailData())
+      .then(() => this.props.allMinusUserCocktails())
   }
 
   render() {
@@ -31,19 +31,19 @@ class DiscoverItem extends Component {
     let { cocktail, ingredients } = this.props
 
     return (
-      <ListGroupItem className={`mb-3 cocktail-item`} key={cocktail.id}>
+      <ListGroupItem className={"mb-3 cocktail-item"} key={cocktail.id}>
         <div className="d-flex mb-3 justify-content-between cocktail-header">
           <div>
             <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
             <span className="cocktail-utils">
               {
                 this.props.cocktail.createdBy === user.getId()
-                ? <CocktailEditModal
-                  buttonLabel="Edit"
-                  cocktail={cocktail}
-                  ingredientNames={ingredients}
-                  getUserCocktailData={this.props.getUserCocktailData}  />
-                : null
+                  ? <CocktailEditModal
+                    buttonLabel="Edit"
+                    cocktail={cocktail}
+                    ingredientNames={ingredients}
+                    getUserCocktailData={this.props.getUserCocktailData}  />
+                  : null
               }
             </span>
           </div>

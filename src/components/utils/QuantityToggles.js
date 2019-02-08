@@ -2,10 +2,10 @@
  * Used throughout when quantities can be updated. Renders the + and - buttons.
  */
 
-import React from 'react'
-import PropTypes from 'prop-types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './quantityToggles.scss'
+import React from "react"
+import PropTypes from "prop-types"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import "./quantityToggles.scss"
 
 function QuantityToggles(props) {
 

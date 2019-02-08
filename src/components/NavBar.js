@@ -1,13 +1,14 @@
-import React from 'react'
+import React from "react"
+import PropTypes from "prop-types"
 import { NavLink as RouterNavLink } from "react-router-dom"
 import {
   Nav,
   Navbar,
   NavbarBrand,
   NavItem,
-  NavLink } from 'reactstrap'
-import user from '../modules/data/user'
-import './navBar.scss'
+  NavLink } from "reactstrap"
+import user from "../modules/data/user"
+import "./navBar.scss"
 
 function NavBar(props) {
 
@@ -36,3 +37,7 @@ function NavBar(props) {
 }
 
 export default NavBar
+
+NavBar.propTypes = {
+  authenticate: PropTypes.func.isRequired
+}

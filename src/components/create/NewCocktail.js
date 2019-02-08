@@ -1,8 +1,8 @@
 /**
  * Creates a new cocktail recipe.
  */
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
 import {
   Button,
   Container,
@@ -11,10 +11,10 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
-  import jsonAPI from '../../modules/data/API'
-  import IngredientInput from './IngredientInput'
-  import user from '../../modules/data/user'
-  import './newCocktail.scss'
+import jsonAPI from "../../modules/data/API"
+import IngredientInput from "./IngredientInput"
+import user from "../../modules/data/user"
+import "./newCocktail.scss"
 
 // TODO: Prevent already used recipe name
 
@@ -37,7 +37,7 @@ class NewCocktail extends Component {
 
   loadIngredients = () => {
     return jsonAPI.getAll("ingredients")
-    .then(ingredients => this.setState({ingredients: ingredients}))
+      .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   valueToState = (key, value) => {
@@ -134,72 +134,72 @@ class NewCocktail extends Component {
       createdBy: user.getId()
     })
     // Capture new recipe ID from response
-    .then(r => this.setState({newRecipeId: r.id}))
+      .then(r => this.setState({newRecipeId: r.id}))
     // Check if any new ingredients and create entries in ingredients table.
-    .then(() => {
-      let newIngredients = []
-      for (let i in cocktailIngredients) {
-        if (cocktailIngredients[i].ingredient.customOption) {
-          let obj = {
-            label: cocktailIngredients[i].ingredient.label,
-            liquid: true,
-            createdBy: user.getId()
+      .then(() => {
+        let newIngredients = []
+        for (let i in cocktailIngredients) {
+          if (cocktailIngredients[i].ingredient.customOption) {
+            let obj = {
+              label: cocktailIngredients[i].ingredient.label,
+              liquid: true,
+              createdBy: user.getId()
+            }
+            if (cocktailIngredients[i].unit === "count") obj.liquid = false
+            newIngredients.push(jsonAPI.saveData("ingredients", obj))
           }
-          if (cocktailIngredients[i].unit === "count") obj.liquid = false
-          newIngredients.push(jsonAPI.saveData("ingredients", obj))
         }
-      }
-      if (newIngredients.length) {
-        return Promise.all(newIngredients)
-          .then(newIngredients => {
+        if (newIngredients.length) {
+          return Promise.all(newIngredients)
+            .then(newIngredients => {
             // setState with the new ingredient IDs
-            this.setState({
-              newIngredientIds: newIngredients
+              this.setState({
+                newIngredientIds: newIngredients
+              })
             })
-        })
-      } else {
-        return
-      }
-    })
-    // For each ingredient, save relationship in cocktailIngredients
-    .then(() => {
-      let ingredients = []
-      for(let i in cocktailIngredients) {
-        if(cocktailIngredients[i].ingredient) {
-
-          //Use the ingredientId unless it was new, then find the id from the newIds array in state
-          let ingredientId = cocktailIngredients[i].ingredient.id
-          if(cocktailIngredients[i].ingredient.customOption) {
-            ingredientId = this.state.newIngredientIds.find(newIng => newIng.label === cocktailIngredients[i].ingredient.label).id
-          }
-
-          let ingredientObj = {
-            cocktailId: this.state.newRecipeId,
-            ingredientId: ingredientId,
-            sortOrder: cocktailIngredients[i].sortOrder,
-            amount: Number(cocktailIngredients[i].amount),
-            unit: cocktailIngredients[i].unit,
-            isRequired: true
-          }
-          ingredients.push(jsonAPI.saveData("cocktailIngredients", ingredientObj))
+        } else {
+          return
         }
-      }
-      return Promise.all(ingredients)
-    })
-    // Save relationship to userCocktails with new recipe ID
-    .then(() => jsonAPI.saveData("userCocktails", {
-      cocktailId: this.state.newRecipeId,
-      userId: user.getId(),
-      wantToMake: true,
-      makeCount: 0
-    }))
-    // Redirect and show success message
-    .then(() => {
-      this.props.toggleAlert("success", `${this.state.cocktailName} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
-      this.props.history.push({
-        pathname: '/cocktails'
       })
-    })
+    // For each ingredient, save relationship in cocktailIngredients
+      .then(() => {
+        let ingredients = []
+        for(let i in cocktailIngredients) {
+          if(cocktailIngredients[i].ingredient) {
+
+            //Use the ingredientId unless it was new, then find the id from the newIds array in state
+            let ingredientId = cocktailIngredients[i].ingredient.id
+            if(cocktailIngredients[i].ingredient.customOption) {
+              ingredientId = this.state.newIngredientIds.find(newIng => newIng.label === cocktailIngredients[i].ingredient.label).id
+            }
+
+            let ingredientObj = {
+              cocktailId: this.state.newRecipeId,
+              ingredientId: ingredientId,
+              sortOrder: cocktailIngredients[i].sortOrder,
+              amount: Number(cocktailIngredients[i].amount),
+              unit: cocktailIngredients[i].unit,
+              isRequired: true
+            }
+            ingredients.push(jsonAPI.saveData("cocktailIngredients", ingredientObj))
+          }
+        }
+        return Promise.all(ingredients)
+      })
+    // Save relationship to userCocktails with new recipe ID
+      .then(() => jsonAPI.saveData("userCocktails", {
+        cocktailId: this.state.newRecipeId,
+        userId: user.getId(),
+        wantToMake: true,
+        makeCount: 0
+      }))
+    // Redirect and show success message
+      .then(() => {
+        this.props.toggleAlert("success", `${this.state.cocktailName} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
+        this.props.history.push({
+          pathname: "/cocktails"
+        })
+      })
   }
 
   render() {

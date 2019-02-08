@@ -4,15 +4,15 @@
  * in the database, but is needed for the current step
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
   InputGroup,
   Input,
   InputGroupAddon,
   InputGroupText } from "reactstrap"
-import jsonAPI from '../../modules/data/API'
-import user from '../../modules/data/user'
+import jsonAPI from "../../modules/data/API"
+import user from "../../modules/data/user"
 
 class NewIngredient extends Component {
 
@@ -30,7 +30,7 @@ class NewIngredient extends Component {
       createdBy: user.getId()
     }
     return jsonAPI.saveData("ingredients", obj)
-    .then(() => this.props.toggle())
+      .then(() => this.props.toggle())
   }
 
   render() {

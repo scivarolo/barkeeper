@@ -3,19 +3,19 @@
  * If new product is triggered, this is the form to create it.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Form,
   InputGroup,
   Input,
   Button } from "reactstrap"
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import UnitsDropdown from './UnitsDropdown'
-import jsonAPI from '../../modules/data/API'
-import user from '../../modules/data/user'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
+import UnitsDropdown from "./UnitsDropdown"
+import jsonAPI from "../../modules/data/API"
+import user from "../../modules/data/user"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 //TODO: Allow new ingredient to be created when a new product is being created.
 
@@ -32,7 +32,7 @@ class NewProduct extends Component {
 
   componentDidMount() {
     jsonAPI.getAll("ingredients")
-    .then(ingredients => this.setState({ingredients: ingredients}))
+      .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   handleFieldChange = (e) => {

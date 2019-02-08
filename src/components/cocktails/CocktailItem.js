@@ -2,20 +2,20 @@
  * Main component for each cocktail recipe in a user's list
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Badge,
   Button,
   Col,
   Row,
-  ListGroupItem } from 'reactstrap'
-import jsonAPI from '../../modules/data/API'
-import RecipeIngredient from './recipe/RecipeIngredient'
-import user from '../../modules/data/user'
-import Units from '../../modules/UnitConverter'
-import CocktailEditModal from './CocktailEditModal'
+  ListGroupItem } from "reactstrap"
+import jsonAPI from "../../modules/data/API"
+import RecipeIngredient from "./recipe/RecipeIngredient"
+import user from "../../modules/data/user"
+import Units from "../../modules/UnitConverter"
+import CocktailEditModal from "./CocktailEditModal"
 import "./cocktailItem.scss"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 
 class CocktailItem extends Component {
@@ -52,7 +52,7 @@ class CocktailItem extends Component {
 
   deleteItem(id) {
     return jsonAPI.deleteData("userCocktails", id)
-    .then(() => this.props.getUserCocktailData())
+      .then(() => this.props.getUserCocktailData())
   }
 
   //Checks status of each ingredient and decides if a cocktail can be made.
@@ -78,7 +78,7 @@ class CocktailItem extends Component {
     })
 
     return Promise.all(ingredientPromises)
-    .then(() => this.canMakeRecipe())
+      .then(() => this.canMakeRecipe())
 
   }
 
@@ -127,7 +127,7 @@ class CocktailItem extends Component {
       }))
     })
     return Promise.all(addArray)
-    .then(() => this.props.getShoppingList())
+      .then(() => this.props.getShoppingList())
   }
 
   componentDidMount() {
@@ -162,12 +162,12 @@ class CocktailItem extends Component {
             <span className="cocktail-utils">
               {
                 this.props.cocktail.createdBy === user.getId()
-                ? <CocktailEditModal
-                  buttonLabel="Edit"
-                  cocktail={cocktail}
-                  ingredientNames={ingredients}
-                  getUserCocktailData={this.props.getUserCocktailData}  />
-                : null
+                  ? <CocktailEditModal
+                    buttonLabel="Edit"
+                    cocktail={cocktail}
+                    ingredientNames={ingredients}
+                    getUserCocktailData={this.props.getUserCocktailData}  />
+                  : null
               }
               <FontAwesomeIcon
                 icon="trash"
@@ -178,12 +178,12 @@ class CocktailItem extends Component {
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
               ? <div>
-                  <Button
-                    onClick={() => this.props.addToUserTab(cocktail.id)}
-                    size="sm"
-                    className="mt-1"
-                    color="warning">Add to my Tab</Button>
-                </div>
+                <Button
+                  onClick={() => this.props.addToUserTab(cocktail.id)}
+                  size="sm"
+                  className="mt-1"
+                  color="warning">Add to my Tab</Button>
+              </div>
               : <Badge color="danger">Missing ingredients!</Badge>
             }
           </div>
@@ -194,7 +194,7 @@ class CocktailItem extends Component {
             <h5>Ingredients</h5>
             <ul className="recipe-ingredients mb-2">
               {
-                cocktail.cocktailIngredients.map((ingredient, i) => {
+                cocktail.cocktailIngredients.map((ingredient) => {
                   return (
                     <RecipeIngredient
                       key={ingredient.id}

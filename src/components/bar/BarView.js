@@ -2,17 +2,17 @@
  * Main Bar Inventory View component
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 import {
   Button,
   Container,
   Row,
   Col,
   InputGroup,
-  ListGroup } from 'reactstrap'
-import API from '../../modules/data/data'
-import BarItem from './BarItem'
-import AddToBar from './AddToBar'
+  ListGroup } from "reactstrap"
+import API from "../../modules/data/data"
+import BarItem from "./BarItem"
+import AddToBar from "./AddToBar"
 
 function BarView(props) {
 
@@ -22,7 +22,7 @@ function BarView(props) {
 
   const getInventory = () => {
     return API.getAll("user_products")
-    .then(inventory => setInventory(inventory))
+      .then(inventory => setInventory(inventory))
   }
 
   const toggleAdd = () => {
@@ -31,7 +31,7 @@ function BarView(props) {
 
   useEffect(() => {
     getInventory()
-    .then(() => setIsLoaded(true))
+      .then(() => setIsLoaded(true))
   }, [])
 
   if (isLoaded) {
@@ -39,22 +39,22 @@ function BarView(props) {
       <Container>
         <Row className="my-5">
           <Col className="d-flex" md={4}>
-              <h1>Your Bar</h1>
+            <h1>Your Bar</h1>
           </Col>
           <Col md={8}>
-              <InputGroup className="d-flex">
-                <AddToBar show={showAddInput}
-                  toggle={toggleAdd}
-                  inventory={inventory}
-                  getInventory={getInventory}
-                  toggleAlert={props.toggleAlert} />
+            <InputGroup className="d-flex">
+              <AddToBar show={showAddInput}
+                toggle={toggleAdd}
+                inventory={inventory}
+                getInventory={getInventory}
+                toggleAlert={props.toggleAlert} />
 
-                <Button onClick={toggleAdd} color="warning" className="ml-auto">
-                  {
-                    showAddInput ? "Cancel" : "Add Products"
-                  }
-                </Button>
-              </InputGroup>
+              <Button onClick={toggleAdd} color="warning" className="ml-auto">
+                {
+                  showAddInput ? "Cancel" : "Add Products"
+                }
+              </Button>
+            </InputGroup>
           </Col>
         </Row>
         <Row>

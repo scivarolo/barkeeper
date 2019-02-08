@@ -2,9 +2,9 @@
  * Displays a list of the cocktails that match the desired query.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import { ListGroup } from "reactstrap"
-import CocktailItem from './CocktailItem'
+import CocktailItem from "./CocktailItem"
 
 class CocktailsList extends Component {
 

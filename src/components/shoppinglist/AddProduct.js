@@ -2,15 +2,15 @@
  * Form for adding a product to the shopping list.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
-  InputGroupAddon } from 'reactstrap'
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import user from '../../modules/data/user'
-import jsonAPI from '../../modules/data/API'
+  InputGroupAddon } from "reactstrap"
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
+import user from "../../modules/data/user"
+import jsonAPI from "../../modules/data/API"
 
 class AddProduct extends Component {
 
@@ -47,7 +47,7 @@ class AddProduct extends Component {
     return Promise.all(savePromises)
       .then(() => {
         let products = this.state.selected.map(product => product.name)
-        this.props.toggleAlert("success", `Product(s) Added to Shopping List`, `${products.join(" & ")} successfully added.`)
+        this.props.toggleAlert("success", "Product(s) Added to Shopping List", `${products.join(" & ")} successfully added.`)
       })
       .then(() => this.setState({selected: []}))
       .then(() => this.props.getShoppingData())
@@ -67,8 +67,8 @@ class AddProduct extends Component {
             multiple={true}
             options={this.state.products.sort((a,b) => {
               let aName = a.name.toUpperCase()
-              let bName = b.name.toUpperCase();
-              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+              let bName = b.name.toUpperCase()
+              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
             })}
             placeholder="Search for products"
             onChange={selected => this.setState({selected: selected})} />

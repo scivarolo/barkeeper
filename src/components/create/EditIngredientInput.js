@@ -2,19 +2,19 @@
  * This is used in EditCocktail for editing ingredients to a recipe.
  */
 
-import React, { Component } from 'react'
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
+import React, { Component } from "react"
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
 import {
   Col,
   Row,
   InputGroup,
   Input,
   InputGroupAddon
-} from 'reactstrap'
-import UnitsDropdown from './UnitsDropdown'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+} from "reactstrap"
+import UnitsDropdown from "./UnitsDropdown"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 class EditIngredientInput extends Component {
 
@@ -78,36 +78,36 @@ class EditIngredientInput extends Component {
                   }
                 }
               }} />
-              <Input
-                type="number"
-                placeholder="amount"
-                step="any"
-                defaultValue={this.props.initialIngredient ? this.props.initialIngredient.amount : ""}
-                onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
-                required={this.state.isRequired}></Input>
+            <Input
+              type="number"
+              placeholder="amount"
+              step="any"
+              defaultValue={this.props.initialIngredient ? this.props.initialIngredient.amount : ""}
+              onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
+              required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
-                <UnitsDropdown
-                  isDisabled={this.state.disableUnits}
-                  isRequired={this.state.isRequired}
-                  isNewIngredient={this.state.isNew}
-                  initialUnit={this.props.initialIngredient ? this.props.initialIngredient.unit : ""}
-                  onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
-                  <span className="move-ingredients ml-2 d-flex align-items-center flex-column">
-                  {
-                    this.props.sortOrder !== 1
+              <UnitsDropdown
+                isDisabled={this.state.disableUnits}
+                isRequired={this.state.isRequired}
+                isNewIngredient={this.state.isNew}
+                initialUnit={this.props.initialIngredient ? this.props.initialIngredient.unit : ""}
+                onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
+              <span className="move-ingredients ml-2 d-flex align-items-center flex-column">
+                {
+                  this.props.sortOrder !== 1
                     ? <div className="ingredient-up">
-                        <FontAwesomeIcon icon="chevron-up" onClick={this.props.moveInputUp} />
-                      </div>
+                      <FontAwesomeIcon icon="chevron-up" onClick={this.props.moveInputUp} />
+                    </div>
                     : null
-                  }
-                  {
-                    !this.props.last
+                }
+                {
+                  !this.props.last
                     ? <div className="ingredient-down">
-                        <FontAwesomeIcon icon="chevron-down" onClick={this.props.moveInputDown} />
-                      </div>
+                      <FontAwesomeIcon icon="chevron-down" onClick={this.props.moveInputDown} />
+                    </div>
                     : null
-                  }
-                  </span>
+                }
+              </span>
             </InputGroupAddon>
           </InputGroup>
         </Col>

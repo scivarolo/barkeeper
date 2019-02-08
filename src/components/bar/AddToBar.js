@@ -2,16 +2,16 @@
  * Handles Adding products to Bar Inventory.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
-  InputGroupAddon } from 'reactstrap'
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import user from '../../modules/data/user'
-import jsonAPI from '../../modules/data/API'
-import NewProduct from '../create/NewProduct'
+  InputGroupAddon } from "reactstrap"
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
+import user from "../../modules/data/user"
+import jsonAPI from "../../modules/data/API"
+import NewProduct from "../create/NewProduct"
 
 class AddToBar extends Component {
 
@@ -87,8 +87,8 @@ class AddToBar extends Component {
             labelKey="name"
             options={this.state.allProducts.sort((a,b) => {
               let aName = a.name.toUpperCase()
-              let bName = b.name.toUpperCase();
-              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+              let bName = b.name.toUpperCase()
+              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
             })}
             placeholder="Search for products"
             ref={(ref) => this._typeahead = ref}
@@ -98,13 +98,13 @@ class AddToBar extends Component {
           </InputGroupAddon>
           {
             this.state.showCreateNewProduct
-            ? <NewProduct
+              ? <NewProduct
                 product={this.state.selected[0]}
                 toggle={this.toggleCreateNewProduct}
                 toggleAlert={this.props.toggleAlert}
                 getInventory={this.props.getInventory}
                 loadProducts={this.loadProducts} />
-            : null
+              : null
           }
         </>
       )

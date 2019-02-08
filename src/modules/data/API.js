@@ -31,7 +31,7 @@ class jsonAPI {
   }
 
   getWithExpands(resource, userId, ...expands) {
-    let string = expands.reduce((string, expand) => `${string}&_expand=${expand}`, '')
+    let string = expands.reduce((string, expand) => `${string}&_expand=${expand}`, "")
     let url = `${this.baseUrl}/${resource}?${string}&id_ne=false`
     if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())

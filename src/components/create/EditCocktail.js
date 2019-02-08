@@ -1,7 +1,7 @@
 /**
  * Loaded by EditCocktailModal. This is the form to edit the cocktail.
  */
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
   Container,
@@ -10,10 +10,10 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
-  import jsonAPI from '../../modules/data/API'
-  import EditIngredientInput from './EditIngredientInput'
-  import user from '../../modules/data/user'
-  import './newCocktail.scss'
+import jsonAPI from "../../modules/data/API"
+import EditIngredientInput from "./EditIngredientInput"
+import user from "../../modules/data/user"
+import "./newCocktail.scss"
 
 class EditCocktail extends Component {
 
@@ -59,7 +59,7 @@ class EditCocktail extends Component {
 
   loadIngredients = () => {
     return jsonAPI.getAll("ingredients")
-    .then(ingredients => this.setState({ingredients: ingredients}))
+      .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   valueToState = (key, value) => {
@@ -184,7 +184,7 @@ class EditCocktail extends Component {
               if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
               ingredientUpdates.push(
                 jsonAPI.saveData("ingredients", newIngredientObj)
-                .then(r => jsonAPI.saveData("cocktailIngredients", {
+                  .then(r => jsonAPI.saveData("cocktailIngredients", {
                     ingredientId: r.id,
                     cocktailId: this.props.cocktail.id,
                     amount: editedIngredients[i].amount,
@@ -192,7 +192,7 @@ class EditCocktail extends Component {
                     sortOrder: editedIngredients[i].sortOrder,
                     isRequired: true
                   })
-                )
+                  )
               )
             }
           } else {
@@ -217,7 +217,7 @@ class EditCocktail extends Component {
               if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
               ingredientUpdates.push(
                 jsonAPI.saveData("ingredients", newIngredientObj)
-                .then(r => jsonAPI.editData("cocktailIngredients", editedIngredients[i].id, {
+                  .then(r => jsonAPI.editData("cocktailIngredients", editedIngredients[i].id, {
                     ingredientId: r.id,
                     cocktailId: this.props.cocktail.id,
                     amount: editedIngredients[i].amount,
@@ -225,7 +225,7 @@ class EditCocktail extends Component {
                     sortOrder: editedIngredients[i].sortOrder,
                     isRequired: true
                   })
-                )
+                  )
               )
             }
           }

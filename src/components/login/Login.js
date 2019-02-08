@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { Container } from 'reactstrap'
+import React, { Component } from "react"
+import { Container } from "reactstrap"
 import "./login.scss"
 
-import LoginForm from './LoginForm'
-import RegisterForm from './RegisterForm'
+import LoginForm from "./LoginForm"
+import RegisterForm from "./RegisterForm"
 
 class Login extends Component {
 
@@ -79,25 +79,24 @@ class Login extends Component {
   postAuth(route, user) {
 
     return fetch(`http://127.0.0.1:8000/${route}/`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json"
       }
     })
-    .then(response => response.json())
-    .then((tokenObj) => {
-      if (tokenObj.token) {
-        window.localStorage.setItem("token", tokenObj.token)
-      } else {
-        this.setState({loginFailed: true})
-      }
-      this.props.authenticate()
-    })
-    .catch((response) => {
-      console.error(response)
-      this.setState({registerError:"Username already in use."})
-    })
+      .then(response => response.json())
+      .then((tokenObj) => {
+        if (tokenObj.token) {
+          window.localStorage.setItem("token", tokenObj.token)
+        } else {
+          this.setState({loginFailed: true})
+        }
+        this.props.authenticate()
+      })
+      .catch((response) => {
+        this.setState({registerError:"Username already in use."})
+      })
   }
 
   registerDjango = (e) => {
@@ -131,22 +130,22 @@ class Login extends Component {
       <Container className="login-container text-center">
         { /* Display login or register */
           this.state.loginForm
-          ?
-          <LoginForm
-            toggleForms={this.toggleForms}
-            handleFieldChange={this.handleFieldChange}
-            resetFormState={this.resetFormState}
-            submitLogin={this.submitLogin}
-            loginFailed={this.state.loginFailed} />
-          :
-          <RegisterForm
-            toggleForms={this.toggleForms}
-            handleFieldChange={this.handleFieldChange}
-            resetFormState={this.resetFormState}
-            confirmPassword={this.confirmPassword}
-            submitRegister={this.registerDjango}
-            passwordMatch={this.state.passwordMatch}
-            registerError={this.state.registerError} />
+            ?
+            <LoginForm
+              toggleForms={this.toggleForms}
+              handleFieldChange={this.handleFieldChange}
+              resetFormState={this.resetFormState}
+              submitLogin={this.submitLogin}
+              loginFailed={this.state.loginFailed} />
+            :
+            <RegisterForm
+              toggleForms={this.toggleForms}
+              handleFieldChange={this.handleFieldChange}
+              resetFormState={this.resetFormState}
+              confirmPassword={this.confirmPassword}
+              submitRegister={this.registerDjango}
+              passwordMatch={this.state.passwordMatch}
+              registerError={this.state.registerError} />
         }
       </Container>
     )

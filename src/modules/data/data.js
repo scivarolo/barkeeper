@@ -57,7 +57,7 @@ class API {
   }
 
   // Send a search string with query
-  search(resource, search_string, user_id) {
+  search(resource, search_string) {
     const url = `${baseUrl}/${resource}/search=${search_string}`
     return this.fetchFactory(url)
   }

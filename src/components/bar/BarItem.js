@@ -2,8 +2,8 @@
  * Component for a single item in the user's Bar Inventory
  */
 
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   InputGroup,
@@ -11,11 +11,11 @@ import {
   InputGroupText,
   Input,
   Progress,
-  ListGroupItem } from 'reactstrap'
-import QuantityToggles from '../utils/QuantityToggles'
-import './barItem.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import API from '../../modules/data/data';
+  ListGroupItem } from "reactstrap"
+import QuantityToggles from "../utils/QuantityToggles"
+import "./barItem.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import API from "../../modules/data/data"
 
 function BarItem(props) {
 
@@ -42,16 +42,16 @@ function BarItem(props) {
       delete obj.product
 
       return API.edit("user_products", props.item.id, obj)
-      .then(() => {
-        toggleUpdateForm()
-        props.getInventory()
-      })
+        .then(() => {
+          toggleUpdateForm()
+          props.getInventory()
+        })
     }
   }
 
   const deleteItem = (id) => {
     return API.delete("user_products", id)
-    .then(() => props.getInventory())
+      .then(() => props.getInventory())
   }
 
   const increaseQuantity = () => {
@@ -77,13 +77,13 @@ function BarItem(props) {
       <div className="d-flex">
         { item.product.unit !== "count"
           ? <>
-              <div style={{width: '150px'}}>
+              <div style={{width: "150px"}}>
                 <Progress
                   className="item-amount-chart"
                   color={
                     (item.amount_available / item.product.size <= 0.25) && item.quantity === 1
-                    ? "danger"
-                    : "primary"}
+                      ? "danger"
+                      : "primary"}
                   value={item.amount_available}
                   max={item.product.size} />
               </div>
@@ -91,24 +91,24 @@ function BarItem(props) {
                 <span>{item.amount_available} {item.product.unit}</span>
                 { showUpdateForm
                   ? <div className="updateItem mx-2">
-                      <InputGroup size="sm">
-                        <Input size="sm" type="number" min="0" step="any" max={item.product.size} value={updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
-                          placeholder={item.amount_available} onChange={e => handleFieldChange(e)} />
-                        <InputGroupAddon addonType="append">
-                          <InputGroupText>{item.product.unit}</InputGroupText>
-                        </InputGroupAddon>
-                        <InputGroupAddon addonType="append">
-                          <Button onClick={updateItemAmount} color="warning">
-                            <FontAwesomeIcon icon="check" />
-                          </Button>
-                          <Button onClick={toggleUpdateForm} color="danger">
-                            <FontAwesomeIcon icon="times" />
-                          </Button>
-                        </InputGroupAddon>
-                      </InputGroup>
-                    </div>
+                    <InputGroup size="sm">
+                      <Input size="sm" type="number" min="0" step="any" max={item.product.size} value={updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
+                        placeholder={item.amount_available} onChange={e => handleFieldChange(e)} />
+                      <InputGroupAddon addonType="append">
+                        <InputGroupText>{item.product.unit}</InputGroupText>
+                      </InputGroupAddon>
+                      <InputGroupAddon addonType="append">
+                        <Button onClick={updateItemAmount} color="warning">
+                          <FontAwesomeIcon icon="check" />
+                        </Button>
+                        <Button onClick={toggleUpdateForm} color="danger">
+                          <FontAwesomeIcon icon="times" />
+                        </Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </div>
                   : <FontAwesomeIcon icon="pen" className="mx-2 bar-edit-icon"
-                      onClick={toggleUpdateForm} />
+                    onClick={toggleUpdateForm} />
                 }
               </div>
             </>

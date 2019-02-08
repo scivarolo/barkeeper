@@ -2,13 +2,13 @@
  * Main Bar Tab component where cocktails to be made are displayed and then made.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
-  Table } from 'reactstrap'
-import './bartab.scss'
-import BarTabCocktail from './BarTabCocktail'
-import jsonAPI from '../../modules/data/API'
+  Table } from "reactstrap"
+import "./bartab.scss"
+import BarTabCocktail from "./BarTabCocktail"
+import jsonAPI from "../../modules/data/API"
 
 class BarTab extends Component {
 
@@ -45,14 +45,14 @@ class BarTab extends Component {
               {
                 this.props.userTab.map(tabCocktail => {
                   return <BarTabCocktail
-                            key={tabCocktail.id}
-                            cocktail={tabCocktail}
-                            userInventory={this.props.userInventory}
-                            ingredients={this.props.cocktails.find(c => c.id === tabCocktail.cocktailId).cocktailIngredients}
-                            removeFromUserTab={this.removeFromUserTab}
-                            makeWithThisIngredient={this.props.makeWithThisIngredient}
-                            cocktailProducts={this.props.userTabProducts[tabCocktail.id]}
-                            getUserTab={this.props.getUserTab} />
+                    key={tabCocktail.id}
+                    cocktail={tabCocktail}
+                    userInventory={this.props.userInventory}
+                    ingredients={this.props.cocktails.find(c => c.id === tabCocktail.cocktailId).cocktailIngredients}
+                    removeFromUserTab={this.removeFromUserTab}
+                    makeWithThisIngredient={this.props.makeWithThisIngredient}
+                    cocktailProducts={this.props.userTabProducts[tabCocktail.id]}
+                    getUserTab={this.props.getUserTab} />
                 })
               }
             </tbody>
@@ -66,7 +66,7 @@ class BarTab extends Component {
       return (
         <div className="sticky-top bartab--offset bartab__wrapper">
           <h1>Bar Tab</h1>
-          <p>{`You don't have any cocktails in your tab right now. Add some!`}</p>
+          <p>{"You don't have any cocktails in your tab right now. Add some!"}</p>
         </div>
       )
 

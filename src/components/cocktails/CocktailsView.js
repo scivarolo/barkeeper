@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import {
   Button,
   Container,
   Row,
-  Col } from 'reactstrap'
-import { Link } from 'react-router-dom'
-import jsonAPI from '../../modules/data/API'
-import user from '../../modules/data/user'
-import BarTab from '../bartab/BarTab'
-import Units from '../../modules/UnitConverter'
-import CocktailsList from './CocktailsList'
-import DiscoverList from './discover/DiscoverList'
-import CocktailSearch from './CocktailSearch'
-import IngredientFilter from './IngredientFilter'
+  Col } from "reactstrap"
+import { Link } from "react-router-dom"
+import jsonAPI from "../../modules/data/API"
+import user from "../../modules/data/user"
+import BarTab from "../bartab/BarTab"
+import Units from "../../modules/UnitConverter"
+import CocktailsList from "./CocktailsList"
+import DiscoverList from "./discover/DiscoverList"
+import CocktailSearch from "./CocktailSearch"
+import IngredientFilter from "./IngredientFilter"
 
 class CocktailsView extends Component {
 
@@ -41,10 +41,10 @@ class CocktailsView extends Component {
 
   componentDidMount() {
     this.getUserCocktailData()
-    .then(() => this.getUserInventory())
-    .then(() => this.getShoppingList())
-    .then(() => this.getUserTab())
-    .then(() => this.setState({isLoaded: true}))
+      .then(() => this.getUserInventory())
+      .then(() => this.getShoppingList())
+      .then(() => this.getUserTab())
+      .then(() => this.setState({isLoaded: true}))
   }
 
   toggleMakeable = () => {
@@ -67,7 +67,7 @@ class CocktailsView extends Component {
 
   loadAllCocktails = () => {
     return jsonAPI.getWithEmbed("cocktails", "cocktailIngredients")
-    .then(data => this.setState({allCocktails: data}))
+      .then(data => this.setState({allCocktails: data}))
   }
 
   allMinusUserCocktails = () => {
@@ -85,11 +85,11 @@ class CocktailsView extends Component {
       return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
     })
     return this.getIngredientData(filtered)
-    .then((ingredients) => this.setState({
-      allMinusUserCocktails: filtered,
-      allMinusUserCocktailIngredients: ingredients
-    })
-    )
+      .then((ingredients) => this.setState({
+        allMinusUserCocktails: filtered,
+        allMinusUserCocktailIngredients: ingredients
+      })
+      )
   }
 
   /* for use after a fetch. Doesn't set state, so set it in the appropriate function. */
@@ -97,65 +97,65 @@ class CocktailsView extends Component {
     let ingredients = []
     cocktails.forEach(c => {
       //build query string for getting ingredient names of each cocktail
-      let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
-      ingredients.push(jsonAPI.getWithFilters(`ingredients`, queryString))
+      let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, "").substr(1)
+      ingredients.push(jsonAPI.getWithFilters("ingredients", queryString))
     })
     return Promise.all(ingredients)
   }
 
   getDiscoverCocktails = () => {
     return this.loadAllCocktails()
-    .then(() => this.allMinusUserCocktails())
+      .then(() => this.allMinusUserCocktails())
   }
 
   getUserCocktailData = () => {
     let newState = {}
     //get userCocktails
     return jsonAPI.getWithExpand("userCocktails", "cocktail", this.state.userId)
-    .then(userCocktails => {
-      newState.userCocktailsRelations = userCocktails
-      //use cocktailId to get cocktails
-      let cocktailQueries = userCocktails.map(
-        c => jsonAPI.getWithEmbed(`cocktails/${c.cocktailId}`, "cocktailIngredients")
-      )
-      //each Promise returns a cocktail with cocktailIngredients embedded
-      return Promise.all(cocktailQueries)
-    })
-    .then(cocktails => {
-      newState.userCocktails = cocktails.sort((a,b) => {
-        let aName = a.name.toUpperCase()
-        let bName = b.name.toUpperCase()
-        return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
+      .then(userCocktails => {
+        newState.userCocktailsRelations = userCocktails
+        //use cocktailId to get cocktails
+        let cocktailQueries = userCocktails.map(
+          c => jsonAPI.getWithEmbed(`cocktails/${c.cocktailId}`, "cocktailIngredients")
+        )
+        //each Promise returns a cocktail with cocktailIngredients embedded
+        return Promise.all(cocktailQueries)
       })
+      .then(cocktails => {
+        newState.userCocktails = cocktails.sort((a,b) => {
+          let aName = a.name.toUpperCase()
+          let bName = b.name.toUpperCase()
+          return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
+        })
 
-      //for each cocktail, loop through array of ingredients to build fetchs for each ingredient
-      let ingredientQueries = []
-      cocktails.forEach(c => {
+        //for each cocktail, loop through array of ingredients to build fetchs for each ingredient
+        let ingredientQueries = []
+        cocktails.forEach(c => {
         //build query string for getting ingredient names of each cocktail
-        let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
-        ingredientQueries.push(jsonAPI.getWithFilters(`ingredients`, queryString))
+          let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, "").substr(1)
+          ingredientQueries.push(jsonAPI.getWithFilters("ingredients", queryString))
+        })
+        return Promise.all(ingredientQueries)
       })
-      return Promise.all(ingredientQueries)
-    })
-    .then(cocktailIngredients => {
-      newState.userCocktailIngredients = cocktailIngredients
-    })
-    .then(() => this.setState(newState))
+      .then(cocktailIngredients => {
+        newState.userCocktailIngredients = cocktailIngredients
+      })
+      .then(() => this.setState(newState))
   }
 
   getUserInventory() {
     jsonAPI.getWithExpand("userProducts", "product", this.state.userId)
-    .then(data => this.setState({userInventory: data}))
+      .then(data => this.setState({userInventory: data}))
   }
 
   getShoppingList = () => {
     jsonAPI.getWithExpands("userShopping", this.state.userId, "product", "ingredient")
-    .then(data => this.setState({userShoppingList: data}))
+      .then(data => this.setState({userShoppingList: data}))
   }
 
   getUserTab = () => {
     jsonAPI.getWithExpands("userTab", this.state.userId, "cocktail")
-    .then(data => this.setState({userTab: data}))
+      .then(data => this.setState({userTab: data}))
   }
 
   addToUserTab = (cocktailId) => {
@@ -166,7 +166,7 @@ class CocktailsView extends Component {
         quantity: inTab.quantity + 1
       }
       return jsonAPI.editData("userTab", inTab.id, obj)
-      .then(() => this.getUserTab())
+        .then(() => this.getUserTab())
     }
 
     // else not already in tab
@@ -176,23 +176,23 @@ class CocktailsView extends Component {
       quantity: 1
     }
     return jsonAPI.saveData("userTab", obj)
-    .then(() => this.getUserTab())
+      .then(() => this.getUserTab())
   }
 
   getTabCocktailProductChoices = (c) => {
     return jsonAPI.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
-    .then((ingredients) => {
-      let prodsObj = {}
-      // find the products available for each ingredient
-      ingredients.forEach(ingredient => {
-        let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
-        prodsObj[ingredient.ingredientId] = prods
+      .then((ingredients) => {
+        let prodsObj = {}
+        // find the products available for each ingredient
+        ingredients.forEach(ingredient => {
+          let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
+          prodsObj[ingredient.ingredientId] = prods
+        })
+        return this.setState(prevState => {
+          let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
+          return {userTabProducts: userTabProductsObj}
+        })
       })
-      return this.setState(prevState => {
-        let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
-        return {userTabProducts: userTabProductsObj}
-      })
-    })
   }
 
   makeWithThisIngredient = (e, tabCocktailId, ingredientId) => {
@@ -264,7 +264,7 @@ class CocktailsView extends Component {
             } else {
               prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
             }
-            if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", `You're missing ingredients!`)
+            if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", "You're missing ingredients!")
 
             const amountNeeded = ingredient.amount * c.quantity
             const amountUnit = ingredient.unit
@@ -289,7 +289,7 @@ class CocktailsView extends Component {
             }
 
             if (amountLeft < 0) {
-              return this.props.toggleAlert("warning", "Bummer", `You don't have enough of an ingredient to make this many.`)
+              return this.props.toggleAlert("warning", "Bummer", "You don't have enough of an ingredient to make this many.")
             } else if (amountLeft === 0) {
               return productUpdates.push(
                 jsonAPI.deleteData("userProducts", userProductId)
@@ -302,16 +302,16 @@ class CocktailsView extends Component {
 
           })
           return Promise.all(productUpdates)
-          .then(() => {
-            let userCocktail = this.state.userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
-            if (c.quantity > 1) {
-              this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}s!`)
-            } else {
-              this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
-            }
-            return jsonAPI.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
-          })
-          .then(() => jsonAPI.deleteData("userTab", c.id))
+            .then(() => {
+              let userCocktail = this.state.userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
+              if (c.quantity > 1) {
+                this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}s!`)
+              } else {
+                this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
+              }
+              return jsonAPI.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
+            })
+            .then(() => jsonAPI.deleteData("userTab", c.id))
         } else {
           this.props.toggleAlert("warning", "Bummer", `You're missing ingredients needed to make ${c.cocktail.name}.`)
         }
@@ -447,67 +447,67 @@ class CocktailsView extends Component {
               <Row className="mb-5">
                 <Col className="d-flex">
                   <div>
-                    <h1>{this.state.discoverCocktails ? `Discover` : `My Cocktails`}</h1>
+                    <h1>{this.state.discoverCocktails ? "Discover" : "My Cocktails"}</h1>
                   </div>
                   <div className="ml-auto">
-                    <Button color="warning" onClick={this.toggleDiscover}>{!this.state.discoverCocktails ? `Discover` : `My Cocktails`}</Button>
+                    <Button color="warning" onClick={this.toggleDiscover}>{!this.state.discoverCocktails ? "Discover" : "My Cocktails"}</Button>
                     <Button color="primary" tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
                 </Col>
               </Row>
-                {this.state.discoverCocktails
+              {this.state.discoverCocktails
                 ? null
                 : <Row className="mb-4">
-                    <Col>
+                  <Col>
 
-                      <Button color="warning" onClick={this.toggleMakeable}>
+                    <Button color="warning" onClick={this.toggleMakeable}>
                       {
                         this.state.showOnlyMakeable
-                        ? "Show All My Cocktails"
-                        : "Show Only Cocktails I Can Make"
+                          ? "Show All My Cocktails"
+                          : "Show Only Cocktails I Can Make"
                       }
-                      </Button>
-                    </Col>
-                  </Row>
-                }
+                    </Button>
+                  </Col>
+                </Row>
+              }
 
               <Row>
                 <Col>
-                {
-                  this.state.discoverCocktails
-                  ? <DiscoverList
-                      cocktails={cocktailsToShow}
-                      cocktailIngredients={ingredientsToShow}
-                      getDiscoverCocktails={this.getDiscoverCocktails}
-                      getUserCocktailData={this.getUserCocktailData}
-                      userCocktails={userCocktails}
-                      allMinusUserCocktails={this.allMinusUserCocktails}
-                    />
-                  : <CocktailsList
-                      cocktails={cocktailsToShow}
-                      cocktailIngredients={ingredientsToShow}
-                      userInventory={userInventory}
-                      userCocktailsRelations={userCocktailsRelations}
-                      userShoppingList={userShoppingList}
-                      getShoppingList={this.getShoppingList}
-                      getUserCocktailData={this.getUserCocktailData}
-                      addToUserTab={this.addToUserTab}
-                      showOnlyMakeable={showOnlyMakeable}
-                    />
-                }
-                { ((searching || filtering) && !searchResults.length)
-                  ? (discoverCocktails)
-                    ? <>
+                  {
+                    this.state.discoverCocktails
+                      ? <DiscoverList
+                        cocktails={cocktailsToShow}
+                        cocktailIngredients={ingredientsToShow}
+                        getDiscoverCocktails={this.getDiscoverCocktails}
+                        getUserCocktailData={this.getUserCocktailData}
+                        userCocktails={userCocktails}
+                        allMinusUserCocktails={this.allMinusUserCocktails}
+                      />
+                      : <CocktailsList
+                        cocktails={cocktailsToShow}
+                        cocktailIngredients={ingredientsToShow}
+                        userInventory={userInventory}
+                        userCocktailsRelations={userCocktailsRelations}
+                        userShoppingList={userShoppingList}
+                        getShoppingList={this.getShoppingList}
+                        getUserCocktailData={this.getUserCocktailData}
+                        addToUserTab={this.addToUserTab}
+                        showOnlyMakeable={showOnlyMakeable}
+                      />
+                  }
+                  { ((searching || filtering) && !searchResults.length)
+                    ? (discoverCocktails)
+                      ? <>
                         <h1>No cocktails match your search.</h1>
                         <p>Want to add a <a href="cocktails/new">new cocktail recipe</a>?</p>
                       </>
-                    : <>
+                      : <>
                         <h1>No cocktails found in your list.</h1>
                         <p>Perhaps try searching in <Button onClick={this.toggleDiscover}>Discover Cocktails</Button>?</p>
                       </>
-                  : null
+                    : null
 
-                }
+                  }
                 </Col>
               </Row>
 
