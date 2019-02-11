@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   InputGroupAddon } from "reactstrap"
@@ -122,3 +123,11 @@ class AddToBar extends Component {
 }
 
 export default AddToBar
+
+AddToBar.propTypes = {
+  inventory: PropTypes.array.isRequired,
+  toggleAlert: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
+  getInventory: PropTypes.func.isRequired
+}
