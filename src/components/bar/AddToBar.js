@@ -10,7 +10,7 @@ import { Typeahead } from "react-bootstrap-typeahead"
 import "react-bootstrap-typeahead/css/Typeahead.css"
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
 import user from "../../modules/data/user"
-import jsonAPI from "../../modules/data/API"
+import API from "../../modules/data/data"
 import NewProduct from "../create/NewProduct"
 
 class AddToBar extends Component {
@@ -23,38 +23,44 @@ class AddToBar extends Component {
 
   // Load all products and set state.
   loadProducts = () => {
-    return jsonAPI.getAll("products")
+    return API.getAll("products")
       .then(products => this.setState({allProducts: products}))
   }
 
   // Selected products are added to the user's inventory
   addDropdownProducts = () => {
+
     if(!this.state.selected.length) return
+
     let userId = user.getId()
     let products = this.state.selected
     let savePromises = products.map(product => {
+      let haveProduct = this.props.inventory.find(invProduct => invProduct.product.id === product.id)
 
-      let haveProduct = this.props.inventory.find(invProduct => invProduct.productId === product.id)
-      if(haveProduct) {
-        return jsonAPI.editData("userProducts", haveProduct.id, {
+      if (haveProduct) {
+        return API.edit("user_products", haveProduct.id, {
           quantity: haveProduct.quantity + 1
         })
       }
       else {
-        return jsonAPI.saveData("userProducts", {
-          productId: product.id,
-          userId: userId,
+        return API.save("user_products", {
+          product_id: product.id,
+          user: userId,
           quantity: 1,
-          amountAvailable: this.state.allProducts.find(p => parseInt(p.id) === parseInt(product.id)).fullAmount
+          amount_available: this.state.allProducts.find(p => parseInt(p.id) === parseInt(product.id)).size
         })
       }
     })
+
     return Promise.all(savePromises)
       .then(() => this.props.getInventory())
       .then(() => {
         this.props.toggleAlert("success", "Products Added", `${this.state.selected.map(item => item.name)} successfully added to your bar inventory.`)
         this.setState({selected: []})
         this.props.toggle()
+      })
+      .catch(r => {
+        console.error("Error saving Product", r)
       })
   }
 
