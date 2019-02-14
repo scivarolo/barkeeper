@@ -140,7 +140,6 @@ class NewProduct extends Component {
 export default NewProduct
 
 NewProduct.propTypes = {
-  // inventory: PropTypes.array.isRequired,
   getInventory: PropTypes.func.isRequired,
   loadProducts: PropTypes.func.isRequired,
   toggleAlert: PropTypes.func.isRequired,
