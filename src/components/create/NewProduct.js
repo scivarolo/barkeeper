@@ -144,5 +144,5 @@ NewProduct.propTypes = {
   loadProducts: PropTypes.func.isRequired,
   toggleAlert: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
-  product: PropTypes.obj.isRequired,
+  product: PropTypes.object.isRequired,
 }
