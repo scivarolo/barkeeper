@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Form,
   InputGroup,
@@ -13,8 +14,7 @@ import { Typeahead } from "react-bootstrap-typeahead"
 import "react-bootstrap-typeahead/css/Typeahead.css"
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
 import UnitsDropdown from "./UnitsDropdown"
-import jsonAPI from "../../modules/data/API"
-import user from "../../modules/data/user"
+import API from "../../modules/data/data"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 //TODO: Allow new ingredient to be created when a new product is being created.
@@ -31,7 +31,7 @@ class NewProduct extends Component {
   }
 
   componentDidMount() {
-    jsonAPI.getAll("ingredients")
+    API.getAll("ingredients")
       .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -63,31 +63,29 @@ class NewProduct extends Component {
 
     let obj = {
       name: this.state.newProductName,
-      ingredientId: this.state.newProductIngredient[0].id,
+      ingredient: this.state.newProductIngredient[0].id,
       unit: this.state.unitsDropdown,
-      fullAmount: Number(this.state.newProductSize),
-      createdBy: user.getId()
+      size: Number(this.state.newProductSize),
     }
 
     if(this.state.unitsDropdown === "count") {
       obj.unit = "count"
-      obj.fullAmount = 1
+      obj.size = 1
     }
 
-    return jsonAPI.saveData("products", obj)
-      .then((r) => {
+    return API.save("products", obj)
+      .then(r => {
         let quantity = 1
-        if(this.state.unitsDropdown === "count") {
+        if (this.state.unitsDropdown === "count") {
           quantity = Number(this.state.newProductSize)
         }
-        return jsonAPI.saveData("userProducts", {
-          userId: user.getId(),
-          productId: r.id,
+        return API.save("user_products", {
+          product_id: r.id,
           quantity: quantity,
-          amountAvailable: r.fullAmount
+          amount_available: r.size
         })
       })
-      .then(() => this.props.getInventoryData())
+      .then(() => this.props.getInventory())
       .then(() => this.props.loadProducts())
       .then(() => {
         this.props.toggleAlert("success", "Product Created", `${this.state.newProductName} successfully created and added to your bar.`)
@@ -111,7 +109,7 @@ class NewProduct extends Component {
             <Typeahead
               isInvalid={this.state.typeaheadInvalid}
               id="newProductIngredient"
-              labelKey="label"
+              labelKey="name"
               placeholder="Type"
               onChange={selected => this.handleTypeaheadChange(selected)}
               options={this.state.ingredients} />
@@ -140,3 +138,12 @@ class NewProduct extends Component {
 }
 
 export default NewProduct
+
+NewProduct.propTypes = {
+  // inventory: PropTypes.array.isRequired,
+  getInventory: PropTypes.func.isRequired,
+  loadProducts: PropTypes.func.isRequired,
+  toggleAlert: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  product: PropTypes.obj.isRequired,
+}
