@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import "./login.scss"
 
@@ -94,7 +95,7 @@ class Login extends Component {
         }
         this.props.authenticate()
       })
-      .catch((response) => {
+      .catch(() => {
         this.setState({registerError:"Username already in use."})
       })
   }
@@ -153,3 +154,7 @@ class Login extends Component {
 }
 
 export default Login
+
+Login.propTypes = {
+  authenticate: PropTypes.func.isRequired
+}
