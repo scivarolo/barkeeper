@@ -10,11 +10,9 @@ import {
   InputGroup,
   Row, } from "reactstrap"
 import API from "../../modules/data/data"
-import jsonAPI from "../../modules/data/API"
 import ShoppingListItem from "./ShoppingListItem"
 import AddProduct from "./AddProduct"
 import AddIngredient from "./AddIngredient"
-import user from "../../modules/data/user"
 import "./shoppingList.scss"
 
 // TODO: Ability to create Ingredient on the fly.

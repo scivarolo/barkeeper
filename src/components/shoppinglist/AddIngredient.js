@@ -9,7 +9,6 @@ import {
 import { Typeahead } from "react-bootstrap-typeahead"
 import "react-bootstrap-typeahead/css/Typeahead.css"
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
-import jsonAPI from "../../modules/data/API"
 import API from "../../modules/data/data"
 
 class AddIngredient extends Component {

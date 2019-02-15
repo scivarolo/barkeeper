@@ -9,7 +9,6 @@ import {
   Badge,
   ListGroupItem } from "reactstrap"
 import API from "../../modules/data/data"
-import jsonAPI from "../../modules/data/API"
 import BoughtIngredientModal from "./boughtIngredient/BoughtIngredientModal"
 import QuantityToggles from "../utils/QuantityToggles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
