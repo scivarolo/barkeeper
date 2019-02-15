@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Input,
@@ -38,3 +39,11 @@ function LoginForm(props) {
 }
 
 export default LoginForm
+
+LoginForm.propTypes = {
+  resetFormState: PropTypes.func.isRequired,
+  submitLogin: PropTypes.func.isRequired,
+  loginFailed: PropTypes.bool.isRequired,
+  handleFieldChange: PropTypes.func.isRequired,
+  toggleForms: PropTypes.func.isRequired
+}
