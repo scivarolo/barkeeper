@@ -39,8 +39,8 @@ class BoughtIngredientModal extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(!prevProps.ingredientId === this.props.ingredientId) {
-      this.getIngredientProducts(this.props.ingredientId)
+    if(!prevProps.ingredientId === this.props.ingredient_id) {
+      this.getIngredientProducts(this.props.ingredient_id)
     }
   }
 
@@ -52,7 +52,7 @@ class BoughtIngredientModal extends Component {
           className="ml-2 shopping-bought"
           onClick={this.toggle} />
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.label} Product</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.name} Product</ModalHeader>
           <ModalBody>
             { this.state.newProduct
               ? <NewProduct

@@ -8,6 +8,7 @@ import {
   Col,
   Badge,
   ListGroupItem } from "reactstrap"
+import API from "../../modules/data/data"
 import jsonAPI from "../../modules/data/API"
 import BoughtIngredientModal from "./boughtIngredient/BoughtIngredientModal"
 import QuantityToggles from "../utils/QuantityToggles"
@@ -18,21 +19,21 @@ class ShoppingListItem extends Component {
   // When 'bought' is clicked on a PRODUCT
   boughtProduct = (item) => {
     //check if product is already in user inventory
-    return jsonAPI.getWithFilters("userProducts", `productId=${item.productId}`, item.userId)
+    // return jsonAPI.getWithFilters("userProducts", `productId=${item.productId}`, item.userId)
+    return API.getFiltered("user_products", `product=${item.product_id}`)
       .then(hasProduct => {
         if (hasProduct.length) {
-          return jsonAPI.editData("userProducts", hasProduct[0].id, {
+          return API.edit("user_products", hasProduct[0].id, {
             quantity: hasProduct[0].quantity + item.quantity
           }).then(() => this.props.deleteItem(item.id))
         } else {
           let userProductsObj = {
-            userId: item.userId,
-            productId: item.productId,
-            amountAvailable: item.product.fullAmount,
+            product_id: item.product_id,
+            amount_available: item.product.size,
             quantity: item.quantity
           }
           //add item to userProducts and delete from userShopping
-          return jsonAPI.saveData("userProducts", userProductsObj)
+          return API.save("user_products", userProductsObj)
             .then(() => this.props.deleteItem(item.id))
         }
       })
@@ -42,20 +43,19 @@ class ShoppingListItem extends Component {
   //When 'bought' is clicked on an INGREDIENT, and an existing product is chosen
   boughtIngredientProduct = (product, item) => {
 
-    return jsonAPI.getWithFilters("userProducts", `productId=${product.id}`, item.userId)
+    return API.getFiltered("user_products", `product=${product.id}`)
       .then(hasProduct => {
         if(hasProduct.length) {
-          return jsonAPI.editData("userProducts", hasProduct[0].id, {
+          return API.edit("user_products", hasProduct[0].id, {
             quantity: hasProduct[0].quantity + item.quantity
           }).then(() => this.props.deleteItem(item.id))
         } else {
           let userProductsObj = {
-            userId: item.userId,
-            productId: product.id,
-            amountAvailable: product.fullAmount,
+            product_id: product.id,
+            amount_available: product.size,
             quantity: item.quantity
           }
-          return jsonAPI.saveData("userProducts", userProductsObj)
+          return API.save("user_products", userProductsObj)
             .then(() => this.props.deleteItem(item.id))
         }
       })
@@ -63,7 +63,7 @@ class ShoppingListItem extends Component {
   }
 
   increaseQuantity = () => {
-    return jsonAPI.editData("userShopping", this.props.item.id, {
+    return API.edit("user_shopping", this.props.item.id, {
       quantity: this.props.item.quantity + 1
     }).then(() => this.props.getShoppingData())
   }
@@ -72,7 +72,7 @@ class ShoppingListItem extends Component {
     if (this.props.item.quantity === 1) {
       return this.props.deleteItem(this.props.item.id)
     } else {
-      return jsonAPI.editData("userShopping", this.props.item.id, {
+      return API.edit("user_shopping", this.props.item.id, {
         quantity: this.props.item.quantity - 1
       }).then(() => this.props.getShoppingData())
     }
@@ -86,9 +86,9 @@ class ShoppingListItem extends Component {
           <Col className="d-flex justify-content-between align-items-center">
             <h5 className="mb-0">
               {
-                item.productId
+                item.product_id
                   ? <>{item.product.name} <Badge className="ml-1 shopping-badge" color="primary">Product</Badge></>
-                  : <>{item.ingredient.label} <Badge className="ml-1 shopping-badge" color="danger">Ingredient</Badge></>
+                  : <>{item.ingredient.name} <Badge className="ml-1 shopping-badge" color="danger">Ingredient</Badge></>
               }
             </h5>
             <span className="d-flex ml-auto mr-2">
@@ -98,7 +98,7 @@ class ShoppingListItem extends Component {
                 decrease={this.decreaseQuantity} />
             </span>
             <div className="shopping-utils">
-              { item.productId
+              { item.product_id
                 ? <FontAwesomeIcon icon="check" className="ml-2 shopping-bought"
                   onClick={() => {
                     this.boughtProduct(item)

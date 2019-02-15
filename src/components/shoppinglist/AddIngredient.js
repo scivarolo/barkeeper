@@ -9,37 +9,37 @@ import {
 import { Typeahead } from "react-bootstrap-typeahead"
 import "react-bootstrap-typeahead/css/Typeahead.css"
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
-import user from "../../modules/data/user"
 import jsonAPI from "../../modules/data/API"
+import API from "../../modules/data/data"
 
 class AddIngredient extends Component {
 
   state = {
-    allIngredients: [],
+    ingredients: [],
     selected: []
   }
 
   loadIngredients() {
-    return jsonAPI.getAll("ingredients")
+    return API.getAll("ingredients")
       .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   addDropdownIngredients = () => {
     if(!this.state.selected.length) return
-    let userId = user.getId()
+
+    // Save ingredients to the shopping list
     let ingredients = this.state.selected
 
     let savePromises = ingredients.map(ingredient => {
-      let haveIngredient = this.props.shoppingList.find(shopIngredient => shopIngredient.ingredientId === ingredient.id)
-      if(haveIngredient) {
-        return jsonAPI.editData("userShopping", haveIngredient.id, {
+      let haveIngredient = this.props.shoppingList.find(shopIngredient => shopIngredient.ingredient_id === ingredient.id)
+      if (haveIngredient) {
+        return API.edit("user_shopping", haveIngredient.id, {
           quantity: haveIngredient.quantity + 1
         })
       } else {
-        return jsonAPI.saveData("userShopping", {
-          ingredientId: ingredient.id,
-          productId: false,
-          userId: userId,
+        return API.save("user_shopping", {
+          ingredient_id: ingredient.id,
+          product_id: null,
           quantity: 1
         })
       }
@@ -63,13 +63,9 @@ class AddIngredient extends Component {
       return (
         <>
           <Typeahead
-            labelKey="label"
+            labelKey="name"
             multiple={true}
-            options={this.state.ingredients.sort((a,b) => {
-              let aName = a.label.toUpperCase()
-              let bName = b.label.toUpperCase()
-              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
-            })}
+            options={this.state.ingredients}
             placeholder="Search for ingredients"
             onChange={selected => this.setState({selected: selected})} />
           <InputGroupAddon addonType="append">

@@ -9,6 +9,7 @@ import {
   Container,
   InputGroup,
   Row, } from "reactstrap"
+import API from "../../modules/data/data"
 import jsonAPI from "../../modules/data/API"
 import ShoppingListItem from "./ShoppingListItem"
 import AddProduct from "./AddProduct"
@@ -29,8 +30,7 @@ class ShoppingListView extends Component {
   }
 
   getShoppingData = () => {
-    let userId = user.getId()
-    return jsonAPI.getWithExpands("userShopping", userId, "product", "ingredient")
+    return API.getAll("user_shopping")
       .then(items => {
         this.setState({
           shoppingProducts: items,
@@ -48,7 +48,7 @@ class ShoppingListView extends Component {
   }
 
   deleteItem = (userShoppingId) => {
-    return jsonAPI.deleteData("userShopping", userShoppingId)
+    return API.delete("user_shopping", userShoppingId)
       .then(() => this.getShoppingData())
   }
 

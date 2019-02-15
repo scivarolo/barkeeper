@@ -9,37 +9,36 @@ import {
 import { Typeahead } from "react-bootstrap-typeahead"
 import "react-bootstrap-typeahead/css/Typeahead.css"
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
-import user from "../../modules/data/user"
-import jsonAPI from "../../modules/data/API"
+import API from "../../modules/data/data"
 
 class AddProduct extends Component {
 
   state = {
-    allProducts: [],
+    products: [],
     selected: []
   }
 
   loadProducts() {
-    return jsonAPI.getAll("products")
+    return API.getAll("products")
       .then(products => this.setState({products: products}))
   }
 
   addDropdownProducts = () => {
-    if(!this.state.selected.length) return
-    let userId = user.getId()
+    if (!this.state.selected.length) return
+
+    // Save products to the shopping list
     let products = this.state.selected
 
     let savePromises = products.map(product => {
-      let haveProduct = this.props.shoppingList.find(shopProduct => shopProduct.productId === product.id)
-      if(haveProduct) {
-        return jsonAPI.editData("userShopping", haveProduct.id, {
+      let haveProduct = this.props.shoppingList.find(shopProduct => shopProduct.product_id === product.id)
+      if (haveProduct) {
+        return API.edit("user_shopping", haveProduct.id, {
           quantity: haveProduct.quantity + 1
         })
       } else {
-        return jsonAPI.saveData("userShopping", {
-          productId: product.id,
-          ingredientId: false,
-          userId: userId,
+        return API.save("user_shopping", {
+          product_id: product.id,
+          ingredient_id: null,
           quantity: 1
         })
       }
@@ -65,11 +64,7 @@ class AddProduct extends Component {
           <Typeahead
             labelKey="name"
             multiple={true}
-            options={this.state.products.sort((a,b) => {
-              let aName = a.name.toUpperCase()
-              let bName = b.name.toUpperCase()
-              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
-            })}
+            options={this.state.products}
             placeholder="Search for products"
             onChange={selected => this.setState({selected: selected})} />
           <InputGroupAddon addonType="append">
