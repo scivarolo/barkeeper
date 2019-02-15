@@ -38,12 +38,6 @@ class BoughtIngredientModal extends Component {
     this.getIngredientProducts(this.props.ingredient.id)
   }
 
-  componentDidUpdate(prevProps) {
-    if(!prevProps.ingredientId === this.props.ingredient_id) {
-      this.getIngredientProducts(this.props.ingredient_id)
-    }
-  }
-
   render() {
     return (
       <>
