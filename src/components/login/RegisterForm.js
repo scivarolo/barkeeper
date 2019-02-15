@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Input,
@@ -75,3 +76,13 @@ function RegisterForm(props) {
 }
 
 export default RegisterForm
+
+RegisterForm.propTypes = {
+  resetFormState: PropTypes.func.isRequired,
+  passwordMatch: PropTypes.bool,
+  submitRegister: PropTypes.func.isRequired,
+  registerError: PropTypes.string,
+  handleFieldChange: PropTypes.func.isRequired,
+  confirmPassword: PropTypes.func.isRequired,
+  toggleForms: PropTypes.func.isRequired
+}
