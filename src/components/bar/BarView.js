@@ -43,7 +43,8 @@ function BarView(props) {
           </Col>
           <Col md={8}>
             <InputGroup className="d-flex">
-              <AddToBar show={showAddInput}
+              <AddToBar
+                show={showAddInput}
                 toggle={toggleAdd}
                 inventory={inventory}
                 getInventory={getInventory}

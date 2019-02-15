@@ -128,6 +128,6 @@ AddToBar.propTypes = {
   inventory: PropTypes.array.isRequired,
   toggleAlert: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
-  show: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
   getInventory: PropTypes.func.isRequired
 }
