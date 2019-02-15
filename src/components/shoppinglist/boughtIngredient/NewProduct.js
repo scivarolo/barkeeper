@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Form,
   InputGroup,
@@ -92,3 +93,10 @@ class NewProduct extends Component {
 }
 
 export default NewProduct
+
+NewProduct.propTypes = {
+  ingredient: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+  toggle: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired
+}

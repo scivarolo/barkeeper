@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   InputGroupAddon } from "reactstrap"
@@ -80,3 +81,11 @@ class AddProduct extends Component {
 }
 
 export default AddProduct
+
+AddProduct.propTypes = {
+  shoppingList: PropTypes.array.isRequired,
+  toggleAlert: PropTypes.func.isRequired,
+  getShoppingData: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
+}

@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import API from "../../../modules/data/data"
 import NewProduct from "./NewProduct"
@@ -45,7 +46,7 @@ class BoughtIngredientModal extends Component {
           icon="check"
           className="ml-2 shopping-bought"
           onClick={this.toggle} />
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Add {this.props.ingredient.name} Product</ModalHeader>
           <ModalBody>
             { this.state.newProduct
@@ -80,3 +81,11 @@ class BoughtIngredientModal extends Component {
 }
 
 export default BoughtIngredientModal
+
+BoughtIngredientModal.propTypes = {
+  ingredient: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+  deleteItem: PropTypes.func.isRequired,
+  boughtIngredientProduct: PropTypes.func.isRequired,
+  toggleAlert: PropTypes.func.isRequired
+}

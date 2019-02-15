@@ -3,6 +3,7 @@
  **/
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Col,
@@ -126,3 +127,7 @@ class ShoppingListView extends Component {
 }
 
 export default ShoppingListView
+
+ShoppingListView.propTypes = {
+  toggleAlert: PropTypes.func.isRequired
+}

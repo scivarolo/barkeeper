@@ -3,6 +3,7 @@
  **/
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Row,
   Col,
@@ -124,3 +125,10 @@ class ShoppingListItem extends Component {
 }
 
 export default ShoppingListItem
+
+ShoppingListItem.propTypes = {
+  deleteItem: PropTypes.func.isRequired,
+  item: PropTypes.object.isRequired,
+  getShoppingData: PropTypes.func.isRequired,
+  toggleAlert: PropTypes.func.isRequired
+}
