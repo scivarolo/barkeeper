@@ -25,7 +25,7 @@ class API {
   // Returns a single entry from a resource.
   // Returns nothing if the user does not have access to that resource.
   getOne(resource, id) {
-    const url = `${baseUrl}/${resource}/${id}`
+    const url = `${baseUrl}/${resource}/${id}/`
     return this.fetchFactory(url)
   }
 
@@ -49,7 +49,7 @@ class API {
 
   // Deletes a single resource entry
   delete(resource, id) {
-    const url = `${baseUrl}/${resource}/${id}`
+    const url = `${baseUrl}/${resource}/${id}/`
     return fetch(url, {
       method: "DELETE",
       headers: headers
