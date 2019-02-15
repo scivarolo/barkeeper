@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Container,
@@ -542,3 +543,7 @@ class CocktailsView extends Component {
 }
 
 export default CocktailsView
+
+CocktailsView.propTypes = {
+  toggleAlert: PropTypes.func.isRequired
+}
