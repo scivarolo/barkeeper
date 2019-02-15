@@ -31,7 +31,7 @@ class API {
 
   // Customize the search query with filters
   getFiltered(resource, filter_string) {
-    const url = `${this.baseUrl}/${resource}/?${filter_string}`
+    const url = `${baseUrl}/${resource}/?${filter_string}`
     return this.fetchFactory(url)
   }
 
