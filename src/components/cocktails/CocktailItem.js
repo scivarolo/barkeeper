@@ -120,7 +120,7 @@ class CocktailItem extends Component {
     ingredients.forEach(ingredient => {
       addArray.push(API.save("user_shopping", {
         ingredient_id: ingredient.ingredient.id,
-        product_id: false,
+        product_id: null,
         quantity: 1
       }))
     })

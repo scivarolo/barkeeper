@@ -13,10 +13,13 @@ class RecipeIngredient extends Component {
   }
 
   inShoppingList = () => {
-    let found = this.props.userShoppingList.find(shoppingItem => {
-      return this.props.ingredient.ingredientId === shoppingItem.ingredientId || this.props.ingredient.ingredientId === shoppingItem.product.ingredientId
-    })
-    if(found) {
+    let { userShoppingList, ingredient } = this.props
+
+    // Check if the ingredient or matching product has already been added to the shopping list
+    let foundIngredient = userShoppingList.find(shoppingItem => shoppingItem.ingredient_id === ingredient.ingredient.id)
+    let foundProduct = userShoppingList.find(shoppingItem => shoppingItem.product ? shoppingItem.product.ingredient === ingredient.ingredient.id : false)
+
+    if(foundIngredient || foundProduct) {
       this.setState({inShoppingList: true})
     } else {
       this.setState({inShoppingList: false})
@@ -43,22 +46,21 @@ class RecipeIngredient extends Component {
           <span className="ingredient__amount">{ingredient.amount}</span>
           <span className="ingredient__unit">{
             ingredient.unit !== "count" ? ingredient.unit : null
-            }</span>
+          }</span>
         </span>
         <span className="ingredient__label">{this.props.label}</span>
         {(!canMake)
           ? !this.state.inShoppingList
             ? <FontAwesomeIcon className="ingredient-add-button"
-                onClick={() => this.props.addToShoppingList(ingredient)}
-                icon="cart-plus" />
+              onClick={() => this.props.addToShoppingList(ingredient)}
+              icon="cart-plus" />
             : <FontAwesomeIcon
-                className="in-shopping-list"
-                icon="check-circle" />
+              className="in-shopping-list"
+              icon="check-circle" />
           : null }
       </li>
     )
   }
-
 }
 
 export default RecipeIngredient
