@@ -11,12 +11,11 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
+import API from "../../modules/data/data"
 import jsonAPI from "../../modules/data/API"
 import IngredientInput from "./IngredientInput"
 import user from "../../modules/data/user"
 import "./newCocktail.scss"
-
-// TODO: Prevent already used recipe name
 
 class NewCocktail extends Component {
 
@@ -26,6 +25,7 @@ class NewCocktail extends Component {
     cocktailIngredients: {},
     cocktailName: "",
     cocktailInstructions: "",
+    cocktailNotes: "",
     newCocktailId: "",
     ingredientRows: 3,
     newIngredientIds: []
@@ -36,7 +36,7 @@ class NewCocktail extends Component {
   }
 
   loadIngredients = () => {
-    return jsonAPI.getAll("ingredients")
+    return API.getAll("ingredients")
       .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
@@ -123,83 +123,48 @@ class NewCocktail extends Component {
     return this.setState({ingredientInputs: array})
   }
 
-  saveRecipe = (e) => {
+  saveRecipe = e => {
     e.preventDefault()
-
-    let {cocktailIngredients, cocktailName, cocktailInstructions} = this.state
-    // Save Recipe Name and Instructions to "cocktails" resource
-    jsonAPI.saveData("cocktails", {
+    let {cocktailIngredients, cocktailName, cocktailInstructions, cocktailNotes} = this.state
+    let cocktailData = {
       name: cocktailName,
       instructions: cocktailInstructions,
-      createdBy: user.getId()
-    })
-    // Capture new recipe ID from response
-      .then(r => this.setState({newRecipeId: r.id}))
-    // Check if any new ingredients and create entries in ingredients table.
-      .then(() => {
-        let newIngredients = []
-        for (let i in cocktailIngredients) {
-          if (cocktailIngredients[i].ingredient.customOption) {
-            let obj = {
-              label: cocktailIngredients[i].ingredient.label,
-              liquid: true,
-              createdBy: user.getId()
-            }
-            if (cocktailIngredients[i].unit === "count") obj.liquid = false
-            newIngredients.push(jsonAPI.saveData("ingredients", obj))
-          }
-        }
-        if (newIngredients.length) {
-          return Promise.all(newIngredients)
-            .then(newIngredients => {
-            // setState with the new ingredient IDs
-              this.setState({
-                newIngredientIds: newIngredients
-              })
-            })
-        } else {
-          return
-        }
-      })
-    // For each ingredient, save relationship in cocktailIngredients
-      .then(() => {
-        let ingredients = []
-        for(let i in cocktailIngredients) {
-          if(cocktailIngredients[i].ingredient) {
+      notes: cocktailNotes,
+      ingredients: []
+    }
 
-            //Use the ingredientId unless it was new, then find the id from the newIds array in state
-            let ingredientId = cocktailIngredients[i].ingredient.id
-            if(cocktailIngredients[i].ingredient.customOption) {
-              ingredientId = this.state.newIngredientIds.find(newIng => newIng.label === cocktailIngredients[i].ingredient.label).id
-            }
+    // cocktailIngredients.forEach(ingredient)
+    for (let i in cocktailIngredients) {
+      let ingredientObj = {
+        ingredient: {
+          name: cocktailIngredients[i].ingredient.name,
+          liquid: cocktailIngredients[i].unit === "count" ? false : true
+        },
+        sort_order: cocktailIngredients[i].sortOrder,
+        amount: Number(cocktailIngredients[i].amount),
+        unit: cocktailIngredients[i].unit
+      }
+      cocktailData.ingredients.push(ingredientObj)
+    }
 
-            let ingredientObj = {
-              cocktailId: this.state.newRecipeId,
-              ingredientId: ingredientId,
-              sortOrder: cocktailIngredients[i].sortOrder,
-              amount: Number(cocktailIngredients[i].amount),
-              unit: cocktailIngredients[i].unit,
-              isRequired: true
-            }
-            ingredients.push(jsonAPI.saveData("cocktailIngredients", ingredientObj))
-          }
-        }
-        return Promise.all(ingredients)
-      })
-    // Save relationship to userCocktails with new recipe ID
-      .then(() => jsonAPI.saveData("userCocktails", {
-        cocktailId: this.state.newRecipeId,
-        userId: user.getId(),
-        wantToMake: true,
-        makeCount: 0
-      }))
-    // Redirect and show success message
-      .then(() => {
-        this.props.toggleAlert("success", `${this.state.cocktailName} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
-        this.props.history.push({
-          pathname: "/cocktails"
+    if (cocktailData.ingredients.length > 0) {
+      API.save("cocktails", cocktailData)
+        .then(r => this.setState({newRecipeId: r.id}))
+        .then(() => API.save("user_cocktails", {
+          cocktail_id: this.state.newRecipeId,
+          make_count: 0,
+          is_saved: true
+        }))
+        .then(() => {
+          this.props.toggleAlert("success", `${this.state.cocktailName} Created`, `${this.state.cocktailName} saved successfully and added to your list.`)
+          this.props.history.push({
+            pathname: "/cocktails"
+          })
         })
-      })
+        .catch(error => this.props.toggleAlert("warning", "Error: Try Again", error))
+    } else {
+      this.props.toggleAlert("warning", "You must enter ingredients to create a cocktail", "Please enter some ingredients.")
+    }
   }
 
   render() {
@@ -246,6 +211,8 @@ class NewCocktail extends Component {
             <Col md={5}>
               <Label for="cocktailInstructions" className="mb-3">Instructions</Label>
               <Input type="textarea" id="cocktailInstructions" onChange={e => this.valueToState(e.target.id, e.target.value)} required={true} rows="5" />
+              <Label for="cocktailNotes" className="my-3">Notes (optional)</Label>
+              <Input type="textarea" id="cocktailNotes" onChange={e => this.valueToState(e.target.id, e.target.value)} rows="3"></Input>
             </Col>
           </Row>
 

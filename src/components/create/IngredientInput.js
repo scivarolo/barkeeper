@@ -47,7 +47,7 @@ class IngredientInput extends Component {
               className="ingredient-typeahead"
               allowNew
               newSelectionPrefix="Add New: "
-              labelKey="label"
+              labelKey="name"
               options={ingredients}
               placeholder="Search for Ingredient"
               onChange={selected => {

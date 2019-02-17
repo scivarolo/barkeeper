@@ -4,7 +4,7 @@ import {
   Label,
   Input
 } from "reactstrap"
-import jsonAPI from "../../modules/data/API"
+import API from "../../modules/data/data"
 import "./ingredientFilter.scss"
 
 class IngredientFilter extends Component {
@@ -14,15 +14,8 @@ class IngredientFilter extends Component {
   }
 
   componentDidMount() {
-    jsonAPI.getAll("ingredients")
-      .then(ingredients => {
-        ingredients.sort((a,b) => {
-          a = a.label.toLowerCase()
-          b = b.label.toLowerCase()
-          return (a < b) ? -1 : (a > b) ? 1 : 0
-        })
-        this.setState({ingredients: ingredients})
-      })
+    API.getAll("ingredients")
+      .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   handleChange = (e) => {
@@ -55,7 +48,7 @@ class IngredientFilter extends Component {
                       onChange={
                         e => this.handleChange(e)
                       }
-                      name="ingredientFilter" />{` ${ingredient.label}`}
+                      name="ingredientFilter" />{` ${ingredient.name}`}
                   </Label>
                 </FormGroup>
               )

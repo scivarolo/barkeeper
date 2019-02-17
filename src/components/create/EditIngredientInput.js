@@ -26,13 +26,13 @@ class EditIngredientInput extends Component {
   componentDidMount() {
     if(!this.props.initialIngredient) {
       this.props.ingredientToState(`ingredient${this.props.ingredientId}`, "additionalIngredient", true)
+      this.props.ingredientToState(`ingredient${this.props.ingredientId}`, "sortOrder", this.props.sortOrder)
     }
   }
 
   checkSelection = (selected) => {
     let newState = {}
     if (selected.length) {
-      newState.isRequired = true
       if (selected[0].liquid === false) {
         newState.disableUnits = true
       } else {
@@ -57,7 +57,7 @@ class EditIngredientInput extends Component {
               className="ingredient-typeahead"
               allowNew
               newSelectionPrefix="Add New: "
-              labelKey="label"
+              labelKey="name"
               options={ingredients}
               placeholder="Search for Ingredient"
               defaultSelected={this.props.initialIngredientName ? [this.props.initialIngredientName] : []}
@@ -65,12 +65,13 @@ class EditIngredientInput extends Component {
                 if (selected.length) {
                   this.checkSelection(selected)
                   this.props.ingredientToState(stateKey, "ingredientId", selected[0].id)
-                  this.props.ingredientToState(stateKey, "ingredientName", selected[0].label)
+                  this.props.ingredientToState(stateKey, "ingredientName", selected[0].name)
                   if (selected.length && selected[0].liquid === false) this.props.ingredientToState(stateKey, "unit", "count")
                   selected[0].customOption ? this.setState({isNew: true}) : this.setState({isNew: false})
                 }
                 else {
                   this.setState({isRequired:false})
+                  this.props.ingredientToState(stateKey, "ingredientName", "")
                   if(this.props.initialIngredient) {
                     this.props.ingredientToState(stateKey, "ingredientId", this.props.initialIngredient.id)
                   } else {

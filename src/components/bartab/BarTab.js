@@ -9,11 +9,12 @@ import {
 import "./bartab.scss"
 import BarTabCocktail from "./BarTabCocktail"
 import jsonAPI from "../../modules/data/API"
+import API from "../../modules/data/data"
 
 class BarTab extends Component {
 
   removeFromUserTab = (userTabId) => {
-    return jsonAPI.deleteData("userTab", userTabId)
+    return API.delete("user_tab", userTabId)
       .then(() => this.props.getUserTab())
   }
 
@@ -48,7 +49,7 @@ class BarTab extends Component {
                     key={tabCocktail.id}
                     cocktail={tabCocktail}
                     userInventory={this.props.userInventory}
-                    ingredients={this.props.cocktails.find(c => c.id === tabCocktail.cocktailId).cocktailIngredients}
+                    ingredients={this.props.cocktails.find(c => c.id === tabCocktail.cocktail_id).ingredients}
                     removeFromUserTab={this.removeFromUserTab}
                     makeWithThisIngredient={this.props.makeWithThisIngredient}
                     cocktailProducts={this.props.userTabProducts[tabCocktail.id]}

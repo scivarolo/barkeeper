@@ -3,7 +3,7 @@ import {
   Col,
   Row,
   ListGroupItem } from "reactstrap"
-import API from "../../../modules/data/API"
+import API from "../../../modules/data/data"
 import RecipeIngredient from "../recipe/RecipeIngredient"
 import user from "../../../modules/data/user"
 import CocktailEditModal from "../CocktailEditModal"
@@ -12,16 +12,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 class DiscoverItem extends Component {
 
-  state = { }
-  // Adds a cocktail receipe to the user's list.
+  // Adds a cocktail recipe to the user's list.
   userAddsCocktail = () => {
     let obj = {
-      "userId": user.getId(),
-      "cocktailId": this.props.cocktail.id,
-      "wantToMake": true,
-      "makeCount": 0
+      "cocktail_id": this.props.cocktail.id,
+      "make_count": 0,
     }
-    return API.saveData("userCocktails", obj)
+    return API.save("user_cocktails", obj)
       .then(() => this.props.getUserCocktailData())
       .then(() => this.props.allMinusUserCocktails())
   }
@@ -60,13 +57,13 @@ class DiscoverItem extends Component {
             <h5>Ingredients</h5>
             <ul className="recipe-ingredients mb-2">
               {
-                cocktail.cocktailIngredients.map((cIngredient, i) => {
+                cocktail.ingredients.map((cIngredient, i) => {
                   return (
                     <RecipeIngredient
                       key={cIngredient.id}
                       canMake={true}
                       ingredient={cIngredient}
-                      label={ingredients.find(label => label.id === cIngredient.ingredientId).label} />
+                      label={ingredients.find(label => label.id === cIngredient.ingredient_id).name} />
                   )
                 })
               }

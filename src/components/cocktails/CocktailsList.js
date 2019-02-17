@@ -26,7 +26,8 @@ class CocktailsList extends Component {
         {
           cocktails.map((cocktail, i) => {
             //Find the userCocktail relationship that goes with the cocktail.
-            let thisUserCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === cocktail.id)
+            let thisUserCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktail_id === cocktail.id)
+
             return (
               <CocktailItem
                 key={thisUserCocktail.id}

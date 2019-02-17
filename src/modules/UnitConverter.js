@@ -42,8 +42,8 @@ class Units {
     return startValue * base / toUnitBase
   }
   compare(aVal, aUnit, bVal, bUnit) {
-    let a = this.convert(aVal, aUnit, "ml")
-    let b = this.convert(bVal, bUnit, "ml")
+    let a = this.convert(parseFloat(aVal), aUnit, "ml")
+    let b = this.convert(parseFloat(bVal), bUnit, "ml")
 
     if (a > b) {
       return 1
