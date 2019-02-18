@@ -34,7 +34,7 @@ class DiscoverItem extends Component {
             <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
             <span className="cocktail-utils">
               {
-                this.props.cocktail.createdBy === user.getId()
+                this.props.cocktail.created_by === user.getId()
                   ? <CocktailEditModal
                     buttonLabel="Edit"
                     cocktail={cocktail}
@@ -60,10 +60,10 @@ class DiscoverItem extends Component {
                 cocktail.ingredients.map((cIngredient, i) => {
                   return (
                     <RecipeIngredient
-                      key={cIngredient.id}
+                      key={cIngredient.ingredient.id}
                       canMake={true}
                       ingredient={cIngredient}
-                      label={ingredients.find(label => label.id === cIngredient.ingredient_id).name} />
+                      label={cIngredient.ingredient.name} />
                   )
                 })
               }
@@ -72,6 +72,13 @@ class DiscoverItem extends Component {
           <Col>
             <h5>Instructions</h5>
             <p>{cocktail.instructions}</p>
+            {cocktail.notes
+              ? <>
+                  <h6>Notes</h6>
+                  <p>{cocktail.notes}</p>
+                </>
+              : null
+            }
           </Col>
         </Row>
       </ListGroupItem>
