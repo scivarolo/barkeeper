@@ -5,7 +5,11 @@
 const user = {
 
   getId() {
-    return parseInt(1)
+    return localStorage.getItem("user_id")
+  },
+
+  getUsername() {
+    return localStorage.getItem("username")
   },
 
   getToken() {

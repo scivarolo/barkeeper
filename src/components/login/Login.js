@@ -90,13 +90,14 @@ class Login extends Component {
       .then((tokenObj) => {
         if (tokenObj.token) {
           window.localStorage.setItem("token", tokenObj.token)
+          window.localStorage.setItem("user_id", tokenObj.user_id)
         } else {
           this.setState({loginFailed: true})
         }
         this.props.authenticate()
       })
       .catch(() => {
-        this.setState({registerError:"Username already in use."})
+        this.setState({registerError: "Username already in use."})
       })
   }
 
