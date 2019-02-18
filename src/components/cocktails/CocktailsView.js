@@ -139,18 +139,22 @@ class CocktailsView extends Component {
   }
 
   getUserInventory() {
-    API.getAll("user_products")
+    return API.getAll("user_products")
       .then(data => this.setState({userInventory: data}))
   }
 
   getShoppingList = () => {
-    API.getAll("user_shopping")
+    return API.getAll("user_shopping")
       .then(data => this.setState({userShoppingList: data}))
   }
 
   getUserTab = () => {
-    API.getAll("user_tab")
-      .then(data => this.setState({userTab: data}))
+    // Loads the user tab data and gets the product choices if applicable.
+    return API.getAll("user_tab")
+      .then(data => {
+        data.forEach(cocktail => this.getTabCocktailProductChoices(cocktail))
+        return this.setState({userTab: data})
+      })
   }
 
   addToUserTab = (cocktailId) => {

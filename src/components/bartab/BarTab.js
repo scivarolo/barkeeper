@@ -18,10 +18,6 @@ class BarTab extends Component {
       .then(() => this.props.getUserTab())
   }
 
-  componentDidMount() {
-    return this.props.userTab.forEach(c => this.props.getTabCocktailProductChoices(c))
-  }
-
   componentDidUpdate(prevProps) {
     if(prevProps.userTab !== this.props.userTab) {
       return this.props.userTab.forEach(c => this.props.getTabCocktailProductChoices(c))
