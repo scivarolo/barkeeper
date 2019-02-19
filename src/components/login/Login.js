@@ -79,7 +79,7 @@ class Login extends Component {
   // and sending back the Token or error.
   postAuth(route, user) {
 
-    return fetch(`http://127.0.0.1:8000/${route}/`, {
+    return fetch(`http://barkeeper-api.sebastiancivarolo.com/${route}/`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {

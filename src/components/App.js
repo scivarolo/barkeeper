@@ -20,6 +20,7 @@ import {
   faChevronUp,
   faChevronDown,
   faBookmark } from "@fortawesome/free-solid-svg-icons"
+import user from "../modules/data/user";
 
 library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faTimes, faCheck, faPen, faChevronUp, faChevronDown)
 
@@ -29,7 +30,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAuthenticated: () => window.localStorage.getItem("token") ? true : false
+      isAuthenticated: () => user.getToken() ? true : false,
     }
   }
 
@@ -38,7 +39,7 @@ class App extends Component {
   }
 
   authenticate = () => {
-    if (window.localStorage.getItem("token")) {
+    if (user.getToken() !== null) {
       this.setState({isAuthenticated: true})
     } else {
       this.setState({isAuthenticated: false})

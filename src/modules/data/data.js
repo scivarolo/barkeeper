@@ -1,6 +1,6 @@
 import user from "./user"
 
-const baseUrl = "http://localhost:8000/api"
+const baseUrl = "http://barkeeper-api.sebastiancivarolo.com/api"
 const headers = {
   "Content-Type": "application/json",
   "Authorization": `Token ${user.getToken()}`
@@ -9,7 +9,12 @@ class API {
 
   // Fetch function builder used below.
   fetchFactory(url, method, body) {
-    const fetchObj = { headers: headers }
+    const fetchObj = {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Token ${user.getToken()}`
+      }
+    }
     if (method) fetchObj.method = method
     if (body) fetchObj.body = JSON.stringify(body)
     return fetch(url, fetchObj).then(r => r.json())
