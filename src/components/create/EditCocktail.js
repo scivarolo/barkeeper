@@ -10,10 +10,8 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
-import jsonAPI from "../../modules/data/API"
 import API from "../../modules/data/data"
 import EditIngredientInput from "./EditIngredientInput"
-import user from "../../modules/data/user"
 import "./newCocktail.scss"
 
 class EditCocktail extends Component {

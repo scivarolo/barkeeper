@@ -12,9 +12,7 @@ import {
   Input,
   Label } from "reactstrap"
 import API from "../../modules/data/data"
-import jsonAPI from "../../modules/data/API"
 import IngredientInput from "./IngredientInput"
-import user from "../../modules/data/user"
 import "./newCocktail.scss"
 
 class NewCocktail extends Component {

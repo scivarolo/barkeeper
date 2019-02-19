@@ -8,7 +8,6 @@ import {
   Table } from "reactstrap"
 import "./bartab.scss"
 import BarTabCocktail from "./BarTabCocktail"
-import jsonAPI from "../../modules/data/API"
 import API from "../../modules/data/data"
 
 class BarTab extends Component {
