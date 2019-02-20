@@ -9,7 +9,8 @@ import {
   Col,
   Container,
   InputGroup,
-  Row, } from "reactstrap"
+  Row,
+  Spinner } from "reactstrap"
 import API from "../../modules/data/data"
 import ShoppingListItem from "./ShoppingListItem"
 import AddProduct from "./AddProduct"
@@ -96,7 +97,8 @@ class ShoppingListView extends Component {
           <Row>
             <Col>
               <div className="shopping-list-grid">
-                {
+
+                { shoppingProducts.length ?
                   shoppingProducts.map(item => {
                     return <ShoppingListItem
                       key={item.id}
@@ -105,6 +107,7 @@ class ShoppingListView extends Component {
                       getShoppingData={this.getShoppingData}
                       deleteItem={this.deleteItem} />
                   })
+                  : (<h4>You don't have any items in your shopping list. Add products and ingredients.</h4>)
                 }
               </div>
             </Col>
@@ -114,11 +117,7 @@ class ShoppingListView extends Component {
     } else {
       return (
         <Container>
-          <Row>
-            <Col>
-              <div>Loading</div>
-            </Col>
-          </Row>
+          <div className="mt-5 text-center"><Spinner color="success" style={{width: "3rem", height: "3rem"}} /></div>
         </Container>
       )
     }

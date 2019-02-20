@@ -21,30 +21,34 @@ class CocktailsList extends Component {
       showOnlyMakeable
     } = this.props
 
-    return (
-      <ListGroup>
-        {
-          cocktails.map((cocktail, i) => {
-            //Find the userCocktail relationship that goes with the cocktail.
-            let thisUserCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktail_id === cocktail.id)
+    if (cocktails.length)
+      return (
+        <ListGroup>
+          {
+            cocktails.map((cocktail, i) => {
+              //Find the userCocktail relationship that goes with the cocktail.
+              let thisUserCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktail_id === cocktail.id)
 
-            return (
-              <CocktailItem
-                key={thisUserCocktail.id}
-                cocktail={cocktail}
-                ingredients={cocktailIngredients[i]}
-                userCocktail={thisUserCocktail}
-                userInventory={userInventory}
-                userShoppingList={userShoppingList}
-                getShoppingList={this.props.getShoppingList}
-                getUserCocktailData={this.props.getUserCocktailData}
-                addToUserTab={this.props.addToUserTab}
-                showOnlyMakeable={showOnlyMakeable} />
-            )
-          })
-        }
-      </ListGroup>
-    )
+              return (
+                <CocktailItem
+                  key={thisUserCocktail.id}
+                  cocktail={cocktail}
+                  ingredients={cocktailIngredients[i]}
+                  userCocktail={thisUserCocktail}
+                  userInventory={userInventory}
+                  userShoppingList={userShoppingList}
+                  getShoppingList={this.props.getShoppingList}
+                  getUserCocktailData={this.props.getUserCocktailData}
+                  addToUserTab={this.props.addToUserTab}
+                  showOnlyMakeable={showOnlyMakeable} />
+              )
+            })
+          }
+        </ListGroup>
+      )
+    else {
+      return (<h4>Looks like you don't have any cocktails saved! Discover some!</h4>)
+    }
   }
 
 }

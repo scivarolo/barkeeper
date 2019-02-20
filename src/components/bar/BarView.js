@@ -9,7 +9,8 @@ import {
   Row,
   Col,
   InputGroup,
-  ListGroup } from "reactstrap"
+  ListGroup,
+  Spinner } from "reactstrap"
 import API from "../../modules/data/data"
 import BarItem from "./BarItem"
 import AddToBar from "./AddToBar"
@@ -62,14 +63,16 @@ function BarView(props) {
           <Col>
             <ListGroup>
               { /* List items in inventory */
-                inventory.map(item => {
-                  return (
-                    <BarItem
-                      key={item.id}
-                      item={item}
-                      getInventory={getInventory} />
-                  )
-                })
+                inventory.length ?
+                  inventory.map(item => {
+                    return (
+                      <BarItem
+                        key={item.id}
+                        item={item}
+                        getInventory={getInventory} />
+                    )
+                  })
+                  : (<h4>You don't have any products in your bar. Add some!</h4>)
               }
             </ListGroup>
           </Col>
@@ -80,7 +83,7 @@ function BarView(props) {
   else {
     return (
       <Container>
-        <div>Loading</div>
+        <div className="mt-5 text-center"><Spinner color="success" style={{width: "3rem", height: "3rem"}} /></div>
       </Container>
     )
   }

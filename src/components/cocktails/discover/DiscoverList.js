@@ -26,23 +26,28 @@ class DiscoverList extends Component {
 
     if (this.state.loaded) {
 
-      return (
-        <ListGroup>
-          {
-            cocktails.map((cocktail, i) => {
-              return (
-                <DiscoverItem
-                  key={cocktail.id}
-                  cocktail={cocktail}
-                  ingredients={cocktailIngredients[i]}
-                  getUserCocktailData={this.props.getUserCocktailData}
-                  allMinusUserCocktails={this.props.allMinusUserCocktails}
-                />
-              )
-            })
-          }
-        </ListGroup>
-      )
+      if (cocktails.length) {
+        return (
+          <ListGroup>
+            {
+              cocktails.map((cocktail, i) => {
+                return (
+                  <DiscoverItem
+                    key={cocktail.id}
+                    cocktail={cocktail}
+                    ingredients={cocktailIngredients[i]}
+                    getUserCocktailData={this.props.getUserCocktailData}
+                    allMinusUserCocktails={this.props.allMinusUserCocktails}
+                  />
+                )
+              })
+            }
+          </ListGroup>
+        )
+      } else {
+        return (<h4>You saved every cocktail! How about adding a new recipe?</h4>)
+      }
+
     } else {
       return <div>Loading</div>
     }

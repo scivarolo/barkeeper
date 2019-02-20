@@ -4,7 +4,8 @@ import {
   Button,
   Container,
   Row,
-  Col } from "reactstrap"
+  Col,
+  Spinner } from "reactstrap"
 import { Link } from "react-router-dom"
 import API from "../../modules/data/data"
 import user from "../../modules/data/user"
@@ -509,11 +510,7 @@ class CocktailsView extends Component {
     } else {
       return (
         <Container>
-          <Row>
-            <Col>
-              <div>Loading</div>
-            </Col>
-          </Row>
+          <div className="mt-5 text-center"><Spinner color="success" style={{width: "3rem", height: "3rem"}} /></div>
         </Container>
       )
     }
