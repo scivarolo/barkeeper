@@ -1,29 +1,27 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Col,
   Row,
-  ListGroupItem } from 'reactstrap'
-import API from '../../../modules/data/API'
-import RecipeIngredient from '../recipe/RecipeIngredient'
-import user from '../../../modules/data/user'
-import CocktailEditModal from '../CocktailEditModal'
+  ListGroupItem } from "reactstrap"
+import API from "../../../modules/data/data"
+import RecipeIngredient from "../recipe/RecipeIngredient"
+import user from "../../../modules/data/user"
+import CocktailEditModal from "../CocktailEditModal"
 import "../cocktailItem.scss"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 class DiscoverItem extends Component {
 
-  state = { }
-  // Adds a cocktail receipe to the user's list.
+  // Adds a cocktail recipe to the user's list.
   userAddsCocktail = () => {
     let obj = {
-      "userId": user.getId(),
-      "cocktailId": this.props.cocktail.id,
-      "wantToMake": true,
-      "makeCount": 0
+      "cocktail_id": this.props.cocktail.id,
+      "make_count": 0,
     }
-    return API.saveData("userCocktails", obj)
-    .then(() => this.props.getUserCocktailData())
-    .then(() => this.props.allMinusUserCocktails())
+    return API.save("user_cocktails", obj)
+      .then(() => this.props.getUserCocktailData())
+      .then(() => this.props.allMinusUserCocktails())
   }
 
   render() {
@@ -31,19 +29,19 @@ class DiscoverItem extends Component {
     let { cocktail, ingredients } = this.props
 
     return (
-      <ListGroupItem className={`mb-3 cocktail-item`} key={cocktail.id}>
+      <ListGroupItem className={"mb-3 cocktail-item"} key={cocktail.id}>
         <div className="d-flex mb-3 justify-content-between cocktail-header">
           <div>
             <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
             <span className="cocktail-utils">
               {
-                this.props.cocktail.createdBy === user.getId()
-                ? <CocktailEditModal
-                  buttonLabel="Edit"
-                  cocktail={cocktail}
-                  ingredientNames={ingredients}
-                  getUserCocktailData={this.props.getUserCocktailData}  />
-                : null
+                this.props.cocktail.created_by === user.getId()
+                  ? <CocktailEditModal
+                    buttonLabel="Edit"
+                    cocktail={cocktail}
+                    ingredientNames={ingredients}
+                    getUserCocktailData={this.props.getUserCocktailData}  />
+                  : null
               }
             </span>
           </div>
@@ -60,13 +58,13 @@ class DiscoverItem extends Component {
             <h5>Ingredients</h5>
             <ul className="recipe-ingredients mb-2">
               {
-                cocktail.cocktailIngredients.map((cIngredient, i) => {
+                cocktail.ingredients.map((cIngredient) => {
                   return (
                     <RecipeIngredient
-                      key={cIngredient.id}
+                      key={cIngredient.ingredient.id}
                       canMake={true}
                       ingredient={cIngredient}
-                      label={ingredients.find(label => label.id === cIngredient.ingredientId).label} />
+                      label={cIngredient.ingredient.name} />
                   )
                 })
               }
@@ -75,6 +73,13 @@ class DiscoverItem extends Component {
           <Col>
             <h5>Instructions</h5>
             <p>{cocktail.instructions}</p>
+            {cocktail.notes
+              ? <>
+                  <h6>Notes</h6>
+                  <p>{cocktail.notes}</p>
+                </>
+              : null
+            }
           </Col>
         </Row>
       </ListGroupItem>
@@ -84,3 +89,10 @@ class DiscoverItem extends Component {
 }
 
 export default DiscoverItem
+
+DiscoverItem.propTypes = {
+  cocktail: PropTypes.object.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired,
+  allMinusUserCocktails: PropTypes.array.isRequired,
+  ingredients: PropTypes.array.isRequired
+}

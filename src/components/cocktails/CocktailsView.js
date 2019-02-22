@@ -1,18 +1,20 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Container,
   Row,
-  Col } from 'reactstrap'
-import { Link } from 'react-router-dom'
-import API from '../../modules/data/API'
-import user from '../../modules/data/user'
-import BarTab from '../bartab/BarTab'
-import Units from '../../modules/UnitConverter'
-import CocktailsList from './CocktailsList'
-import DiscoverList from './discover/DiscoverList'
-import CocktailSearch from './CocktailSearch'
-import IngredientFilter from './IngredientFilter'
+  Col,
+  Spinner } from "reactstrap"
+import { Link } from "react-router-dom"
+import API from "../../modules/data/data"
+import user from "../../modules/data/user"
+import BarTab from "../bartab/BarTab"
+import Units from "../../modules/UnitConverter"
+import CocktailsList from "./CocktailsList"
+import DiscoverList from "./discover/DiscoverList"
+import CocktailSearch from "./CocktailSearch"
+import IngredientFilter from "./IngredientFilter"
 
 class CocktailsView extends Component {
 
@@ -41,10 +43,10 @@ class CocktailsView extends Component {
 
   componentDidMount() {
     this.getUserCocktailData()
-    .then(() => this.getUserInventory())
-    .then(() => this.getShoppingList())
-    .then(() => this.getUserTab())
-    .then(() => this.setState({isLoaded: true}))
+      .then(() => this.getUserInventory())
+      .then(() => this.getShoppingList())
+      .then(() => this.getUserTab())
+      .then(() => this.setState({isLoaded: true}))
   }
 
   toggleMakeable = () => {
@@ -66,8 +68,8 @@ class CocktailsView extends Component {
   }
 
   loadAllCocktails = () => {
-    return API.getWithEmbed("cocktails", "cocktailIngredients")
-    .then(data => this.setState({allCocktails: data}))
+    return API.getAll("cocktails")
+      .then(data => this.setState({allCocktails: data}))
   }
 
   allMinusUserCocktails = () => {
@@ -79,119 +81,115 @@ class CocktailsView extends Component {
       }
     })
 
-    filtered.sort((a, b) => {
-      let aName = a.name.toUpperCase()
-      let bName = b.name.toUpperCase()
-      return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
-    })
-    return this.getIngredientData(filtered)
-    .then((ingredients) => this.setState({
+    let ingredients = this.getIngredientData(filtered)
+
+    return this.setState({
       allMinusUserCocktails: filtered,
       allMinusUserCocktailIngredients: ingredients
     })
-    )
+
   }
 
   /* for use after a fetch. Doesn't set state, so set it in the appropriate function. */
   getIngredientData = (cocktails) => {
     let ingredients = []
+    // TODO: Use the integrated ingredients rather than the separate ingredients object.
+    //build ingredients as separate state object (remnant from json-server)
     cocktails.forEach(c => {
-      //build query string for getting ingredient names of each cocktail
-      let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
-      ingredients.push(API.getWithFilters(`ingredients`, queryString))
+      ingredients.push(c.ingredients)
     })
-    return Promise.all(ingredients)
+    return ingredients
   }
 
   getDiscoverCocktails = () => {
     return this.loadAllCocktails()
-    .then(() => this.allMinusUserCocktails())
+      .then(() => this.allMinusUserCocktails())
   }
 
   getUserCocktailData = () => {
+    /* Load the user's cocktails, and load the cocktail data with the IDs from that array. */
     let newState = {}
-    //get userCocktails
-    return API.getWithExpand("userCocktails", "cocktail", this.state.userId)
-    .then(userCocktails => {
-      newState.userCocktailsRelations = userCocktails
-      //use cocktailId to get cocktails
-      let cocktailQueries = userCocktails.map(
-        c => API.getWithEmbed(`cocktails/${c.cocktailId}`, "cocktailIngredients")
-      )
-      //each Promise returns a cocktail with cocktailIngredients embedded
-      return Promise.all(cocktailQueries)
-    })
-    .then(cocktails => {
-      newState.userCocktails = cocktails.sort((a,b) => {
-        let aName = a.name.toUpperCase()
-        let bName = b.name.toUpperCase()
-        return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
-      })
 
-      //for each cocktail, loop through array of ingredients to build fetchs for each ingredient
-      let ingredientQueries = []
-      cocktails.forEach(c => {
-        //build query string for getting ingredient names of each cocktail
-        let queryString = c.cocktailIngredients.reduce((q, ing) => q + `&id=${ing.ingredientId}`, '').substr(1)
-        ingredientQueries.push(API.getWithFilters(`ingredients`, queryString))
+    // get user_cocktails
+    return API.getAll("user_cocktails")
+      .then(userCocktails => {
+        newState.userCocktailsRelations = userCocktails
+        //use 'cocktail' from user_cocktail to get cocktail data
+        let cocktailQueries = userCocktails.map(
+          c => API.getOne("cocktails", c.cocktail_id)
+        )
+        //each Promise returns a cocktail with cocktailIngredients embedded
+        return Promise.all(cocktailQueries)
       })
-      return Promise.all(ingredientQueries)
-    })
-    .then(cocktailIngredients => {
-      newState.userCocktailIngredients = cocktailIngredients
-    })
-    .then(() => this.setState(newState))
+      .then(cocktails => {
+        newState.userCocktails = cocktails
+
+        // Loops through cocktails and saves ingredients in state as a separate array
+        // Remnant from using json-server, but now the cocktail returns all of the ingredient data inside it.
+        // TODO: Rewrite anywhere that uses userCocktailIngredients to just reference the ingredients from within the cocktail
+        let cocktailIngredients = []
+        cocktails.forEach(cocktail => {
+          cocktailIngredients.push(cocktail.ingredients)
+        })
+        return cocktailIngredients
+      })
+      .then(cocktailIngredients => {
+        newState.userCocktailIngredients = cocktailIngredients
+      })
+      .then(() => this.setState(newState))
+      .catch(error => this.toggleAlert("warning", "Something went wrong. Try again.", error))
   }
 
   getUserInventory() {
-    API.getWithExpand("userProducts", "product", this.state.userId)
-    .then(data => this.setState({userInventory: data}))
+    return API.getAll("user_products")
+      .then(data => this.setState({userInventory: data}))
   }
 
   getShoppingList = () => {
-    API.getWithExpands("userShopping", this.state.userId, "product", "ingredient")
-    .then(data => this.setState({userShoppingList: data}))
+    return API.getAll("user_shopping")
+      .then(data => this.setState({userShoppingList: data}))
   }
 
   getUserTab = () => {
-    API.getWithExpands("userTab", this.state.userId, "cocktail")
-    .then(data => this.setState({userTab: data}))
+    // Loads the user tab data and gets the product choices if applicable.
+    return API.getAll("user_tab")
+      .then(data => {
+        data.forEach(cocktail => this.getTabCocktailProductChoices(cocktail))
+        return this.setState({userTab: data})
+      })
   }
 
   addToUserTab = (cocktailId) => {
-    let inTab = this.state.userTab.find(tabCocktail => tabCocktail.cocktailId === cocktailId)
+    let inTab = this.state.userTab.find(tabCocktail => tabCocktail.cocktail_id === cocktailId)
 
     if (inTab) {
       let obj = {
         quantity: inTab.quantity + 1
       }
-      return API.editData("userTab", inTab.id, obj)
-      .then(() => this.getUserTab())
+      return API.edit("user_tab", inTab.id, obj)
+        .then(() => this.getUserTab())
     }
 
     // else not already in tab
     let obj = {
-      userId: user.getId(),
-      cocktailId: cocktailId,
+      cocktail_id: cocktailId,
       quantity: 1
     }
-    return API.saveData("userTab", obj)
-    .then(() => this.getUserTab())
+    return API.save("user_tab", obj)
+      .then(() => this.getUserTab())
   }
 
   getTabCocktailProductChoices = (c) => {
-    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
-    .then((ingredients) => {
-      let prodsObj = {}
-      // find the products available for each ingredient
-      ingredients.forEach(ingredient => {
-        let prods = this.state.userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
-        prodsObj[ingredient.ingredientId] = prods
-      })
-      return this.setState(prevState => {
-        let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
-        return {userTabProducts: userTabProductsObj}
-      })
+
+    let prodsObj = {}
+    // find the products available for each ingredient
+    c.cocktail.ingredients.forEach(ingredient => {
+      let prods = this.state.userInventory.filter(item => item.product.ingredient === ingredient.ingredient.id)
+      prodsObj[ingredient.ingredient.id] = prods
+    })
+    return this.setState(prevState => {
+      let userTabProductsObj = Object.assign({}, prevState.userTabProducts, {[c.id]: prodsObj})
+      return {userTabProducts: userTabProductsObj}
     })
   }
 
@@ -201,122 +199,105 @@ class CocktailsView extends Component {
       tabCocktailId: Number(tabCocktailId),
       ingredientId: Number(ingredientId)
     }
-    this.setState(prevState => {
-      return {
-        tabChoices: Object.assign({}, prevState.tabChoices, {
-          [tabCocktailId]: {
-            [ingredientId]: obj
-          }
+    // For each ingredient, save the product choice inside an object for that tabCocktail inside tabChoices in state
+    return this.setState(prevState => {
+      let tabChoicesObj = Object.assign({}, prevState.tabChoices, {
+        [tabCocktailId]: Object.assign({}, prevState.tabChoices[tabCocktailId], {
+          [ingredientId]: obj
         })
+      })
+      return {
+        tabChoices: tabChoicesObj
       }
     })
 
   }
 
   makeCocktail = (c) => {
-    // c = the cocktail being made
-    return API.getWithFilters("cocktailIngredients", `cocktailId=${c.cocktailId}`)
-      .then((ingredients) => {
-        /**
-         * Loop through each of the cocktail's ingredients
-         * Find the first product in the inventory that matches
-         * and calculate how much will be left.
-         * Return all updates in a Promise.all
-         */
-        let productUpdates = []
+    // c = the bar tab cocktail being made
+    let ingredients = c.cocktail.ingredients
+    let productUpdates = []
+    let canMake = true
 
-        // Check if all ingredients are available
-        let canMake = true
-        ingredients.forEach(ingredient => {
-          let prod
-          // If multiple product options, and user specified one. Else, use the first one.
-          if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
-            let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
-            prod = this.state.userInventory.find(item => item.productId === productId)
-          } else {
-            prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
-          }
-          // If no product found, then cannot make it
-          if (!prod) {
-            canMake = false
-            return
-          }
+    // Check if each ingredient is available
+    ingredients.forEach(currentIngredient => {
+      let prod
+      // Check if user has specified any non-default choices for products to use to make this cocktail
+      if (this.state.tabChoices[c.id] && this.state.tabChoices[c.id][currentIngredient.ingredient.id]) {
+        let productId = this.state.tabChoices[c.id][currentIngredient.ingredient.id].productId
+        prod = this.state.userInventory.find(item => item.product_id === productId)
+      } else {
+        prod = this.state.userInventory.find(item => item.product.ingredient === currentIngredient.ingredient.id)
+      }
+      // If no product found, cannot make cocktail
+      if (!prod) {
+        canMake = false
+        return
+      }
 
-          // Check if there is enough of each ingredient to make the specified quantity.
-          const amountNeeded = ingredient.amount * c.quantity
-          const amountUnit = ingredient.unit
-          const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
-          const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * prod.quantity)), prod.product.unit, "ml")
+      // Check if there is enough of each ingredient to make the specified quantity
+      const amountNeededMl = Units.convert((currentIngredient.amount * c.quantity), currentIngredient.unit, "ml")
+      const prodAvailable = Units.convert((prod.amount_available + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
+      const amountLeft = prodAvailable - amountNeededMl
+      if (amountLeft < 0) canMake = false
+    })
 
-          const amountLeft = prodAvailable - amountNeededMl
-          if (amountLeft < 0) {
-            canMake = false
-          }
-        })
-
-        if (canMake) {
-          ingredients.forEach(ingredient => {
-            let prod
-            //If multiple product options, and user specified one. If not, just use the first one.
-            if(this.state.tabChoices[c.id] && this.state.tabChoices[c.id][ingredient.ingredientId]) {
-              let productId = this.state.tabChoices[c.id][ingredient.ingredientId].productId
-              prod = this.state.userInventory.find(item => item.productId === productId)
-            } else {
-              prod = this.state.userInventory.find(item => item.product.ingredientId === ingredient.ingredientId)
-            }
-            if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", `You're missing ingredients!`)
-
-            const amountNeeded = ingredient.amount * c.quantity
-            const amountUnit = ingredient.unit
-            const amountNeededMl = Units.convert(amountNeeded, amountUnit, "ml")
-            const prodAvailable = Units.convert((prod.amountAvailable + (prod.product.fullAmount * (prod.quantity - 1))), prod.product.unit, "ml")
-            const prodFullAmount = Units.convert(prod.product.fullAmount, prod.product.unit, "ml")
-            const amountLeft = prodAvailable - amountNeededMl
-            const quantityLeft = amountLeft / prodFullAmount
-            const quantityCeil = Math.ceil(quantityLeft)
-            let newAmountAvailable = amountLeft % prodFullAmount
-            if (newAmountAvailable === 0) {
-              newAmountAvailable = prodFullAmount
-            }
-            if (prod.product.unit !== "ml" && prod.product.unit !== "count") {
-              newAmountAvailable = Units.convert(newAmountAvailable, "ml", prod.product.unit)
-            }
-
-            const userProductId = prod.id
-            const userProductPatchObj = {
-              amountAvailable: newAmountAvailable,
-              quantity: quantityCeil
-            }
-
-            if (amountLeft < 0) {
-              return this.props.toggleAlert("warning", "Bummer", `You don't have enough of an ingredient to make this many.`)
-            } else if (amountLeft === 0) {
-              return productUpdates.push(
-                API.deleteData("userProducts", userProductId)
-              )
-            } else {
-              return productUpdates.push(
-                API.editData("userProducts", userProductId, userProductPatchObj)
-              )
-            }
-
-          })
-          return Promise.all(productUpdates)
-          .then(() => {
-            let userCocktail = this.state.userCocktailsRelations.find(userCocktail => userCocktail.cocktailId === c.cocktailId)
-            if (c.quantity > 1) {
-              this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}s!`)
-            } else {
-              this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
-            }
-            return API.editData("userCocktails", userCocktail.id, {makeCount: userCocktail.makeCount + c.quantity})
-          })
-          .then(() => API.deleteData("userTab", c.id))
+    if (canMake) {
+      ingredients.forEach(currentIngredient => {
+        let prod
+        if (this.state.tabChoices[c.id] && this.state.tabChoices[c.id][currentIngredient.ingredient.id]) {
+          let productId = this.state.tabChoices[c.id][currentIngredient.ingredient.id].productId
+          prod = this.state.userInventory.find(item => item.product_id === productId)
         } else {
-          this.props.toggleAlert("warning", "Bummer", `You're missing ingredients needed to make ${c.cocktail.name}.`)
+          prod = this.state.userInventory.find(item => item.product.ingredient === currentIngredient.ingredient.id)
+        }
+        if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", "You're missing ingredients!")
+
+        const amountNeededMl = Units.convert((currentIngredient.amount * c.quantity), currentIngredient.unit, "ml")
+        const prodAvailable = Units.convert((prod.amount_available + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
+        const prodSizeMl = Units.convert(prod.product.size, prod.product.unit, "ml")
+        const amountLeft = prodAvailable - amountNeededMl
+        const quantityLeft = Math.ceil(amountLeft / prodSizeMl)
+
+        let newAmountAvailable = amountLeft % prodSizeMl
+        if (newAmountAvailable === 0) {
+          newAmountAvailable = prodSizeMl
+        }
+        if (prod.product.unit !== "ml" && prod.product.unit !== "count") {
+          newAmountAvailable = Units.convert(newAmountAvailable, "ml", prod.product.unit)
         }
 
+        const userProductId = prod.id
+        const userProductPatchObj = {
+          amount_available: Math.round(newAmountAvailable),
+          quantity: quantityLeft
+        }
+
+        if (amountLeft < 0) {
+          return this.props.toggleAlert("warning", "Bummer", "You don't have enough of an ingredient to make this many.")
+        } else if (amountLeft === 0) {
+          return productUpdates.push(
+            API.delete("user_products", userProductId)
+          )
+        } else {
+          return productUpdates.push(
+            API.edit("user_products", userProductId, userProductPatchObj)
+          )
+        }
       })
+      return Promise.all(productUpdates)
+        .then(() => {
+          let userCocktail = this.state.userCocktailsRelations.find(userCocktail => userCocktail.cocktail_id === c.cocktail_id)
+          if (c.quantity > 1) {
+            this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}s!`)
+          } else {
+            this.props.toggleAlert("success", "Enjoy!", `You made ${c.quantity} ${c.cocktail.name}!`)
+          }
+          return API.edit("user_cocktails", userCocktail.id, {make_count: userCocktail.make_count + c.quantity})
+        }).then(() => API.delete("user_tab", c.id))
+    } else {
+      this.props.toggleAlert("warning", "Bummer", `You're missing ingredients needed to make ${c.cocktail.name}.`)
+    }
   }
 
   makeCocktails = (cocktailsToMake) => {
@@ -367,7 +348,7 @@ class CocktailsView extends Component {
     this.cocktailSearch.clear()
     let matchingIngredients = []
     let results = cocktailsToFilter.filter((cocktail, i) => {
-      if(cocktail.cocktailIngredients.find(cocktailIngredient => cocktailIngredient.ingredientId === ingredientId)) {
+      if(cocktail.ingredients.find(cocktailIngredient => cocktailIngredient.ingredient.id === ingredientId)) {
         matchingIngredients.push(cocktailIngredients[i])
         return cocktail
       } else {
@@ -447,67 +428,67 @@ class CocktailsView extends Component {
               <Row className="mb-5">
                 <Col className="d-flex">
                   <div>
-                    <h1>{this.state.discoverCocktails ? `Discover` : `My Cocktails`}</h1>
+                    <h1>{this.state.discoverCocktails ? "Discover" : "My Cocktails"}</h1>
                   </div>
                   <div className="ml-auto">
-                    <Button color="warning" onClick={this.toggleDiscover}>{!this.state.discoverCocktails ? `Discover` : `My Cocktails`}</Button>
+                    <Button color="warning" onClick={this.toggleDiscover}>{!this.state.discoverCocktails ? "Discover" : "My Cocktails"}</Button>
                     <Button color="primary" tag={Link} to="/cocktails/new">New Recipe</Button>
                   </div>
                 </Col>
               </Row>
-                {this.state.discoverCocktails
+              {this.state.discoverCocktails
                 ? null
                 : <Row className="mb-4">
-                    <Col>
+                  <Col>
 
-                      <Button color="warning" onClick={this.toggleMakeable}>
+                    <Button color="warning" onClick={this.toggleMakeable}>
                       {
                         this.state.showOnlyMakeable
-                        ? "Show All My Cocktails"
-                        : "Show Only Cocktails I Can Make"
+                          ? "Show All My Cocktails"
+                          : "Show Only Cocktails I Can Make"
                       }
-                      </Button>
-                    </Col>
-                  </Row>
-                }
+                    </Button>
+                  </Col>
+                </Row>
+              }
 
               <Row>
                 <Col>
-                {
-                  this.state.discoverCocktails
-                  ? <DiscoverList
-                      cocktails={cocktailsToShow}
-                      cocktailIngredients={ingredientsToShow}
-                      getDiscoverCocktails={this.getDiscoverCocktails}
-                      getUserCocktailData={this.getUserCocktailData}
-                      userCocktails={userCocktails}
-                      allMinusUserCocktails={this.allMinusUserCocktails}
-                    />
-                  : <CocktailsList
-                      cocktails={cocktailsToShow}
-                      cocktailIngredients={ingredientsToShow}
-                      userInventory={userInventory}
-                      userCocktailsRelations={userCocktailsRelations}
-                      userShoppingList={userShoppingList}
-                      getShoppingList={this.getShoppingList}
-                      getUserCocktailData={this.getUserCocktailData}
-                      addToUserTab={this.addToUserTab}
-                      showOnlyMakeable={showOnlyMakeable}
-                    />
-                }
-                { ((searching || filtering) && !searchResults.length)
-                  ? (discoverCocktails)
-                    ? <>
+                  {
+                    this.state.discoverCocktails
+                      ? <DiscoverList
+                        cocktails={cocktailsToShow}
+                        cocktailIngredients={ingredientsToShow}
+                        getDiscoverCocktails={this.getDiscoverCocktails}
+                        getUserCocktailData={this.getUserCocktailData}
+                        userCocktails={userCocktails}
+                        allMinusUserCocktails={this.allMinusUserCocktails}
+                      />
+                      : <CocktailsList
+                        cocktails={cocktailsToShow}
+                        cocktailIngredients={ingredientsToShow}
+                        userInventory={userInventory}
+                        userCocktailsRelations={userCocktailsRelations}
+                        userShoppingList={userShoppingList}
+                        getShoppingList={this.getShoppingList}
+                        getUserCocktailData={this.getUserCocktailData}
+                        addToUserTab={this.addToUserTab}
+                        showOnlyMakeable={showOnlyMakeable}
+                      />
+                  }
+                  { ((searching || filtering) && !searchResults.length)
+                    ? (discoverCocktails)
+                      ? <>
                         <h1>No cocktails match your search.</h1>
                         <p>Want to add a <a href="cocktails/new">new cocktail recipe</a>?</p>
                       </>
-                    : <>
+                      : <>
                         <h1>No cocktails found in your list.</h1>
                         <p>Perhaps try searching in <Button onClick={this.toggleDiscover}>Discover Cocktails</Button>?</p>
                       </>
-                  : null
+                    : null
 
-                }
+                  }
                 </Col>
               </Row>
 
@@ -529,11 +510,7 @@ class CocktailsView extends Component {
     } else {
       return (
         <Container>
-          <Row>
-            <Col>
-              <div>Loading</div>
-            </Col>
-          </Row>
+          <div className="mt-5 text-center"><Spinner color="success" style={{width: "3rem", height: "3rem"}} /></div>
         </Container>
       )
     }
@@ -542,3 +519,7 @@ class CocktailsView extends Component {
 }
 
 export default CocktailsView
+
+CocktailsView.propTypes = {
+  toggleAlert: PropTypes.func.isRequired
+}

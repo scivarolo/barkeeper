@@ -2,16 +2,17 @@
  * Handles Adding products to Bar Inventory.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
-  InputGroupAddon } from 'reactstrap'
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import user from '../../modules/data/user'
-import API from '../../modules/data/API'
-import NewProduct from '../create/NewProduct'
+  InputGroupAddon } from "reactstrap"
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
+import user from "../../modules/data/user"
+import API from "../../modules/data/data"
+import NewProduct from "../create/NewProduct"
 
 class AddToBar extends Component {
 
@@ -29,32 +30,38 @@ class AddToBar extends Component {
 
   // Selected products are added to the user's inventory
   addDropdownProducts = () => {
+
     if(!this.state.selected.length) return
+
     let userId = user.getId()
     let products = this.state.selected
     let savePromises = products.map(product => {
+      let haveProduct = this.props.inventory.find(invProduct => invProduct.product.id === product.id)
 
-      let haveProduct = this.props.inventory.find(invProduct => invProduct.productId === product.id)
-      if(haveProduct) {
-        return API.editData("userProducts", haveProduct.id, {
+      if (haveProduct) {
+        return API.edit("user_products", haveProduct.id, {
           quantity: haveProduct.quantity + 1
         })
       }
       else {
-        return API.saveData("userProducts", {
-          productId: product.id,
-          userId: userId,
+        return API.save("user_products", {
+          product_id: product.id,
+          user: userId,
           quantity: 1,
-          amountAvailable: this.state.allProducts.find(p => parseInt(p.id) === parseInt(product.id)).fullAmount
+          amount_available: this.state.allProducts.find(p => parseInt(p.id) === parseInt(product.id)).size
         })
       }
     })
+
     return Promise.all(savePromises)
-      .then(() => this.props.getInventoryData())
+      .then(() => this.props.getInventory())
       .then(() => {
         this.props.toggleAlert("success", "Products Added", `${this.state.selected.map(item => item.name)} successfully added to your bar inventory.`)
         this.setState({selected: []})
         this.props.toggle()
+      })
+      .catch(r => {
+        this.props.toggleAlert("danger", "Error saving Product", r)
       })
   }
 
@@ -87,8 +94,8 @@ class AddToBar extends Component {
             labelKey="name"
             options={this.state.allProducts.sort((a,b) => {
               let aName = a.name.toUpperCase()
-              let bName = b.name.toUpperCase();
-              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+              let bName = b.name.toUpperCase()
+              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0
             })}
             placeholder="Search for products"
             ref={(ref) => this._typeahead = ref}
@@ -98,13 +105,13 @@ class AddToBar extends Component {
           </InputGroupAddon>
           {
             this.state.showCreateNewProduct
-            ? <NewProduct
+              ? <NewProduct
                 product={this.state.selected[0]}
                 toggle={this.toggleCreateNewProduct}
                 toggleAlert={this.props.toggleAlert}
-                getInventoryData={this.props.getInventoryData}
+                getInventory={this.props.getInventory}
                 loadProducts={this.loadProducts} />
-            : null
+              : null
           }
         </>
       )
@@ -116,3 +123,11 @@ class AddToBar extends Component {
 }
 
 export default AddToBar
+
+AddToBar.propTypes = {
+  inventory: PropTypes.array.isRequired,
+  toggleAlert: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
+  getInventory: PropTypes.func.isRequired
+}

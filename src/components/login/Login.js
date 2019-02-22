@@ -1,24 +1,24 @@
-import React, { Component } from 'react'
-import { Container } from 'reactstrap'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Container } from "reactstrap"
 import "./login.scss"
 
-import LoginForm from './LoginForm'
-import RegisterForm from './RegisterForm'
-import API from '../../modules/data/API'
+import LoginForm from "./LoginForm"
+import RegisterForm from "./RegisterForm"
 
 class Login extends Component {
 
   state = {
     loginEmail: "",
     loginPassword: "",
-    loginName: "",
-    rememberMe: false,
+    loginUsername: "",
+    loginFirstName: "",
+    loginLastName: "",
     loginForm: true,
     passwordConfirm: "",
     passwordMatch: null,
-    registerSuccess: false,
     loginFailed: false,
-    emailTaken: false
+    registerError: "",
   }
 
   // Toggle between Login and Register
@@ -28,11 +28,7 @@ class Login extends Component {
 
   // Save input values to state
   handleFieldChange = (e) => {
-    if (e.target.type === "checkbox") {
-      this.setState({rememberMe: !this.state.rememberMe})
-    } else {
-      this.setState({[e.target.id]: e.target.value})
-    }
+    this.setState({[e.target.id]: e.target.value})
   }
 
   confirmPassword = (e) => {
@@ -63,62 +59,69 @@ class Login extends Component {
       match = null
     }
 
-    this.setState({passwordMatch: match})
+    this.setState({
+      passwordMatch: match
+    })
   }
 
+  // Grab the username and password and send it to postAuth for Django to authenticate
   submitLogin = (e) => {
     e.preventDefault()
-    // Check if email and password match a user in the database
-    return API.query("users", this.state.loginEmail)
-      .then(user => {
-        if(user.length && user[0].password === this.state.loginPassword) {
-          this.setState({loginFailed: false})
-          window.sessionStorage.setItem("id", user[0].id)
-          this.props.authenticate()
+    const user = {
+      username: this.state.loginUsername,
+      password: this.state.loginPassword
+    }
+    this.postAuth("api/api-token-auth", user)
+  }
+
+
+  // Handles sending login and registration to Django
+  // and sending back the Token or error.
+  postAuth(route, user) {
+
+    return fetch(`http://barkeeper-api.sebastiancivarolo.com/${route}/`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => response.json())
+      .then((tokenObj) => {
+        if (tokenObj.token) {
+          window.localStorage.setItem("token", tokenObj.token)
+          window.localStorage.setItem("user_id", tokenObj.user_id)
         } else {
           this.setState({loginFailed: true})
         }
+        this.props.authenticate()
+      })
+      .catch(() => {
+        this.setState({registerError: "Username already in use."})
       })
   }
 
-  submitRegister = (e) => {
+  registerDjango = (e) => {
     e.preventDefault()
-
-    // If passwords don't match stop
-    if(!this.state.passwordMatch) {
-      return
-    }
-
-    //Set up object for submission to database
-    let newUser = {
+    const new_user = {
+      username: this.state.loginUsername,
+      first_name: this.state.loginFirstName,
+      last_name: this.state.loginLastName,
       email: this.state.loginEmail,
-      password: this.state.loginPassword,
-      name: this.state.loginName
+      password: this.state.loginPassword
     }
-
-    // Check if email is in use
-    return API.query("users", this.state.loginEmail)
-      .then(existing => {
-        if(existing.length) {
-          return this.setState({emailTaken: true})
-        } else {
-          return API.saveData("users", newUser)
-          .then(() => {
-            this.toggleForms()
-            this.setState({registerSuccess: true})
-          })
-        }
-      })
-
+    this.postAuth("accounts/register", new_user)
   }
 
   // Clear form data from state when either is unmounted
   resetFormState = () => {
     this.setState({
       loginEmail: "",
+      loginFirstName: "",
+      loginLastName: "",
+      loginUsername: "",
       loginPassword: "",
-      loginName: "",
-      rememberMe: false
+      passwordConfirm: "",
     })
   }
 
@@ -129,28 +132,30 @@ class Login extends Component {
       <Container className="login-container text-center">
         { /* Display login or register */
           this.state.loginForm
-          ?
-          <LoginForm
-            toggleForms={this.toggleForms}
-            handleFieldChange={this.handleFieldChange}
-            resetFormState={this.resetFormState}
-            submitLogin={this.submitLogin}
-            registerSuccess={this.state.registerSuccess}
-            loginFailed={this.state.loginFailed} />
-          :
-          <RegisterForm
-            toggleForms={this.toggleForms}
-            handleFieldChange={this.handleFieldChange}
-            resetFormState={this.resetFormState}
-            confirmPassword={this.confirmPassword}
-            submitRegister={this.submitRegister}
-            passwordMatch={this.state.passwordMatch}
-            emailTaken={this.state.emailTaken} />
+            ?
+            <LoginForm
+              toggleForms={this.toggleForms}
+              handleFieldChange={this.handleFieldChange}
+              resetFormState={this.resetFormState}
+              submitLogin={this.submitLogin}
+              loginFailed={this.state.loginFailed} />
+            :
+            <RegisterForm
+              toggleForms={this.toggleForms}
+              handleFieldChange={this.handleFieldChange}
+              resetFormState={this.resetFormState}
+              confirmPassword={this.confirmPassword}
+              submitRegister={this.registerDjango}
+              passwordMatch={this.state.passwordMatch}
+              registerError={this.state.registerError} />
         }
       </Container>
     )
   }
-
 }
 
 export default Login
+
+Login.propTypes = {
+  authenticate: PropTypes.func.isRequired
+}

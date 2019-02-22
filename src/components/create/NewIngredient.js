@@ -4,15 +4,16 @@
  * in the database, but is needed for the current step
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   InputGroup,
   Input,
   InputGroupAddon,
   InputGroupText } from "reactstrap"
-import API from '../../modules/data/API'
-import user from '../../modules/data/user'
+import jsonAPI from "../../modules/data/API"
+import user from "../../modules/data/user"
 
 class NewIngredient extends Component {
 
@@ -29,8 +30,8 @@ class NewIngredient extends Component {
       label: this.state.label,
       createdBy: user.getId()
     }
-    return API.saveData("ingredients", obj)
-    .then(() => this.props.toggle())
+    return jsonAPI.saveData("ingredients", obj)
+      .then(() => this.props.toggle())
   }
 
   render() {
@@ -56,3 +57,8 @@ class NewIngredient extends Component {
 }
 
 export default NewIngredient
+
+NewIngredient.propTypes = {
+  toggle: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
+}

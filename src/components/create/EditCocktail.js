@@ -1,7 +1,8 @@
 /**
  * Loaded by EditCocktailModal. This is the form to edit the cocktail.
  */
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Container,
@@ -10,10 +11,9 @@ import {
   Form,
   Input,
   Label } from "reactstrap"
-  import API from '../../modules/data/API'
-  import EditIngredientInput from './EditIngredientInput'
-  import user from '../../modules/data/user'
-  import './newCocktail.scss'
+import API from "../../modules/data/data"
+import EditIngredientInput from "./EditIngredientInput"
+import "./newCocktail.scss"
 
 class EditCocktail extends Component {
 
@@ -27,14 +27,14 @@ class EditCocktail extends Component {
   }
 
   componentDidMount() {
-    this.setState({ingredientRows: this.props.cocktail.cocktailIngredients.length})
+    this.setState({ingredientRows: this.props.cocktail.ingredients.length})
     this.loadIngredients().then(() => this.generateInitialInputs())
     this.ingredientsInitialState()
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.cocktail !== this.props.cocktail) {
-      this.setState({ingredientRows: this.props.cocktail.cocktailIngredients.length})
+      this.setState({ingredientRows: this.props.cocktail.ingredients.length})
     }
   }
 
@@ -43,15 +43,13 @@ class EditCocktail extends Component {
     let stateToChange = {
       editedIngredients: {}
     }
-    this.props.cocktail.cocktailIngredients.forEach((ingredient, i) => {
+    this.props.cocktail.ingredients.forEach((ingredient, i) => {
       stateToChange.editedIngredients[`ingredient${i + 1}`] = {
-        ingredientId: Number(ingredient.ingredientId),
-        cocktailId: Number(ingredient.cocktailId),
+        ingredientName: ingredient.ingredient.name,
+        ingredientId: Number(ingredient.ingredient.id),
         amount: Number(ingredient.amount),
         unit: ingredient.unit,
-        sortOrder: Number(ingredient.sortOrder),
-        isRequired: true,
-        id: Number(ingredient.id)
+        sortOrder: Number(ingredient.sort_order)
       }
     })
     this.setState(stateToChange)
@@ -59,7 +57,7 @@ class EditCocktail extends Component {
 
   loadIngredients = () => {
     return API.getAll("ingredients")
-    .then(ingredients => this.setState({ingredients: ingredients}))
+      .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   valueToState = (key, value) => {
@@ -71,7 +69,9 @@ class EditCocktail extends Component {
     //store all ingredient objects in an object together
     this.setState(prevState => {
       let obj = Object.assign({}, prevState.editedIngredients)
-      if(!obj[ingredientInputsId]) obj[ingredientInputsId] = {}
+      if (!obj[ingredientInputsId]) {
+        obj[ingredientInputsId] = {}
+      }
       obj[ingredientInputsId][key] = value
       return {
         editedIngredients: obj
@@ -82,10 +82,10 @@ class EditCocktail extends Component {
   generateInitialInputs = () => {
     let array = []
     for (let i = 1; i <= this.state.ingredientRows; i++) {
-      if (i <= this.props.cocktail.cocktailIngredients.length) {
+      if (i <= this.props.cocktail.ingredients.length) {
         array.push({
-          initialIngredientName: this.props.ingredientNames.find(label => label.id === this.props.cocktail.cocktailIngredients[i-1].ingredientId),
-          initialIngredient: this.props.cocktail.cocktailIngredients[i-1],
+          initialIngredientName: this.props.cocktail.ingredients[i-1].ingredient.name,
+          initialIngredient: this.props.cocktail.ingredients[i-1],
           sortOrder: i,
           key: `ingredient${i}`,
           ingredientId: i
@@ -107,6 +107,7 @@ class EditCocktail extends Component {
         key: `ingredient${i}`,
         ingredientId: i
       })
+      return {ingredientInputs: array}
     })
   }
 
@@ -117,15 +118,14 @@ class EditCocktail extends Component {
 
     let element = array[oldPosition]
     element.sortOrder = newPosition + 1
-
     let otherEl = array[newPosition]
     otherEl.sortOrder = oldPosition + 1
 
     let data = this.state.editedIngredients
-
     // check if either input has data and if sortOrder needs to be updated in their object in state.
     this.setState(prevState => {
       let obj = Object.assign({}, prevState.editedIngredients)
+
       if (data[`ingredient${element.ingredientId}`]) {
         obj[`ingredient${element.ingredientId}`].sortOrder = newPosition + 1
       }
@@ -143,95 +143,40 @@ class EditCocktail extends Component {
       array.splice(newPosition, 2)
       array.splice(newPosition, 0, element, otherEl)
     }
-
     return this.setState({ingredientInputs: array})
   }
 
-  editRecipe = (e) => {
+  editRecipe = e => {
     e.preventDefault()
     //Edit name and instructions
     let patch = {
       name: this.props.cocktail.name,
-      instructions: this.props.cocktail.instructions
+      instructions: this.props.cocktail.instructions,
+      notes: this.props.cocktail.notes,
+      ingredients: []
     }
-    if(this.state.cocktailName) patch.name = this.state.cocktailName
-    if(this.state.cocktailInstructions) patch.instructions = this.state.cocktailInstructions
-    return API.editData("cocktails", this.props.cocktail.id, patch)
+    if (this.state.cocktailName) patch.name = this.state.cocktailName
+    if (this.state.cocktailInstructions) patch.instructions = this.state.cocktailInstructions
+    if (this.state.cocktailNotes) patch.notes = this.state.cocktailNotes
+    if (this.state.cocktailNotes === "") patch.notes = ""
 
-    //End edit name and instructions
-      .then(() => {
-        let ingredientUpdates = []
-        let {editedIngredients} = this.state
-        for(let i in editedIngredients) {
-          if(editedIngredients[i].additionalIngredient) {
-            //this is an additional ingredient from the original.
-            if(Number(editedIngredients[i].ingredientId)) {
-              ingredientUpdates.push(API.saveData("cocktailIngredients", {
-                ingredientId: editedIngredients[i].ingredientId,
-                cocktailId: this.props.cocktail.id,
-                amount: editedIngredients[i].amount,
-                unit: editedIngredients[i].unit,
-                sortOrder: editedIngredients[i].sortOrder,
-                isRequired: true
-              }))
-            } else if (editedIngredients[i].ingredientId !== "") {
-              //we're making a new one!
-              let newIngredientObj = {
-                label: editedIngredients[i].ingredientName,
-                liquid: true,
-                createdBy: user.getId()
-              }
-              if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
-              ingredientUpdates.push(
-                API.saveData("ingredients", newIngredientObj)
-                .then(r => API.saveData("cocktailIngredients", {
-                    ingredientId: r.id,
-                    cocktailId: this.props.cocktail.id,
-                    amount: editedIngredients[i].amount,
-                    unit: editedIngredients[i].unit,
-                    sortOrder: editedIngredients[i].sortOrder,
-                    isRequired: true
-                  })
-                )
-              )
-            }
-          } else {
-            //we're editing an existing cocktailIngredient!
-            if (Number(editedIngredients[i].ingredientId)) {
-              let editObj = {
-                ingredientId: editedIngredients[i].ingredientId,
-                cocktailId: this.props.cocktail.id,
-                amount: editedIngredients[i].amount,
-                unit: editedIngredients[i].unit,
-                sortOrder: editedIngredients[i].sortOrder,
-                isRequired: true
-              }
-              ingredientUpdates.push(API.editData("cocktailIngredients", editedIngredients[i].id, editObj ))
-            } else if (editedIngredients[i].ingredientId !== "") {
-              // we need to create an ingredient first!
-              let newIngredientObj = {
-                label: editedIngredients[i].ingredientName,
-                liquid: true,
-                createdBy: user.getId()
-              }
-              if(editedIngredients[i].unit === "count") newIngredientObj.liquid = false
-              ingredientUpdates.push(
-                API.saveData("ingredients", newIngredientObj)
-                .then(r => API.editData("cocktailIngredients", editedIngredients[i].id, {
-                    ingredientId: r.id,
-                    cocktailId: this.props.cocktail.id,
-                    amount: editedIngredients[i].amount,
-                    unit: editedIngredients[i].unit,
-                    sortOrder: editedIngredients[i].sortOrder,
-                    isRequired: true
-                  })
-                )
-              )
-            }
-          }
+    let {editedIngredients} = this.state
+    for (let i in editedIngredients) {
+      if (editedIngredients[i].ingredientName.length > 0) {
+        let ingredientObj = {
+          ingredient: {
+            name: editedIngredients[i].ingredientName,
+            liquid: editedIngredients[i].unit === "count" ? false : true
+          },
+          sort_order: editedIngredients[i].sortOrder,
+          amount: editedIngredients[i].amount,
+          unit: editedIngredients[i].unit
         }
-        return Promise.all(ingredientUpdates)
-      })
+        patch.ingredients.push(ingredientObj)
+      }
+    }
+
+    return API.edit("cocktails", this.props.cocktail.id, patch)
       .then(() => {
         this.props.getUserCocktailData()
         this.props.toggle()
@@ -275,6 +220,11 @@ class EditCocktail extends Component {
                 id="cocktailInstructions"
                 onChange={e => this.valueToState(e.target.id, e.target.value)}
                 required={true} />
+              <Label for="cocktailNotes">Notes</Label>
+              <Input type="textarea" rows="3"
+                defaultValue={this.props.cocktail.notes}
+                id="cocktailNotes"
+                onChange={e => this.valueToState(e.target.id, e.target.value)} />
             </Col>
           </Row>
 
@@ -291,3 +241,9 @@ class EditCocktail extends Component {
 }
 
 export default EditCocktail
+
+EditCocktail.propTypes = {
+  cocktail: PropTypes.object.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired
+}

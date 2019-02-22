@@ -2,31 +2,32 @@
  * Modal for editing a recipe created by this user
  */
 
-import React from 'react'
+import React from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter } from 'reactstrap'
-import EditCocktail from '../create/EditCocktail'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  ModalFooter } from "reactstrap"
+import EditCocktail from "../create/EditCocktail"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 
 class CocktailEditModal extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       modal: false
-    };
+    }
 
-    this.toggle = this.toggle.bind(this);
+    this.toggle = this.toggle.bind(this)
   }
 
   toggle() {
     this.setState({
       modal: !this.state.modal
-    });
+    })
   }
 
   render() {
@@ -46,8 +47,15 @@ class CocktailEditModal extends React.Component {
           </ModalFooter>
         </Modal>
       </>
-    );
+    )
   }
 }
 
-export default CocktailEditModal;
+export default CocktailEditModal
+
+CocktailEditModal.propTypes = {
+  className: PropTypes.string,
+  cocktail: PropTypes.object.isRequired,
+  ingredientNames: PropTypes.array.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired
+}

@@ -2,20 +2,20 @@
  * Form for adding a product to the shopping list.
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
-  InputGroupAddon } from 'reactstrap'
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
-import user from '../../modules/data/user'
-import API from '../../modules/data/API'
+  InputGroupAddon } from "reactstrap"
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
+import API from "../../modules/data/data"
 
 class AddProduct extends Component {
 
   state = {
-    allProducts: [],
+    products: [],
     selected: []
   }
 
@@ -25,21 +25,21 @@ class AddProduct extends Component {
   }
 
   addDropdownProducts = () => {
-    if(!this.state.selected.length) return
-    let userId = user.getId()
+    if (!this.state.selected.length) return
+
+    // Save products to the shopping list
     let products = this.state.selected
 
     let savePromises = products.map(product => {
-      let haveProduct = this.props.shoppingList.find(shopProduct => shopProduct.productId === product.id)
-      if(haveProduct) {
-        return API.editData("userShopping", haveProduct.id, {
+      let haveProduct = this.props.shoppingList.find(shopProduct => shopProduct.product_id === product.id)
+      if (haveProduct) {
+        return API.edit("user_shopping", haveProduct.id, {
           quantity: haveProduct.quantity + 1
         })
       } else {
-        return API.saveData("userShopping", {
-          productId: product.id,
-          ingredientId: false,
-          userId: userId,
+        return API.save("user_shopping", {
+          product_id: product.id,
+          ingredient_id: null,
           quantity: 1
         })
       }
@@ -47,7 +47,7 @@ class AddProduct extends Component {
     return Promise.all(savePromises)
       .then(() => {
         let products = this.state.selected.map(product => product.name)
-        this.props.toggleAlert("success", `Product(s) Added to Shopping List`, `${products.join(" & ")} successfully added.`)
+        this.props.toggleAlert("success", "Product(s) Added to Shopping List", `${products.join(" & ")} successfully added.`)
       })
       .then(() => this.setState({selected: []}))
       .then(() => this.props.getShoppingData())
@@ -65,11 +65,7 @@ class AddProduct extends Component {
           <Typeahead
             labelKey="name"
             multiple={true}
-            options={this.state.products.sort((a,b) => {
-              let aName = a.name.toUpperCase()
-              let bName = b.name.toUpperCase();
-              return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
-            })}
+            options={this.state.products}
             placeholder="Search for products"
             onChange={selected => this.setState({selected: selected})} />
           <InputGroupAddon addonType="append">
@@ -85,3 +81,11 @@ class AddProduct extends Component {
 }
 
 export default AddProduct
+
+AddProduct.propTypes = {
+  shoppingList: PropTypes.array.isRequired,
+  toggleAlert: PropTypes.func.isRequired,
+  getShoppingData: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
+}

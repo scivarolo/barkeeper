@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import NavBar from "./NavBar"
 import { Switch, Route, Redirect } from "react-router-dom"
 
 import BarView from "./bar/BarView"
 import ShoppingListView from "./shoppinglist/ShoppingListView"
-import CocktailsView from './cocktails/CocktailsView'
-import NewCocktail from './create/NewCocktail'
-import Alerts from './alerts/Alerts';
+import CocktailsView from "./cocktails/CocktailsView"
+import NewCocktail from "./create/NewCocktail"
+import Alerts from "./alerts/Alerts"
 
 class Barkeeper extends Component {
 
@@ -48,7 +49,7 @@ class Barkeeper extends Component {
           }} />
 
           <Route path="/cocktails" render={props => {
-              return <CocktailsView {...props} toggleAlert={this.toggleAlert} />
+            return <CocktailsView {...props} toggleAlert={this.toggleAlert} />
           }} />
 
           <Route path="/bar" render={() => {
@@ -77,3 +78,7 @@ class Barkeeper extends Component {
 }
 
 export default Barkeeper
+
+Barkeeper.propTypes = {
+  authenticate: PropTypes.func.isRequired
+}

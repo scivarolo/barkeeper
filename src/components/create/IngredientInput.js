@@ -2,19 +2,20 @@
  * This is used in NewCocktail for adding ingredients to a recipe.
  */
 
-import React, { Component } from 'react'
-import { Typeahead } from 'react-bootstrap-typeahead'
-import 'react-bootstrap-typeahead/css/Typeahead.css'
-import 'react-bootstrap-typeahead/css/Typeahead-bs4.css'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Typeahead } from "react-bootstrap-typeahead"
+import "react-bootstrap-typeahead/css/Typeahead.css"
+import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
 import {
   Col,
   Row,
   InputGroup,
   Input,
   InputGroupAddon
-} from 'reactstrap'
-import UnitsDropdown from './UnitsDropdown'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+} from "reactstrap"
+import UnitsDropdown from "./UnitsDropdown"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 class IngredientInput extends Component {
 
@@ -47,7 +48,7 @@ class IngredientInput extends Component {
               className="ingredient-typeahead"
               allowNew
               newSelectionPrefix="Add New: "
-              labelKey="label"
+              labelKey="name"
               options={ingredients}
               placeholder="Search for Ingredient"
               onChange={selected => {
@@ -58,35 +59,35 @@ class IngredientInput extends Component {
                 selected.length && selected[0].customOption
                   ? this.setState({isNew: true})
                   : this.setState({isNew: false})
-                }} />
-              <Input
-                type="number"
-                placeholder="amount"
-                step="any"
-                onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
-                required={this.state.isRequired}></Input>
+              }} />
+            <Input
+              type="number"
+              placeholder="amount"
+              step="any"
+              onChange={e => this.props.ingredientToState(stateKey, "amount", e.target.value)}
+              required={this.state.isRequired}></Input>
             <InputGroupAddon addonType="append">
-                <UnitsDropdown
-                  isDisabled={this.state.disableUnits}
-                  isRequired={this.state.isRequired}
-                  isNewIngredient={this.state.isNew}
-                  onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
-                  <span className="move-ingredients ml-2 d-flex align-items-center flex-column">
-                  {
-                    sortOrder !== 1
+              <UnitsDropdown
+                isDisabled={this.state.disableUnits}
+                isRequired={this.state.isRequired}
+                isNewIngredient={this.state.isNew}
+                onChangeFn={e => this.props.ingredientToState(stateKey, "unit", e.target.value)} />
+              <span className="move-ingredients ml-2 d-flex align-items-center flex-column">
+                {
+                  sortOrder !== 1
                     ? <div className="ingredient-up">
-                        <FontAwesomeIcon icon="chevron-up" onClick={this.props.moveInputUp} />
-                      </div>
+                      <FontAwesomeIcon icon="chevron-up" onClick={this.props.moveInputUp} />
+                    </div>
                     : null
-                  }
-                  {
-                    !this.props.last
+                }
+                {
+                  !this.props.last
                     ? <div className="ingredient-down">
-                        <FontAwesomeIcon icon="chevron-down" onClick={this.props.moveInputDown} />
-                      </div>
+                      <FontAwesomeIcon icon="chevron-down" onClick={this.props.moveInputDown} />
+                    </div>
                     : null
-                  }
-                  </span>
+                }
+              </span>
             </InputGroupAddon>
           </InputGroup>
         </Col>
@@ -97,3 +98,19 @@ class IngredientInput extends Component {
 }
 
 export default IngredientInput
+
+IngredientInput.propTypes = {
+  ingredientId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  sortOrder: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  ingredients: PropTypes.array.isRequired,
+  ingredientToState: PropTypes.func.isRequired,
+  moveInputUp: PropTypes.func.isRequired,
+  moveInputDown: PropTypes.func.isRequired,
+  last: PropTypes.bool.isRequired
+}

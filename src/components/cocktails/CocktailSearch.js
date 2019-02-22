@@ -3,8 +3,9 @@
  * or in the global list by name (depending on which view they are in).
  */
 
-import React, { Component } from 'react'
-import { Input } from 'reactstrap'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Input } from "reactstrap"
 
 class CocktailSearch extends Component {
 
@@ -32,3 +33,10 @@ class CocktailSearch extends Component {
 }
 
 export default CocktailSearch
+
+CocktailSearch.propTypes = {
+  search: PropTypes.func.isRequired,
+  searchData: PropTypes.array.isRequired,
+  searchIngredients: PropTypes.array.isRequired,
+  placeholder: PropTypes.string.isRequired,
+}

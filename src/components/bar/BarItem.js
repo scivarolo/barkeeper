@@ -2,7 +2,8 @@
  * Component for a single item in the user's Bar Inventory
  */
 
-import React, { Component } from 'react'
+import React, { useState } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   InputGroup,
@@ -10,130 +11,127 @@ import {
   InputGroupText,
   Input,
   Progress,
-  ListGroupItem } from 'reactstrap'
-import QuantityToggles from '../utils/QuantityToggles'
-import API from '../../modules/data/API'
-import './barItem.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  ListGroupItem } from "reactstrap"
+import QuantityToggles from "../utils/QuantityToggles"
+import "./barItem.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import API from "../../modules/data/data"
 
-class BarItem extends Component {
+function BarItem(props) {
 
-  state = {
-    showUpdateForm: false,
-    updateValue: "",
-    totalAmount: "",
-  }
+  const [showUpdateForm, setShowUpdateForm] = useState(false)
+  const [updateValue, setUpdateValue] = useState("")
 
   // Toggle the update form for updating the volume of a liquor
-  toggleUpdate = () => {
-    this.setState({
-      showUpdateForm: !this.state.showUpdateForm,
-      updateValue: ""
-    })
-  }
+  const toggleUpdateForm = () => setShowUpdateForm(!showUpdateForm)
 
-  handleFieldChange = (e) => {
+  const handleFieldChange = (e) => {
     let val = e.target.value
-    if(e.target.value > this.props.item.product.fullAmount) {
-      val = this.props.item.product.fullAmount
+    if (e.target.value > props.item.product.size) {
+      val = props.item.product.size
     }
-    this.setState({updateValue: val})
+    setUpdateValue(val)
   }
 
   // Update the volume of a product
-  updateItemAmount = () => {
-    if(this.state.updateValue) {
-      let updatedObj = {
-        amountAvailable: parseInt(this.state.updateValue)
-      }
-      return API.editData("userProducts", this.props.item.id, updatedObj)
+  const updateItemAmount = () => {
+    if (updateValue) {
+      let obj = {...props.item}
+      obj.amount_available = updateValue
+      obj.product_id = props.item.product.id
+      delete obj.product
+
+      return API.edit("user_products", props.item.id, obj)
         .then(() => {
-          this.toggleUpdate()
-          return this.props.getInventoryData()
+          toggleUpdateForm()
+          props.getInventory()
         })
     }
   }
 
-  deleteItem = (id) => {
-    return API.deleteData("userProducts", id)
-    .then(() => this.props.getInventoryData())
+  const deleteItem = (id) => {
+    return API.delete("user_products", id)
+      .then(() => props.getInventory())
   }
 
-  increaseQuantity = () => {
-    return API.editData("userProducts", this.props.item.id, {
-      quantity: this.props.item.quantity + 1
-    }).then(() => this.props.getInventoryData())
+  const increaseQuantity = () => {
+    return API.edit("user_products", props.item.id, {
+      quantity: props.item.quantity + 1
+    }).then(() => props.getInventory())
   }
 
-  decreaseQuantity = () => {
-    if (this.props.item.quantity === 1) {
-      return this.deleteItem(this.props.item.id)
+  const decreaseQuantity = () => {
+    if (props.item.quantity === 1) {
+      return deleteItem(props.item.id)
     } else {
-      return API.editData("userProducts", this.props.item.id, {
-        quantity: this.props.item.quantity - 1
-      }).then(() => this.props.getInventoryData())
+      return API.edit("user_products", props.item.id, {
+        quantity: props.item.quantity - 1
+      }).then(() => props.getInventory())
     }
   }
 
-  render() {
-    let item = this.props.item
-    return (
-      <ListGroupItem className="mb-2 bar-item" id={item.id}>
-        <h4>{item.product.name} ({item.product.fullAmount} {item.product.unit})</h4>
-        <div className="d-flex">
-          { item.product.unit !== "count"
-            ? <>
-                <div style={{width: '150px'}}>
-                  <Progress
-                    className="item-amount-chart"
-                    color={
-                      (item.amountAvailable / item.product.fullAmount <= 0.25) && item.quantity === 1
+  let item = props.item
+  return (
+    <ListGroupItem className="mb-2 bar-item" id={item.id}>
+      <h4>{item.product.name} ({item.product.size} {item.product.unit})</h4>
+      <div className="d-flex">
+        { item.product.unit !== "count"
+          ? <>
+              <div style={{width: "150px"}}>
+                <Progress
+                  className="item-amount-chart"
+                  color={
+                    (item.amount_available / item.product.size <= 0.25) && item.quantity === 1
                       ? "danger"
                       : "primary"}
-                    value={item.amountAvailable}
-                    max={item.product.fullAmount} />
-                </div>
-                <div className="mx-3">
-                  <span>{item.amountAvailable} {item.product.unit}</span>
-                  { this.state.showUpdateForm
-                    ? <div className="updateItem mx-2">
-                        <InputGroup size="sm">
-                          <Input size="sm" type="number" min="0" step="any" max={item.product.fullAmount} value={this.state.updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
-                            placeholder={item.amountAvailable} onChange={e => this.handleFieldChange(e)} />
-                          <InputGroupAddon addonType="append">
-                            <InputGroupText>{item.product.unit}</InputGroupText>
-                          </InputGroupAddon>
-                          <InputGroupAddon addonType="append">
-                            <Button onClick={this.updateItemAmount} color="warning">
-                              <FontAwesomeIcon icon="check" />
-                            </Button>
-                            <Button onClick={this.toggleUpdate} color="danger">
-                              <FontAwesomeIcon icon="times" />
-                            </Button>
-                          </InputGroupAddon>
-                        </InputGroup>
-                      </div>
-                    : <FontAwesomeIcon icon="pen" className="mx-2 bar-edit-icon"
-                        onClick={this.toggleUpdate} />
-                  }
-                </div>
-              </>
-            : null
-          }
-          <div className={item.product.unit === "count" ? "mr-auto" : "ml-auto"}>
-            <span className="d-flex">
-              <span>Quantity: {item.quantity}</span>
-              <QuantityToggles increase={this.increaseQuantity} decrease={this.decreaseQuantity} />
-            </span>
-          </div>
-          <div className="ml-2">
-            <FontAwesomeIcon icon="trash" className="bar-item-delete" onClick={() => this.deleteItem(item.id)} />
-          </div>
+                  value={item.amount_available}
+                  max={item.product.size} />
+              </div>
+              <div className="mx-3">
+                <span>{item.amount_available} {item.product.unit}</span>
+                { showUpdateForm
+                  ? <div className="updateItem mx-2">
+                    <InputGroup size="sm">
+                      <Input size="sm" type="number" min="0" step="any" max={item.product.size} value={updateValue} style={{border: "1px solid lightgray", maxWidth:"70px"}}
+                        placeholder={item.amount_available} onChange={e => handleFieldChange(e)} />
+                      <InputGroupAddon addonType="append">
+                        <InputGroupText>{item.product.unit}</InputGroupText>
+                      </InputGroupAddon>
+                      <InputGroupAddon addonType="append">
+                        <Button onClick={updateItemAmount} color="warning">
+                          <FontAwesomeIcon icon="check" />
+                        </Button>
+                        <Button onClick={toggleUpdateForm} color="danger">
+                          <FontAwesomeIcon icon="times" />
+                        </Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </div>
+                  : <FontAwesomeIcon icon="pen" className="mx-2 bar-edit-icon"
+                    onClick={toggleUpdateForm} />
+                }
+              </div>
+            </>
+          : null
+        }
+        <div className={item.product.unit === "count" ? "mr-auto" : "ml-auto"}>
+          <span className="d-flex">
+            <span>Quantity: {item.quantity}</span>
+            <QuantityToggles increase={increaseQuantity} decrease={decreaseQuantity} />
+          </span>
         </div>
-      </ListGroupItem>
-    )
-  }
+        <div className="ml-2">
+          <FontAwesomeIcon icon="trash" className="bar-item-delete" onClick={() => deleteItem(item.id)} />
+        </div>
+      </div>
+    </ListGroupItem>
+  )
 
 }
 
 export default BarItem
+
+BarItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  getInventory: PropTypes.func.isRequired
+}

@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   FormGroup,
   Label,
   Input
-  } from "reactstrap"
-import API from '../../modules/data/API';
-import './ingredientFilter.scss'
+} from "reactstrap"
+import API from "../../modules/data/data"
+import "./ingredientFilter.scss"
 
 class IngredientFilter extends Component {
 
@@ -15,14 +16,7 @@ class IngredientFilter extends Component {
 
   componentDidMount() {
     API.getAll("ingredients")
-    .then(ingredients => {
-      ingredients.sort((a,b) => {
-        a = a.label.toLowerCase()
-        b = b.label.toLowerCase()
-        return (a < b) ? -1 : (a > b) ? 1 : 0
-      })
-      this.setState({ingredients: ingredients})
-    })
+      .then(ingredients => this.setState({ingredients: ingredients}))
   }
 
   handleChange = (e) => {
@@ -55,7 +49,7 @@ class IngredientFilter extends Component {
                       onChange={
                         e => this.handleChange(e)
                       }
-                      name="ingredientFilter" />{` ${ingredient.label}`}
+                      name="ingredientFilter" />{` ${ingredient.name}`}
                   </Label>
                 </FormGroup>
               )
@@ -67,7 +61,7 @@ class IngredientFilter extends Component {
                 type="radio"
                 name="ingredientFilter"
                 id="noFilter"
-                onChange={e => this.handleChange(e)} />{` Reset`}
+                onChange={e => this.handleChange(e)} />{" Reset"}
             </Label>
           </FormGroup>
         </FormGroup>
@@ -78,3 +72,9 @@ class IngredientFilter extends Component {
 }
 
 export default IngredientFilter
+
+IngredientFilter.propTypes = {
+  filterByIngredient: PropTypes.func.isRequired,
+  cocktails: PropTypes.array.isRequired,
+  cocktailIngredients: PropTypes.array.isRequired
+}

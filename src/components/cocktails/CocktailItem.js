@@ -2,20 +2,21 @@
  * Main component for each cocktail recipe in a user's list
  */
 
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Badge,
   Button,
   Col,
   Row,
-  ListGroupItem } from 'reactstrap'
-import API from '../../modules/data/API'
-import RecipeIngredient from './recipe/RecipeIngredient'
-import user from '../../modules/data/user'
-import Units from '../../modules/UnitConverter'
-import CocktailEditModal from './CocktailEditModal'
+  ListGroupItem } from "reactstrap"
+import API from "../../modules/data/data"
+import RecipeIngredient from "./recipe/RecipeIngredient"
+import user from "../../modules/data/user"
+import Units from "../../modules/UnitConverter"
+import CocktailEditModal from "./CocktailEditModal"
 import "./cocktailItem.scss"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 
 class CocktailItem extends Component {
@@ -31,7 +32,7 @@ class CocktailItem extends Component {
     //store all ingredient objects in an object together
     this.setState(prevState => {
       let obj = Object.assign({}, prevState.ingredientsStatus)
-      let objectKey = ingredient.id
+      let objectKey = ingredient.ingredient.id
       if (!obj[objectKey]) obj[objectKey] = {}
       obj[objectKey][key] = value
 
@@ -51,8 +52,8 @@ class CocktailItem extends Component {
   }
 
   deleteItem(id) {
-    return API.deleteData("userCocktails", id)
-    .then(() => this.props.getUserCocktailData())
+    return API.delete("user_cocktails", id)
+      .then(() => this.props.getUserCocktailData())
   }
 
   //Checks status of each ingredient and decides if a cocktail can be made.
@@ -69,36 +70,35 @@ class CocktailItem extends Component {
   checkIngredientsAgainstInventory = () => {
     let ingredientPromises = []
 
-    this.props.cocktail.cocktailIngredients.sort((a, b) => {
-      return a.sortOrder - b.sortOrder
-    }).forEach(ingredient => {
+    this.props.cocktail.ingredients.forEach(ingredient => {
       ingredientPromises.push(
         this.checkSingleIngredientAgainstInventory(ingredient, this.props.userInventory)
       )
     })
 
     return Promise.all(ingredientPromises)
-    .then(() => this.canMakeRecipe())
+      .then(() => this.canMakeRecipe())
 
   }
 
   // Used by checkIngredientsAgainstInventory() to check each ingredient's availability
   checkSingleIngredientAgainstInventory = (ingredient, userInventory) => {
+    //TODO: Handle sending all numbers as numbers from django?
     let canMake
     //Find the items in the user's inventory that match the ingredient
-    let products = userInventory.filter(item => item.product.ingredientId === ingredient.ingredientId)
+    let products = userInventory.filter(item => item.product.ingredient === ingredient.ingredient.id)
     if (!products.length) {
       canMake = false
     } else {
       let productsTotalMl = 0
       //loop through that ingredient's products and sum the total.
       products.forEach(product => {
-        let amount = product.amountAvailable + (product.product.fullAmount * (product.quantity - 1))
+        let amount = parseFloat(product.amount_available) + (parseFloat(product.product.size) * (parseFloat(product.quantity) - 1))
         let unit = product.product.unit
         let amountMl = Units.convert(amount, unit, "ml")
         productsTotalMl += amountMl
       })
-      let comparison = Units.compare(productsTotalMl, "ml", ingredient.amount, ingredient.unit)
+      let comparison = Units.compare(productsTotalMl, "ml", parseFloat(ingredient.amount), ingredient.unit)
       if (comparison === 1 || comparison === 0) {
         canMake = true
       } else {
@@ -108,7 +108,7 @@ class CocktailItem extends Component {
     }
 
     this.ingredientStatusToState(ingredient, "canMake", canMake)
-    this.ingredientAvailabilityToState(ingredient.ingredientId, canMake)
+    this.ingredientAvailabilityToState(ingredient.ingredient.id, canMake)
   }
 
   /**
@@ -119,15 +119,14 @@ class CocktailItem extends Component {
     //Array of missing ingredients objects to add to shopping list.
     let addArray = []
     ingredients.forEach(ingredient => {
-      addArray.push(API.saveData("userShopping", {
-        ingredientId: ingredient.ingredientId,
-        productId: false,
-        userId: user.getId(),
+      addArray.push(API.save("user_shopping", {
+        ingredient_id: ingredient.ingredient.id,
+        product_id: null,
         quantity: 1
       }))
     })
     return Promise.all(addArray)
-    .then(() => this.props.getShoppingList())
+      .then(() => this.props.getShoppingList())
   }
 
   componentDidMount() {
@@ -161,13 +160,13 @@ class CocktailItem extends Component {
             <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
             <span className="cocktail-utils">
               {
-                this.props.cocktail.createdBy === user.getId()
-                ? <CocktailEditModal
-                  buttonLabel="Edit"
-                  cocktail={cocktail}
-                  ingredientNames={ingredients}
-                  getUserCocktailData={this.props.getUserCocktailData}  />
-                : null
+                Number(this.props.cocktail.created_by) === Number(user.getId())
+                  ? <CocktailEditModal
+                    buttonLabel="Edit"
+                    cocktail={cocktail}
+                    ingredientNames={ingredients}
+                    getUserCocktailData={this.props.getUserCocktailData}  />
+                  : null
               }
               <FontAwesomeIcon
                 icon="trash"
@@ -178,12 +177,12 @@ class CocktailItem extends Component {
           <div className="mt-1 recipe-badge">
             { this.state.userCanMake
               ? <div>
-                  <Button
-                    onClick={() => this.props.addToUserTab(cocktail.id)}
-                    size="sm"
-                    className="mt-1"
-                    color="warning">Add to my Tab</Button>
-                </div>
+                <Button
+                  onClick={() => this.props.addToUserTab(cocktail.id)}
+                  size="sm"
+                  className="mt-1"
+                  color="warning">Add to my Tab</Button>
+              </div>
               : <Badge color="danger">Missing ingredients!</Badge>
             }
           </div>
@@ -194,15 +193,15 @@ class CocktailItem extends Component {
             <h5>Ingredients</h5>
             <ul className="recipe-ingredients mb-2">
               {
-                cocktail.cocktailIngredients.map((ingredient, i) => {
+                cocktail.ingredients.map((ingredient) => {
                   return (
                     <RecipeIngredient
-                      key={ingredient.id}
-                      canMake={this.state.ingredientAvailability[ingredient.ingredientId]}
+                      key={ingredient.ingredient.id}
+                      canMake={this.state.ingredientAvailability[ingredient.ingredient.id]}
                       ingredient={ingredient}
                       userShoppingList={this.props.userShoppingList}
                       addToShoppingList={this.addToShoppingList}
-                      label={ingredients.find(label => label.id === ingredient.ingredientId).label} />
+                      label={ingredient.ingredient.name} />
                   )
                 })
               }
@@ -211,6 +210,13 @@ class CocktailItem extends Component {
           <Col>
             <h5>Instructions</h5>
             <p>{cocktail.instructions}</p>
+            {cocktail.notes
+              ? <>
+                  <h6>Notes</h6>
+                  <p>{cocktail.notes}</p>
+                </>
+              : null
+            }
           </Col>
         </Row>
       </ListGroupItem>
@@ -220,3 +226,15 @@ class CocktailItem extends Component {
 }
 
 export default CocktailItem
+
+CocktailItem.propTypes = {
+  getUserCocktailData: PropTypes.func.isRequired,
+  cocktail: PropTypes.object.isRequired,
+  userInventory: PropTypes.array.isRequired,
+  getShoppingList: PropTypes.func.isRequired,
+  ingredients: PropTypes.array.isRequired,
+  showOnlyMakeable: PropTypes.bool.isRequired,
+  userCocktail: PropTypes.object.isRequired,
+  addToUserTab: PropTypes.func.isRequired,
+  userShoppingList: PropTypes.array.isRequired
+}

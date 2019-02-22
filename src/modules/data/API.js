@@ -2,7 +2,7 @@
  * Purpose: Highest Level API CLass in charge of get, creating, editing, and deleting data in the database
  */
 
-class API {
+class jsonAPI {
 
   constructor() {
     this.baseUrl = "http://localhost:5002"
@@ -31,7 +31,7 @@ class API {
   }
 
   getWithExpands(resource, userId, ...expands) {
-    let string = expands.reduce((string, expand) => `${string}&_expand=${expand}`, '')
+    let string = expands.reduce((string, expand) => `${string}&_expand=${expand}`, "")
     let url = `${this.baseUrl}/${resource}?${string}&id_ne=false`
     if (userId) url += `&userId=${userId}`
     return fetch(url).then(r => r.json())
@@ -77,4 +77,4 @@ class API {
 
 }
 
-export default new API()
+export default new jsonAPI()
