@@ -62,7 +62,7 @@ CocktailsList.propTypes = {
   userCocktailsRelations: PropTypes.array.isRequired,
   userInventory: PropTypes.array.isRequired,
   userShoppingList: PropTypes.array.isRequired,
-  showOnlyMakeable: PropTypes.func.isRequired,
+  showOnlyMakeable: PropTypes.bool.isRequired,
   getShoppingList: PropTypes.func.isRequired,
   getUserCocktailData: PropTypes.func.isRequired,
   addToUserTab: PropTypes.func.isRequired
