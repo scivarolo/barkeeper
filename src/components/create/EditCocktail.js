@@ -2,6 +2,7 @@
  * Loaded by EditCocktailModal. This is the form to edit the cocktail.
  */
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Container,
@@ -240,3 +241,9 @@ class EditCocktail extends Component {
 }
 
 export default EditCocktail
+
+EditCocktail.propTypes = {
+  cocktail: PropTypes.object.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired
+}

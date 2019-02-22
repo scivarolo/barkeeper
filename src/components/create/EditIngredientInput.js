@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Typeahead } from "react-bootstrap-typeahead"
 import "react-bootstrap-typeahead/css/Typeahead.css"
 import "react-bootstrap-typeahead/css/Typeahead-bs4.css"
@@ -119,3 +120,21 @@ class EditIngredientInput extends Component {
 }
 
 export default EditIngredientInput
+
+EditIngredientInput.propTypes = {
+  initialIngredient: PropTypes.object.isRequired,
+  ingredientToState: PropTypes.func.isRequired,
+  ingredientId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  sortOrder: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  ingredients: PropTypes.array.isRequired,
+  initialIngredientName: PropTypes.string.isRequired,
+  moveInputUp: PropTypes.func.isRequired,
+  moveInputDown: PropTypes.func.isRequired,
+  last: PropTypes.bool.isRequired
+}

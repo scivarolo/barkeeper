@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import NavBar from "./NavBar"
 import { Switch, Route, Redirect } from "react-router-dom"
 
@@ -77,3 +78,7 @@ class Barkeeper extends Component {
 }
 
 export default Barkeeper
+
+Barkeeper.propTypes = {
+  authenticate: PropTypes.func.isRequired
+}

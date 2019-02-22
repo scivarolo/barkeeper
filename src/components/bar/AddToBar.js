@@ -61,7 +61,7 @@ class AddToBar extends Component {
         this.props.toggle()
       })
       .catch(r => {
-        console.error("Error saving Product", r)
+        this.props.toggleAlert("danger", "Error saving Product", r)
       })
   }
 

@@ -3,25 +3,28 @@
  * Imported by Barkeeper.js
  */
 
-import React, { Component } from "react"
+import React from "react"
+import PropTypes from "prop-types"
 import { Alert, AlertContainer } from "react-bs-notifier"
 
-class Alerts extends Component {
+export default function Alerts(props) {
 
-  render() {
-    return (
-      <AlertContainer>
-        {
-          this.props.showAlert
-            ? ( <Alert type={this.props.alertType} headline={this.props.alertHeadline}>
-              {this.props.alertMessage}
-            </Alert> )
-            : null
-        }
-      </AlertContainer>
-    )
-  }
-
+  return (
+    <AlertContainer>
+      {
+        props.showAlert
+          ? ( <Alert type={props.alertType ? props.alertType : "success"} headline={props.alertHeadline}>
+            {props.alertMessage}
+          </Alert> )
+          : null
+      }
+    </AlertContainer>
+  )
 }
 
-export default Alerts
+Alerts.propTypes = {
+  showAlert: PropTypes.bool,
+  alertType: PropTypes.string,
+  alertHeadline: PropTypes.string.isRequired,
+  alertMessage: PropTypes.string.isRequired,
+}

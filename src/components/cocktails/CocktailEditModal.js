@@ -3,6 +3,7 @@
  */
 
 import React from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Modal,
@@ -51,3 +52,10 @@ class CocktailEditModal extends React.Component {
 }
 
 export default CocktailEditModal
+
+CocktailEditModal.propTypes = {
+  className: PropTypes.string,
+  cocktail: PropTypes.object.isRequired,
+  ingredientNames: PropTypes.array.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired
+}

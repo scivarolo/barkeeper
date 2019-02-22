@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   Table } from "reactstrap"
@@ -73,3 +74,14 @@ class BarTab extends Component {
 }
 
 export default BarTab
+
+BarTab.propTypes = {
+  getUserTab: PropTypes.func.isRequired,
+  userTab: PropTypes.array.isRequired,
+  getTabCocktailProductChoices: PropTypes.func.isRequired,
+  userInventory: PropTypes.array.isRequired,
+  cocktails: PropTypes.array.isRequired,
+  makeWithThisIngredient: PropTypes.func.isRequired,
+  userTabProducts: PropTypes.object.isRequired,
+  makeCocktails: PropTypes.func.isRequired
+}

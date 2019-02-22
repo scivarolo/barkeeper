@@ -2,6 +2,7 @@
  * Creates a new cocktail recipe.
  */
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
 import {
   Button,
@@ -228,3 +229,8 @@ class NewCocktail extends Component {
 }
 
 export default NewCocktail
+
+NewCocktail.propTypes = {
+  toggleAlert: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
+}

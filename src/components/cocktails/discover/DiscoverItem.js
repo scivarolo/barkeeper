@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Col,
   Row,
@@ -57,7 +58,7 @@ class DiscoverItem extends Component {
             <h5>Ingredients</h5>
             <ul className="recipe-ingredients mb-2">
               {
-                cocktail.ingredients.map((cIngredient, i) => {
+                cocktail.ingredients.map((cIngredient) => {
                   return (
                     <RecipeIngredient
                       key={cIngredient.ingredient.id}
@@ -88,3 +89,10 @@ class DiscoverItem extends Component {
 }
 
 export default DiscoverItem
+
+DiscoverItem.propTypes = {
+  cocktail: PropTypes.object.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired,
+  allMinusUserCocktails: PropTypes.array.isRequired,
+  ingredients: PropTypes.array.isRequired
+}

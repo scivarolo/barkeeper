@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Badge,
   Button,
@@ -225,3 +226,15 @@ class CocktailItem extends Component {
 }
 
 export default CocktailItem
+
+CocktailItem.propTypes = {
+  getUserCocktailData: PropTypes.func.isRequired,
+  cocktail: PropTypes.object.isRequired,
+  userInventory: PropTypes.array.isRequired,
+  getShoppingList: PropTypes.func.isRequired,
+  ingredients: PropTypes.array.isRequired,
+  showOnlyMakeable: PropTypes.bool.isRequired,
+  userCocktail: PropTypes.object.isRequired,
+  addToUserTab: PropTypes.func.isRequired,
+  userShoppingList: PropTypes.array.isRequired
+}

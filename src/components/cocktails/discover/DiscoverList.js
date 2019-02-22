@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { ListGroup } from "reactstrap"
 import DiscoverItem from "./DiscoverItem"
 
@@ -56,3 +57,12 @@ class DiscoverList extends Component {
 }
 
 export default DiscoverList
+
+DiscoverList.propTypes = {
+  getDiscoverCocktails: PropTypes.func.isRequired,
+  cocktails: PropTypes.array.isRequired,
+  cocktailIngredients: PropTypes.array.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired,
+  allMinusUserCocktails: PropTypes.func.isRequired
+}
+

@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import QuantityToggles from "../utils/QuantityToggles"
 import API from "../../modules/data/data"
@@ -84,3 +85,11 @@ class BarTabCocktail extends Component {
 }
 
 export default BarTabCocktail
+
+BarTabCocktail.propTypes = {
+  cocktailProducts: PropTypes.object.isRequired,
+  cocktail: PropTypes.object.isRequired,
+  getUserTab: PropTypes.func.isRequired,
+  removeFromUserTab: PropTypes.func.isRequired,
+  makeWithThisIngredient: PropTypes.func.isRequired
+}

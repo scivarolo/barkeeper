@@ -137,7 +137,7 @@ class CocktailsView extends Component {
         newState.userCocktailIngredients = cocktailIngredients
       })
       .then(() => this.setState(newState))
-      .catch(error => console.error(error))
+      .catch(error => this.toggleAlert("warning", "Something went wrong. Try again.", error))
   }
 
   getUserInventory() {

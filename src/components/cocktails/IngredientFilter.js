@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   FormGroup,
   Label,
@@ -71,3 +72,9 @@ class IngredientFilter extends Component {
 }
 
 export default IngredientFilter
+
+IngredientFilter.propTypes = {
+  filterByIngredient: PropTypes.func.isRequired,
+  cocktails: PropTypes.array.isRequired,
+  cocktailIngredients: PropTypes.array.isRequired
+}

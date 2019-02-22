@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import {
   Button,
   InputGroup,
@@ -56,3 +57,8 @@ class NewIngredient extends Component {
 }
 
 export default NewIngredient
+
+NewIngredient.propTypes = {
+  toggle: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
+}

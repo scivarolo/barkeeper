@@ -72,7 +72,7 @@ function BarView(props) {
                         getInventory={getInventory} />
                     )
                   })
-                  : (<h4>You don't have any products in your bar. Add some!</h4>)
+                  : (<h4>{"You don't have any products in your bar. Add some!"}</h4>)
               }
             </ListGroup>
           </Col>
