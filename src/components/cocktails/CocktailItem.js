@@ -160,7 +160,7 @@ class CocktailItem extends Component {
             <h2 className="mb-3 cocktail-name d-inline-block">{cocktail.name}</h2>
             <span className="cocktail-utils">
               {
-                this.props.cocktail.created_by == user.getId()
+                Number(this.props.cocktail.created_by) === Number(user.getId())
                   ? <CocktailEditModal
                     buttonLabel="Edit"
                     cocktail={cocktail}
