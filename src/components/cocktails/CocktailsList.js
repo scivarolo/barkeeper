@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import { ListGroup } from "reactstrap"
 import CocktailItem from "./CocktailItem"
 
@@ -47,10 +48,22 @@ class CocktailsList extends Component {
         </ListGroup>
       )
     else {
-      return (<h4>Looks like you don't have any cocktails saved! Discover some!</h4>)
+      return (<h4>{"Looks like you don't have any cocktails saved! Discover some!"}</h4>)
     }
   }
 
 }
 
 export default CocktailsList
+
+CocktailsList.propTypes = {
+  cocktails: PropTypes.array.isRequired,
+  cocktailIngredients: PropTypes.array.isRequired,
+  userCocktailsRelations: PropTypes.array.isRequired,
+  userInventory: PropTypes.array.isRequired,
+  userShoppingList: PropTypes.array.isRequired,
+  showOnlyMakeable: PropTypes.func.isRequired,
+  getShoppingList: PropTypes.func.isRequired,
+  getUserCocktailData: PropTypes.func.isRequired,
+  addToUserTab: PropTypes.func.isRequired
+}
