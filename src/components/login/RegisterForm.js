@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import {
+  Alert,
   Button,
   Input,
   FormGroup,
@@ -29,17 +30,19 @@ function RegisterForm(props) {
       }
 
       <FormGroup className="mb-3">
+        <Alert color="info">Only username and password required.</Alert>
         <Label className="sr-only" for="loginFirstName">First Name</Label>
-        <Input type="text" id="loginFirstName" placeholder="First Name" required onChange={props.handleFieldChange} />
+        <Input type="text" id="loginFirstName" placeholder="First Name" onChange={props.handleFieldChange} />
 
         <Label className="sr-only" for="loginLastName">Last Name</Label>
-        <Input type="text" id="loginLastName" placeholder="Last Name" required onChange={props.handleFieldChange} />
-
+        <Input type="text" id="loginLastName" placeholder="Last Name" onChange={props.handleFieldChange} />
+      </FormGroup>
+      <FormGroup>
         <Label className="sr-only" for="loginUsername">Last Name</Label>
         <Input type="text" id="loginUsername" placeholder="Username" required onChange={props.handleFieldChange} />
 
         <Label className="sr-only" for="loginEmail">Email address</Label>
-        <Input type="email" id="loginEmail" placeholder="Email address" required onChange={props.handleFieldChange} />
+        <Input type="email" id="loginEmail" placeholder="Email address" onChange={props.handleFieldChange} />
       </FormGroup>
       <FormGroup>
         <Label className="sr-only" for="loginPassword">Password</Label>
