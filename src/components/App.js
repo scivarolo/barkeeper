@@ -20,7 +20,7 @@ import {
   faChevronUp,
   faChevronDown,
   faBookmark } from "@fortawesome/free-solid-svg-icons"
-import user from "../modules/data/user";
+import user from "../modules/data/user"
 
 library.add(faPlusCircle, faMinusCircle, faEdit, faTrash, faCheckCircle, faCartPlus, faBookmark, faTimes, faCheck, faPen, faChevronUp, faChevronDown)
 
