@@ -107,7 +107,7 @@ class ShoppingListView extends Component {
                       getShoppingData={this.getShoppingData}
                       deleteItem={this.deleteItem} />
                   })
-                  : (<h4>You don't have any items in your shopping list. Add products and ingredients.</h4>)
+                  : (<h4>{"You don't have any items in your shopping list. Add products and ingredients."}</h4>)
                 }
               </div>
             </Col>
