@@ -1,19 +1,17 @@
 import user from "./user"
 
-const baseUrl = "http://barkeeper-api.sebastiancivarolo.com/api"
-const headers = {
-  "Content-Type": "application/json",
-  "Authorization": `Token ${user.getToken()}`
-}
+const baseUrl = "https://barkeeper-api.sebastiancivarolo.com/api"
 class API {
-
+  constructor() {
+    this.headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Token ${user.getToken()}`
+    }
+  }
   // Fetch function builder used below.
   fetchFactory(url, method, body) {
     const fetchObj = {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Token ${user.getToken()}`
-      }
+      headers: this.headers
     }
     if (method) fetchObj.method = method
     if (body) fetchObj.body = JSON.stringify(body)
@@ -57,7 +55,7 @@ class API {
     const url = `${baseUrl}/${resource}/${id}/`
     return fetch(url, {
       method: "DELETE",
-      headers: headers
+      headers: this.headers
     })
   }
 
