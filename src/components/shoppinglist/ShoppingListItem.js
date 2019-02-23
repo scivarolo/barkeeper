@@ -126,6 +126,7 @@ class ShoppingListItem extends Component {
 
 export default ShoppingListItem
 
+ShoppingListItem.displayName = "ShoppingListItem"
 ShoppingListItem.propTypes = {
   deleteItem: PropTypes.func.isRequired,
   item: PropTypes.object.isRequired,

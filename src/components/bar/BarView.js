@@ -91,3 +91,5 @@ function BarView(props) {
 }
 
 export default BarView
+
+BarView.displayName = "BarView"

@@ -124,6 +124,7 @@ class AddToBar extends Component {
 
 export default AddToBar
 
+AddToBar.displayName = "AddToBar"
 AddToBar.propTypes = {
   inventory: PropTypes.array.isRequired,
   toggleAlert: PropTypes.func.isRequired,

@@ -33,6 +33,7 @@ export default function UnitsDropdown(props) {
 
 }
 
+UnitsDropdown.displayName = "UnitsDropdown"
 UnitsDropdown.propTypes = {
   isDisabled: PropTypes.bool.isRequired,
   isRequired: PropTypes.bool.isRequired,

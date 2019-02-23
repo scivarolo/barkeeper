@@ -131,6 +131,7 @@ function BarItem(props) {
 
 export default BarItem
 
+BarItem.displayName = "BarItem"
 BarItem.propTypes = {
   item: PropTypes.object.isRequired,
   getInventory: PropTypes.func.isRequired

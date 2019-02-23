@@ -73,6 +73,7 @@ class IngredientFilter extends Component {
 
 export default IngredientFilter
 
+IngredientFilter.displayName = "IngredientFilter"
 IngredientFilter.propTypes = {
   filterByIngredient: PropTypes.func.isRequired,
   cocktails: PropTypes.array.isRequired,

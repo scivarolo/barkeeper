@@ -156,6 +156,7 @@ class Login extends Component {
 
 export default Login
 
+Login.displayName = "Login"
 Login.propTypes = {
   authenticate: PropTypes.func.isRequired
 }

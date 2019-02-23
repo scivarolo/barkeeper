@@ -121,6 +121,7 @@ class EditIngredientInput extends Component {
 
 export default EditIngredientInput
 
+EditIngredientInput.displayName = "EditIngredientInput"
 EditIngredientInput.propTypes = {
   initialIngredient: PropTypes.object.isRequired,
   ingredientToState: PropTypes.func.isRequired,

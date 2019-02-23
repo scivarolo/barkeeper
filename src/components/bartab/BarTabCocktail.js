@@ -86,6 +86,7 @@ class BarTabCocktail extends Component {
 
 export default BarTabCocktail
 
+BarTabCocktail.dispayName = "BarTabCocktail"
 BarTabCocktail.propTypes = {
   cocktailProducts: PropTypes.object.isRequired,
   cocktail: PropTypes.object.isRequired,

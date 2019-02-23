@@ -99,6 +99,7 @@ class IngredientInput extends Component {
 
 export default IngredientInput
 
+IngredientInput.displayName = "IngredientInput"
 IngredientInput.propTypes = {
   ingredientId: PropTypes.oneOfType([
     PropTypes.string,

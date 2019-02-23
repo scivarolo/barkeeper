@@ -82,6 +82,7 @@ class AddProduct extends Component {
 
 export default AddProduct
 
+AddProduct.displayName = "AddProduct"
 AddProduct.propTypes = {
   shoppingList: PropTypes.array.isRequired,
   toggleAlert: PropTypes.func.isRequired,

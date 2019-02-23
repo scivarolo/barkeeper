@@ -24,6 +24,7 @@ function QuantityToggles(props) {
 
 export default QuantityToggles
 
+QuantityToggles.displayName = "QuantityToggles"
 QuantityToggles.propTypes = {
   increase: PropTypes.func.isRequired,
   decrease: PropTypes.func.isRequired

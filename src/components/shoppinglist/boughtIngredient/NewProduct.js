@@ -94,6 +94,7 @@ class NewProduct extends Component {
 
 export default NewProduct
 
+NewProduct.displayName = "NewProduct"
 NewProduct.propTypes = {
   ingredient: PropTypes.object.isRequired,
   item: PropTypes.object.isRequired,

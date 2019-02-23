@@ -139,6 +139,7 @@ class NewProduct extends Component {
 
 export default NewProduct
 
+NewProduct.displayName = "NewProduct"
 NewProduct.propTypes = {
   getInventory: PropTypes.func.isRequired,
   loadProducts: PropTypes.func.isRequired,

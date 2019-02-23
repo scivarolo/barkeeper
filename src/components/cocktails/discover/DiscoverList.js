@@ -58,6 +58,7 @@ class DiscoverList extends Component {
 
 export default DiscoverList
 
+DiscoverList.displayName = "DiscoverList"
 DiscoverList.propTypes = {
   getDiscoverCocktails: PropTypes.func.isRequired,
   cocktails: PropTypes.array.isRequired,

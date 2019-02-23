@@ -79,6 +79,7 @@ class Barkeeper extends Component {
 
 export default Barkeeper
 
+Barkeeper.displayName = "Barkeeper"
 Barkeeper.propTypes = {
   authenticate: PropTypes.func.isRequired
 }

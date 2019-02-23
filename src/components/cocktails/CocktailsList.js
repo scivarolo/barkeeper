@@ -56,6 +56,7 @@ class CocktailsList extends Component {
 
 export default CocktailsList
 
+CocktailsList.displayName = "CocktailsList"
 CocktailsList.propTypes = {
   cocktails: PropTypes.array.isRequired,
   cocktailIngredients: PropTypes.array.isRequired,

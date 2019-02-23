@@ -40,6 +40,7 @@ function LoginForm(props) {
 
 export default LoginForm
 
+LoginForm.displayName = "LoginForm"
 LoginForm.propTypes = {
   resetFormState: PropTypes.func.isRequired,
   submitLogin: PropTypes.func.isRequired,

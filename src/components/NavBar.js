@@ -38,6 +38,7 @@ function NavBar(props) {
 
 export default NavBar
 
+NavBar.displayName = "NavBar"
 NavBar.propTypes = {
   authenticate: PropTypes.func.isRequired
 }

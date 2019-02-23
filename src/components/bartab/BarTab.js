@@ -75,6 +75,7 @@ class BarTab extends Component {
 
 export default BarTab
 
+BarTab.displayName = "BarTab"
 BarTab.propTypes = {
   getUserTab: PropTypes.func.isRequired,
   userTab: PropTypes.array.isRequired,

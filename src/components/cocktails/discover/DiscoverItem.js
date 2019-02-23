@@ -90,6 +90,7 @@ class DiscoverItem extends Component {
 
 export default DiscoverItem
 
+DiscoverItem.displayName = "DiscoverItem"
 DiscoverItem.propTypes = {
   cocktail: PropTypes.object.isRequired,
   getUserCocktailData: PropTypes.func.isRequired,

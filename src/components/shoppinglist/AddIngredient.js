@@ -82,6 +82,7 @@ class AddIngredient extends Component {
 
 export default AddIngredient
 
+AddIngredient.displayName = "AddIngredient"
 AddIngredient.propTypes = {
   shoppingList: PropTypes.array.isRequired,
   toggleAlert: PropTypes.func.isRequired,

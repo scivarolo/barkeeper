@@ -127,6 +127,7 @@ class ShoppingListView extends Component {
 
 export default ShoppingListView
 
+ShoppingListView.displayName = "ShoppingListView"
 ShoppingListView.propTypes = {
   toggleAlert: PropTypes.func.isRequired
 }

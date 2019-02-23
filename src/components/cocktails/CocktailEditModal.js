@@ -53,6 +53,7 @@ class CocktailEditModal extends React.Component {
 
 export default CocktailEditModal
 
+CocktailEditModal.displayName = "CocktailEditModal"
 CocktailEditModal.propTypes = {
   className: PropTypes.string,
   cocktail: PropTypes.object.isRequired,

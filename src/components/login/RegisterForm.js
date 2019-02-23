@@ -80,6 +80,7 @@ function RegisterForm(props) {
 
 export default RegisterForm
 
+RegisterForm.displayName = "RegisterForm"
 RegisterForm.propTypes = {
   resetFormState: PropTypes.func.isRequired,
   passwordMatch: PropTypes.bool,

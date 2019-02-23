@@ -18,3 +18,5 @@ class Dashboard extends Component {
 }
 
 export default Dashboard
+
+Dashboard.displayName = "Dashboard"

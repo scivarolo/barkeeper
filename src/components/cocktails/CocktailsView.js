@@ -520,6 +520,7 @@ class CocktailsView extends Component {
 
 export default CocktailsView
 
+CocktailsView.displayName = "CocktailsView"
 CocktailsView.propTypes = {
   toggleAlert: PropTypes.func.isRequired
 }

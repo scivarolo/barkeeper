@@ -34,6 +34,7 @@ class CocktailSearch extends Component {
 
 export default CocktailSearch
 
+CocktailSearch.displayName = "CocktailSearch"
 CocktailSearch.propTypes = {
   search: PropTypes.func.isRequired,
   searchData: PropTypes.array.isRequired,

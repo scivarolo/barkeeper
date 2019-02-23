@@ -67,3 +67,5 @@ class App extends Component {
 }
 
 export default App
+
+App.displayName = "App"

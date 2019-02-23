@@ -82,6 +82,7 @@ class BoughtIngredientModal extends Component {
 
 export default BoughtIngredientModal
 
+BoughtIngredientModal.displayName = "BoughtIngredientModal"
 BoughtIngredientModal.propTypes = {
   ingredient: PropTypes.object.isRequired,
   item: PropTypes.object.isRequired,

@@ -230,6 +230,7 @@ class NewCocktail extends Component {
 
 export default NewCocktail
 
+NewCocktail.displayName = "NewCocktail"
 NewCocktail.propTypes = {
   toggleAlert: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired

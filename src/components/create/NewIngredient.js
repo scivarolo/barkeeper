@@ -58,6 +58,7 @@ class NewIngredient extends Component {
 
 export default NewIngredient
 
+NewIngredient.displayName = "NewIngredient"
 NewIngredient.propTypes = {
   toggle: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired

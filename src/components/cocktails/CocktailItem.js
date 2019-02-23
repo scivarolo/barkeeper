@@ -227,6 +227,7 @@ class CocktailItem extends Component {
 
 export default CocktailItem
 
+CocktailItem.displayName = "CocktailItem"
 CocktailItem.propTypes = {
   getUserCocktailData: PropTypes.func.isRequired,
   cocktail: PropTypes.object.isRequired,

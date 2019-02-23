@@ -242,6 +242,7 @@ class EditCocktail extends Component {
 
 export default EditCocktail
 
+EditCocktail.displayName = "EditCocktail"
 EditCocktail.propTypes = {
   cocktail: PropTypes.object.isRequired,
   getUserCocktailData: PropTypes.func.isRequired,
