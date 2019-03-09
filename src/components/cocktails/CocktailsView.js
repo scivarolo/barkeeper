@@ -207,11 +207,12 @@ class CocktailsView extends Component {
 
   }
 
-  makeCocktail = (c) => {
+  makeCocktail = c => {
     // c = the bar tab cocktail being made
     let ingredients = c.cocktail.ingredients
     let productUpdates = []
     let canMake = true
+    let ingredientProducts = {}
 
     // Check if each ingredient is available
     ingredients.forEach(currentIngredient => {
@@ -234,18 +235,15 @@ class CocktailsView extends Component {
       const prodAvailable = Units.convert((Number(prod.amount_available) + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
       const amountLeft = prodAvailable - amountNeededMl
       if (amountLeft < 0) canMake = false
+
+      // Store a product map
+      ingredientProducts[currentIngredient.ingredient.id] = prod
     })
 
     if (canMake) {
       ingredients.forEach(currentIngredient => {
-        let prod
-        if (this.state.tabChoices[c.id] && this.state.tabChoices[c.id][currentIngredient.ingredient.id]) {
-          let productId = this.state.tabChoices[c.id][currentIngredient.ingredient.id].productId
-          prod = this.state.userInventory.find(item => item.product_id === productId)
-        } else {
-          prod = this.state.userInventory.find(item => item.product.ingredient === currentIngredient.ingredient.id)
-        }
-        if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", "You're missing ingredients!")
+        const prod = ingredientProducts[currentIngredient.ingredient.id]
+        if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", `You're missing ${currentIngredient.ingredient.name}!`)
 
         const amountNeededMl = Units.convert((currentIngredient.amount * c.quantity), currentIngredient.unit, "ml")
         const prodAvailable = Units.convert((Number(prod.amount_available) + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
@@ -268,7 +266,7 @@ class CocktailsView extends Component {
         }
 
         if (amountLeft < 0) {
-          return this.props.toggleAlert("warning", "Bummer", "You don't have enough of an ingredient to make this many.")
+          return this.props.toggleAlert("warning", "Bummer", `You don't have enough ${prod.product.name} to make this many.`)
         } else if (amountLeft === 0) {
           return productUpdates.push(
             API.delete("user_products", userProductId)
@@ -297,9 +295,7 @@ class CocktailsView extends Component {
   makeCocktails = (cocktailsToMake) => {
     let madeCocktails = []
     cocktailsToMake.forEach(c => {
-      madeCocktails.push(
-        this.makeCocktail(c)
-      )
+      madeCocktails.push(this.makeCocktail(c))
     })
     return Promise.all(madeCocktails)
       .then(() => this.getUserInventory())
@@ -351,13 +347,6 @@ class CocktailsView extends Component {
 
   render() {
 
-    /* cocktails contains the ingredient Ids
-     * userCocktail contains the id needed for delete
-     * and creating the keys for the ListGroupItems
-     * cocktailIngredients contains the ingredient labels
-     * userInventory contains the users inventory data for comparing to cocktail ingredients
-     */
-
     let {
       allMinusUserCocktails,
       allMinusUserCocktailIngredients,
@@ -372,7 +361,6 @@ class CocktailsView extends Component {
       searchResults,
       showOnlyMakeable } = this.state
 
-    // let cocktailsToShow = userCocktails
     let cocktailsToShow = userCocktails
     let cocktailsToSearch = userCocktails
     let ingredientsToSearch = userCocktailIngredients
@@ -385,7 +373,6 @@ class CocktailsView extends Component {
     if (searching || filtering) {
       cocktailsToShow = searchResults
     }
-
 
     if (this.state.isLoaded) {
       return (
@@ -494,7 +481,6 @@ class CocktailsView extends Component {
       )
     }
   }
-
 }
 
 export default CocktailsView
