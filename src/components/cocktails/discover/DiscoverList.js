@@ -20,10 +20,7 @@ class DiscoverList extends Component {
 
   render() {
 
-    let {
-      cocktails,
-      cocktailIngredients
-    } = this.props
+    let { cocktails } = this.props
 
     if (this.state.loaded) {
 
@@ -31,12 +28,12 @@ class DiscoverList extends Component {
         return (
           <ListGroup>
             {
-              cocktails.map((cocktail, i) => {
+              cocktails.map(cocktail => {
                 return (
                   <DiscoverItem
                     key={cocktail.id}
                     cocktail={cocktail}
-                    ingredients={cocktailIngredients[i]}
+                    ingredients={cocktail.ingredients}
                     getUserCocktailData={this.props.getUserCocktailData}
                     allMinusUserCocktails={this.props.allMinusUserCocktails}
                   />
@@ -62,7 +59,6 @@ DiscoverList.displayName = "DiscoverList"
 DiscoverList.propTypes = {
   getDiscoverCocktails: PropTypes.func.isRequired,
   cocktails: PropTypes.array.isRequired,
-  cocktailIngredients: PropTypes.array.isRequired,
   getUserCocktailData: PropTypes.func.isRequired,
   allMinusUserCocktails: PropTypes.func.isRequired
 }

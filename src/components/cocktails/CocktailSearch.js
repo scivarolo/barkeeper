@@ -15,7 +15,7 @@ class CocktailSearch extends Component {
 
   handleFieldChange(e) {
     this.setState({[e.target.id]: e.target.value})
-    this.props.search(this.props.searchData, this.props.searchIngredients, e.target.value)
+    this.props.search(this.props.searchData, e.target.value)
   }
 
   clear = () => {
@@ -38,6 +38,5 @@ CocktailSearch.displayName = "CocktailSearch"
 CocktailSearch.propTypes = {
   search: PropTypes.func.isRequired,
   searchData: PropTypes.array.isRequired,
-  searchIngredients: PropTypes.array.isRequired,
   placeholder: PropTypes.string.isRequired,
 }

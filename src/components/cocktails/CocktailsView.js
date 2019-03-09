@@ -62,16 +62,22 @@ class CocktailsView extends Component {
       searching: false,
       filtering: false,
       searchResults: [],
-      searchIngredients: [],
       discoverCocktails: !this.state.discoverCocktails
     })
   }
 
+  // This is only used by allMinusUserCocktails to get discover cocktails list
+  // Let's prevent loading all cocktails with filtered API fetch below
   loadAllCocktails = () => {
     return API.getAll("cocktails")
       .then(data => this.setState({allCocktails: data}))
   }
 
+  /** TODO: Filter cocktails in backend by not in user_cocktails
+    * allMinusUserCocktails should become discoverCocktails
+    * allMinusUserCocktailsIngredients should become discoverCocktailsIngredients
+    * fetched pre-filtered from API for future pagination.
+    */
   allMinusUserCocktails = () => {
     let filtered = this.state.allCocktails.filter(cocktail => {
       if(!this.state.userCocktails.find(userC => userC.id === cocktail.id)) {
@@ -90,24 +96,23 @@ class CocktailsView extends Component {
 
   }
 
+  getDiscoverCocktails = () => {
+    return this.loadAllCocktails()
+      .then(() => this.allMinusUserCocktails())
+  }
+
   /* for use after a fetch. Doesn't set state, so set it in the appropriate function. */
   getIngredientData = (cocktails) => {
     let ingredients = []
-    // TODO: Use the integrated ingredients rather than the separate ingredients object.
-    //build ingredients as separate state object (remnant from json-server)
+    // TODO: Investigate if can use the integrated ingredients rather than the separate ingredients object.
     cocktails.forEach(c => {
       ingredients.push(c.ingredients)
     })
     return ingredients
   }
 
-  getDiscoverCocktails = () => {
-    return this.loadAllCocktails()
-      .then(() => this.allMinusUserCocktails())
-  }
-
   getUserCocktailData = () => {
-    /* Load the user's cocktails, and load the cocktail data with the IDs from that array. */
+    /* Load the user's cocktails, and push the cocktail data into another array in state */
     let newState = {}
 
     // get user_cocktails
@@ -115,28 +120,17 @@ class CocktailsView extends Component {
       .then(userCocktails => {
         newState.userCocktailsRelations = userCocktails
         //use 'cocktail' from user_cocktail to get cocktail data
-        let cocktailQueries = userCocktails.map(
-          c => API.getOne("cocktails", c.cocktail_id)
+        newState.userCocktails = userCocktails.map(
+          c => c.cocktail
         )
-        //each Promise returns a cocktail with cocktailIngredients embedded
-        return Promise.all(cocktailQueries)
-      })
-      .then(cocktails => {
-        newState.userCocktails = cocktails
 
         // Loops through cocktails and saves ingredients in state as a separate array
-        // Remnant from using json-server, but now the cocktail returns all of the ingredient data inside it.
-        // TODO: Rewrite anywhere that uses userCocktailIngredients to just reference the ingredients from within the cocktail
-        let cocktailIngredients = []
-        cocktails.forEach(cocktail => {
-          cocktailIngredients.push(cocktail.ingredients)
+        newState.userCocktailIngredients = []
+        newState.userCocktails.forEach(cocktail => {
+          newState.userCocktailIngredients.push(cocktail.ingredients)
         })
-        return cocktailIngredients
+        this.setState(newState)
       })
-      .then(cocktailIngredients => {
-        newState.userCocktailIngredients = cocktailIngredients
-      })
-      .then(() => this.setState(newState))
       .catch(error => this.toggleAlert("warning", "Something went wrong. Try again.", error))
   }
 
@@ -312,44 +306,37 @@ class CocktailsView extends Component {
       .then(() => this.getUserTab())
   }
 
-  searchCocktails = (cocktailsToSearch, ingredientsToSearch, query) => {
+  searchCocktails = (cocktailsToSearch, query) => {
     query = query.toLowerCase()
     let searching = true
-    let ingredientResults = []
-    let results = cocktailsToSearch.filter((result, index) => {
+    let results = cocktailsToSearch.filter(result => {
       let found = result.name.toLowerCase().includes(query)
-      if (found) ingredientResults.push(ingredientsToSearch[index])
       return found
     })
 
     if (query === "") {
       results = []
-      ingredientResults = []
       searching = false
     }
     return this.setState({
       searching: searching,
       filtering: false,
-      searchIngredients: ingredientResults,
       searchResults: results
     })
   }
 
-  filterByIngredient = (cocktailsToFilter, cocktailIngredients, ingredientId) => {
+  filterByIngredient = (cocktailsToFilter, ingredientId) => {
     if (ingredientId === "noFilter") {
       return this.setState({
         filtering: false,
         searching: false,
         searchResults: [],
-        searchIngredients: []
       })
     }
 
     this.cocktailSearch.clear()
-    let matchingIngredients = []
-    let results = cocktailsToFilter.filter((cocktail, i) => {
+    let results = cocktailsToFilter.filter(cocktail => {
       if(cocktail.ingredients.find(cocktailIngredient => cocktailIngredient.ingredient.id === ingredientId)) {
-        matchingIngredients.push(cocktailIngredients[i])
         return cocktail
       } else {
         return null
@@ -359,7 +346,6 @@ class CocktailsView extends Component {
       filtering: true,
       searching: false,
       searchResults: results,
-      searchIngredients: matchingIngredients
     })
   }
 
@@ -384,23 +370,20 @@ class CocktailsView extends Component {
       searching,
       filtering,
       searchResults,
-      searchIngredients,
       showOnlyMakeable } = this.state
 
+    // let cocktailsToShow = userCocktails
     let cocktailsToShow = userCocktails
-    let ingredientsToShow = userCocktailIngredients
     let cocktailsToSearch = userCocktails
     let ingredientsToSearch = userCocktailIngredients
 
     if (discoverCocktails) {
       cocktailsToShow = allMinusUserCocktails
-      ingredientsToShow = allMinusUserCocktailIngredients
       cocktailsToSearch = allMinusUserCocktails
       ingredientsToSearch = allMinusUserCocktailIngredients
     }
     if (searching || filtering) {
       cocktailsToShow = searchResults
-      ingredientsToShow = searchIngredients
     }
 
 
@@ -412,7 +395,6 @@ class CocktailsView extends Component {
               <CocktailSearch
                 ref={cocktailSearch => this.cocktailSearch = cocktailSearch}
                 searchData={cocktailsToSearch}
-                searchIngredients={ingredientsToSearch}
                 searching={searching}
                 search={this.searchCocktails}
                 searchResults={searchResults}
@@ -458,15 +440,12 @@ class CocktailsView extends Component {
                     this.state.discoverCocktails
                       ? <DiscoverList
                         cocktails={cocktailsToShow}
-                        cocktailIngredients={ingredientsToShow}
                         getDiscoverCocktails={this.getDiscoverCocktails}
                         getUserCocktailData={this.getUserCocktailData}
-                        userCocktails={userCocktails}
                         allMinusUserCocktails={this.allMinusUserCocktails}
                       />
                       : <CocktailsList
                         cocktails={cocktailsToShow}
-                        cocktailIngredients={ingredientsToShow}
                         userInventory={userInventory}
                         userCocktailsRelations={userCocktailsRelations}
                         userShoppingList={userShoppingList}
