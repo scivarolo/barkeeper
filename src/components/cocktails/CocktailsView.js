@@ -231,7 +231,7 @@ class CocktailsView extends Component {
 
       // Check if there is enough of each ingredient to make the specified quantity
       const amountNeededMl = Units.convert((currentIngredient.amount * c.quantity), currentIngredient.unit, "ml")
-      const prodAvailable = Units.convert((prod.amount_available + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
+      const prodAvailable = Units.convert((Number(prod.amount_available) + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
       const amountLeft = prodAvailable - amountNeededMl
       if (amountLeft < 0) canMake = false
     })
@@ -248,7 +248,7 @@ class CocktailsView extends Component {
         if (!prod) return this.props.toggleAlert("Warning", "Can't Make This Cocktail", "You're missing ingredients!")
 
         const amountNeededMl = Units.convert((currentIngredient.amount * c.quantity), currentIngredient.unit, "ml")
-        const prodAvailable = Units.convert((prod.amount_available + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
+        const prodAvailable = Units.convert((Number(prod.amount_available) + (prod.product.size * prod.quantity)), prod.product.unit, "ml")
         const prodSizeMl = Units.convert(prod.product.size, prod.product.unit, "ml")
         const amountLeft = prodAvailable - amountNeededMl
         const quantityLeft = Math.ceil(amountLeft / prodSizeMl)
