@@ -15,7 +15,6 @@ class CocktailsList extends Component {
 
     let {
       cocktails,
-      cocktailIngredients,
       userCocktailsRelations,
       userInventory,
       userShoppingList,
@@ -26,16 +25,15 @@ class CocktailsList extends Component {
       return (
         <ListGroup>
           {
-            cocktails.map((cocktail, i) => {
-              //Find the userCocktail relationship that goes with the cocktail.
-              let thisUserCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktail_id === cocktail.id)
-
+            cocktails.map(cocktail => {
+              let userCocktail = userCocktailsRelations.find(userCocktail => userCocktail.cocktail_id === cocktail.id)
               return (
                 <CocktailItem
-                  key={thisUserCocktail.id}
+                  // TODO: Just pass the usercocktail and break it apart inside the component?
+                  key={userCocktail.id}
+                  userCocktail={userCocktail}
                   cocktail={cocktail}
-                  ingredients={cocktailIngredients[i]}
-                  userCocktail={thisUserCocktail}
+                  ingredients={cocktail.ingredients}
                   userInventory={userInventory}
                   userShoppingList={userShoppingList}
                   getShoppingList={this.props.getShoppingList}
@@ -59,7 +57,6 @@ export default CocktailsList
 CocktailsList.displayName = "CocktailsList"
 CocktailsList.propTypes = {
   cocktails: PropTypes.array.isRequired,
-  cocktailIngredients: PropTypes.array.isRequired,
   userCocktailsRelations: PropTypes.array.isRequired,
   userInventory: PropTypes.array.isRequired,
   userShoppingList: PropTypes.array.isRequired,

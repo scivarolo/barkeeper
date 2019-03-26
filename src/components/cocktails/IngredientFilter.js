@@ -23,7 +23,7 @@ class IngredientFilter extends Component {
     let id = e.target.id
     if (id !== "noFilter") id = Number(e.target.id)
     this.setState({ingredientFilter: id})
-    this.props.filterByIngredient(this.props.cocktails, this.props.cocktailIngredients, id)
+    this.props.filterByIngredient(this.props.cocktails, id)
   }
 
   clear = () => {
