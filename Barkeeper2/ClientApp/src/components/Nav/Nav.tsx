@@ -53,8 +53,8 @@ export default function Nav() {
                         activeOnlyWhenExact
                     />
                     <NavButton
-                        to="/fetch-data"
-                        label="Fetch Data"
+                        to="/bar"
+                        label="Your Bar"
                         activeOnlyWhenExact
                     />
                 </Flex>
