@@ -11,7 +11,7 @@ namespace Barkeeper2.Models {
 
 		public string UserId { get; set; }
 
-		[ForeignKey ("UserId")]
-		public ApplicationUser User { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		public DateTime DateAdded { get; set; }
 	}
 }

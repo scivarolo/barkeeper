@@ -43,11 +43,12 @@ namespace Barkeeper2.Controllers {
 
         #region Save Ingredients
 
-        [HttpPost]
-        public async Task<Ingredient> AddNewIngredient(Ingredient newIngredient)
+        [HttpPost("save-new")]
+        public async Task<Ingredient> AddNewIngredient([FromBody]Ingredient newIngredient)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             newIngredient.CreatedById = userId;
+            newIngredient.CreatedDate = DateTime.UtcNow;
             var model = await _ingredientsService.AddNew(newIngredient);
             return model;
         }

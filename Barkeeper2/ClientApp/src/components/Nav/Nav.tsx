@@ -57,6 +57,11 @@ export default function Nav() {
                         label="Your Bar"
                         activeOnlyWhenExact
                     />
+                    <NavButton
+                        to="/admin/ingredients"
+                        label="Ingredients"
+                        activeOnlyWhenExact
+                    />
                 </Flex>
             )}
             <Box

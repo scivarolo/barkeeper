@@ -37,5 +37,42 @@ namespace Barkeeper2.Data
 		public DbSet<UserShopping> UserShopping { get; set; }
 
 		public DbSet<UserTabCocktail> UserTabCocktails { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<UserCocktail>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId);
+            builder.Entity<UserHistory>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId);
+            builder.Entity<UserProduct>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId);
+            builder.Entity<UserShopping>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId);
+            builder.Entity<UserTabCocktail>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId);
+            builder.Entity<Product>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.CreatedById);
+            builder.Entity<Cocktail>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.CreatedById);
+            builder.Entity<Ingredient>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.CreatedById);
+        }
     }
 }
