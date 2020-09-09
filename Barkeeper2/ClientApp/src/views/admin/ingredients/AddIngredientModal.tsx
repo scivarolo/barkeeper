@@ -13,9 +13,10 @@ import {
     ModalOverlay,
     Switch,
     useDisclosure,
+    Flex
 } from "@chakra-ui/core";
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, queryCache } from "react-query";
 import API from "../../../modules/API";
 
 export default function AddIngredientModal() {
@@ -24,13 +25,15 @@ export default function AddIngredientModal() {
     const [name, setName] = useState("");
     const [isLiquid, setIsLiquid] = useState(true);
 
-    const [
-        mutate,
-        { isIdle, isLoading, isError, isSuccess, data, error }
-    ] = useMutation(({ name, liquid }: any) => API.POST<Partial<Ingredient>, Ingredient>("api/v2/ingredients/save-new", {
+    const [mutate, { isLoading }] = useMutation(({ name, liquid }: any) => API.POST<Partial<Ingredient>, Ingredient>("api/v2/ingredients/save-new", {
         name,
         liquid
-    }));
+    }), {
+        onSuccess: () => {
+            queryCache.invalidateQueries("ingredients-all")
+            onClose();
+        }
+    });
 
     const onSaveIngredient = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -59,12 +62,18 @@ export default function AddIngredientModal() {
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                 </FormControl>
-                                <FormControl id="name">
-                                    <FormLabel>Liquid?</FormLabel>
+                                <FormControl
+                                    id="liquid"
+                                    mt={3}
+                                    as={Flex}
+                                    justifyContent="start"
+                                    alignItems="center">
                                     <Switch
+                                        mr={1}
                                         isChecked={isLiquid}
                                         onChange={() => setIsLiquid(!isLiquid)}
-                                    />
+                                        />
+                                    <FormLabel>Liquid?</FormLabel>
                                 </FormControl>
                         </ModalBody>
                         <ModalFooter>

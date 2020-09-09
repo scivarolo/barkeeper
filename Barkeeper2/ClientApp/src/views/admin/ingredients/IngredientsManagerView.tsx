@@ -1,4 +1,4 @@
-import { Box, Button, Spinner } from "@chakra-ui/core";
+import { Box, Spinner } from "@chakra-ui/core";
 import React from "react";
 import API from "../../../modules/API";
 import { useQuery } from "react-query";
