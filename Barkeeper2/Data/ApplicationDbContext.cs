@@ -3,10 +3,6 @@ using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Barkeeper2.Data
 {
@@ -19,23 +15,14 @@ namespace Barkeeper2.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-
 		public DbSet<Ingredient> Ingredients { get; set; }
-
 		public DbSet<Cocktail> Cocktails { get; set; }
-
 		public DbSet<Product> Products { get; set; }
-
 		public DbSet<CocktailIngredient> CocktailIngredients { get; set; }
-
 		public DbSet<UserCocktail> UserCocktails { get; set; }
-
 		public DbSet<UserHistory> UserHistories { get; set; }
-
 		public DbSet<UserProduct> UserProducts { get; set; }
-
 		public DbSet<UserShopping> UserShopping { get; set; }
-
 		public DbSet<UserTabCocktail> UserTabCocktails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -73,6 +60,38 @@ namespace Barkeeper2.Data
                 .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(x => x.CreatedById);
+            builder.Entity<Ingredient>()
+                .Property(i => i.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<Cocktail>()
+                .Property(c => c.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<Product>()
+                .Property(p => p.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<UserCocktail>()
+                .Property(c => c.DateAdded)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<UserHistory>()
+                .Property(h => h.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<UserProduct>()
+                .Property(p => p.DateAdded)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<UserShopping>()
+                .Property(s => s.DateAdded)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+            builder.Entity<UserTabCocktail>()
+                .Property(c => c.DateAdded)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
         }
     }
 }

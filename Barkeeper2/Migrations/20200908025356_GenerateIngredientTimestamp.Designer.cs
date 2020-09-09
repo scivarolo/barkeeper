@@ -3,15 +3,17 @@ using System;
 using Barkeeper2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Barkeeper2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200908025356_GenerateIngredientTimestamp")]
+    partial class GenerateIngredientTimestamp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,9 +96,8 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Instructions")
                         .IsRequired()
@@ -161,7 +162,7 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -190,9 +191,8 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("IngredientId")
                         .HasColumnType("integer");
@@ -220,9 +220,8 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -247,9 +246,8 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -274,9 +272,8 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<DateTime>("DateAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -310,9 +307,8 @@ namespace Barkeeper2.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("DateAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("IngredientId")
                         .HasColumnType("integer");
@@ -348,9 +344,8 @@ namespace Barkeeper2.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");

@@ -21,7 +21,6 @@ namespace Barkeeper2.Models {
 		//[ForeignKey ("CreatedById")]
 		//public ApplicationUser CreatedBy { get; set; }
 
-		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime CreatedDate { get; set; }
 
 	}
