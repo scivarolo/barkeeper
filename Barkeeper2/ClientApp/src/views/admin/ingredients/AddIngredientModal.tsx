@@ -13,7 +13,10 @@ import {
     ModalOverlay,
     Switch,
     useDisclosure,
-    Flex
+    Flex,
+    AlertDescription,
+    AlertIcon,
+    Alert
 } from "@chakra-ui/core";
 import React, { useState } from "react";
 import { useMutation, queryCache } from "react-query";
@@ -25,20 +28,19 @@ export default function AddIngredientModal() {
     const [name, setName] = useState("");
     const [isLiquid, setIsLiquid] = useState(true);
 
-    const [mutate, { isLoading }] = useMutation(({ name, liquid }: any) => API.POST<Partial<Ingredient>, Ingredient>("api/v2/ingredients/save-new", {
+    const [mutate, { isLoading, isError, error }] = useMutation<Ingredient, string, Partial<Ingredient>>(({ name, liquid }: any) => API.POST<Partial<Ingredient>, Ingredient>("api/v2/ingredients/save-new", {
         name,
         liquid
     }), {
         onSuccess: () => {
             queryCache.invalidateQueries("ingredients-all")
             onClose();
-        }
+        },
     });
 
     const onSaveIngredient = async (e: React.MouseEvent) => {
         e.preventDefault();
         try {
-            console.log("save")
             await mutate({ name, liquid: isLiquid })
         } catch ( error ) {
 
@@ -75,6 +77,12 @@ export default function AddIngredientModal() {
                                         />
                                     <FormLabel>Liquid?</FormLabel>
                                 </FormControl>
+                                {isError && (
+                                    <Alert>
+                                        <AlertIcon />
+                                        <AlertDescription>{error}</AlertDescription>
+                                    </Alert>
+                                )}
                         </ModalBody>
                         <ModalFooter>
                             <ButtonGroup>

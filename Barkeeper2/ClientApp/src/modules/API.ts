@@ -6,7 +6,11 @@ class API {
         const response = await fetch(endpoint, {
             headers: !token ? {} : { "Authorization": `Bearer ${token}` }
         });
-        const data: T = await response.json();
+        const data = await response.json();
+        if (!response.ok) {
+            const error = data as Error;
+            throw error.error;
+        }
         return data;
     }
 
@@ -17,7 +21,11 @@ class API {
             headers: !token ? {} : { "Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
             body: body ? JSON.stringify(body) : null
         });
-        const data: TResponse = await response.json();
+        const data = await response.json();
+        if (!response.ok) {
+            const error = data as Error;
+            throw error.error;
+        }
         return data;
     }
 }

@@ -14,6 +14,7 @@ using Barkeeper2.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Barkeeper2.Helpers.Exceptions;
 
 namespace Barkeeper2
 {
@@ -30,7 +31,7 @@ namespace Barkeeper2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"]));             
+                options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"]));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -87,7 +88,7 @@ namespace Barkeeper2
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseMiddleware<JsonExceptionHandler>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

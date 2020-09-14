@@ -49,8 +49,8 @@ namespace Barkeeper2.Controllers {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             newIngredient.CreatedById = userId;
             newIngredient.CreatedDate = DateTime.UtcNow;
-            var model = await _ingredientsService.AddNew(newIngredient);
-            return model;
+            var result = await _ingredientsService.SaveNewIngredient(newIngredient);
+            return result;
         }
 
         [HttpPut("{id}")]
