@@ -1,11 +1,10 @@
 import { Box, Spinner } from "@chakra-ui/core";
 import React from "react";
-import API from "../../../modules/API";
-import { useQuery } from "react-query";
 import AddIngredientModal from "./AddIngredientModal";
+import { useAllIngredients } from "../../../data/Ingredients";
 
 export default function IngredientsManagerView() {
-    const { isLoading, data: ingredients } = useQuery("ingredients-all", () => API.GET<Ingredient[]>("api/v2/ingredients"))
+    const { isLoading, data: ingredients } = useAllIngredients();
     return (<>
         <Box mb="1rem">
             <AddIngredientModal />

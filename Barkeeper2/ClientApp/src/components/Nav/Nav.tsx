@@ -48,11 +48,6 @@ export default function Nav() {
                         activeOnlyWhenExact
                     />
                     <NavButton
-                        to="/counter"
-                        label="Counter"
-                        activeOnlyWhenExact
-                    />
-                    <NavButton
                         to="/bar"
                         label="Your Bar"
                         activeOnlyWhenExact

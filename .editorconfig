@@ -1,0 +1,2 @@
+dotnet_naming_style.parameter.capitalization = pascal_case;
+dotnet_naming_style.parameter.capitalization.severity = warning;

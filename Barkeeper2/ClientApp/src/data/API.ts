@@ -1,4 +1,4 @@
-import authService from "./../components/api-authorization/AuthorizeService";
+import authService from "../components/api-authorization/AuthorizeService";
 
 class API {
     async GET<T>(endpoint: string): Promise<T> {

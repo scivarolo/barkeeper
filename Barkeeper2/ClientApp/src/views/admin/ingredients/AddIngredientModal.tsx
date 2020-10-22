@@ -19,8 +19,7 @@ import {
     Alert
 } from "@chakra-ui/core";
 import React, { useState } from "react";
-import { useMutation, queryCache } from "react-query";
-import API from "../../../modules/API";
+import { useSaveIngredient } from "../../../data/Ingredients";
 
 export default function AddIngredientModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,15 +27,7 @@ export default function AddIngredientModal() {
     const [name, setName] = useState("");
     const [isLiquid, setIsLiquid] = useState(true);
 
-    const [mutate, { isLoading, isError, error }] = useMutation<Ingredient, string, Partial<Ingredient>>(({ name, liquid }: any) => API.POST<Partial<Ingredient>, Ingredient>("api/v2/ingredients/save-new", {
-        name,
-        liquid
-    }), {
-        onSuccess: () => {
-            queryCache.invalidateQueries("ingredients-all")
-            onClose();
-        },
-    });
+    const [mutate, { isLoading, isError, error }] = useSaveIngredient(onClose);
 
     const onSaveIngredient = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -74,7 +65,7 @@ export default function AddIngredientModal() {
                                         mr={1}
                                         isChecked={isLiquid}
                                         onChange={() => setIsLiquid(!isLiquid)}
-                                        />
+                                    />
                                     <FormLabel>Liquid?</FormLabel>
                                 </FormControl>
                                 {isError && (

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router';
 import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
@@ -31,8 +29,6 @@ export default function App() {
           <Nav />
           <Box m="1rem" p="1rem">
             <Route exact path='/' component={Home} />
-            <Route path='/counter' component={Counter} />
-            <AuthorizeRoute path='/fetch-data' component={FetchData} />
             <AuthorizeRoute path="/bar" component={InventoryView} />
             {user?.name?.startsWith("scivarolo") && (
               <Route exact path="/admin/ingredients">

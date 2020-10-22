@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Barkeeper2.Controllers {
 
     [Authorize]
-    [Route("api/v2/ingredients")]
+    [Route("api/v1/ingredients")]
     public class IngredientsController : ControllerBase
     {
 

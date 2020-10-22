@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Barkeeper2.Controllers {
     [Authorize]
-    [Route("api/v2/cocktailIngredients")]
+    [Route("api/v1/cocktailIngredients")]
     public class CocktailIngredientsController : ControllerBase
     {
         private readonly ICocktailIngredientsService _cocktailIngredientsService;
