@@ -1,7 +1,7 @@
 import { Box, Spinner } from "@chakra-ui/core";
 import React from "react";
 import AddIngredientModal from "./AddIngredientModal";
-import { useAllIngredients } from "../../../data/Ingredients";
+import { useAllIngredients } from "@data/Ingredients";
 
 export default function IngredientsManagerView() {
     const { isLoading, data: ingredients } = useAllIngredients();

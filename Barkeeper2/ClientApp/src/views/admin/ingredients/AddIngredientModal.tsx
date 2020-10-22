@@ -19,7 +19,7 @@ import {
     Alert
 } from "@chakra-ui/core";
 import React, { useState } from "react";
-import { useSaveIngredient } from "../../../data/Ingredients";
+import { useSaveIngredient } from "@data/Ingredients";
 
 export default function AddIngredientModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,32 +48,32 @@ export default function AddIngredientModal() {
                         <ModalHeader>Add Ingredient</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                                <FormControl id="name">
-                                    <FormLabel>Ingredient Name</FormLabel>
-                                    <Input
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
-                                </FormControl>
-                                <FormControl
-                                    id="liquid"
-                                    mt={3}
-                                    as={Flex}
-                                    justifyContent="start"
-                                    alignItems="center">
-                                    <Switch
-                                        mr={1}
-                                        isChecked={isLiquid}
-                                        onChange={() => setIsLiquid(!isLiquid)}
-                                    />
-                                    <FormLabel>Liquid?</FormLabel>
-                                </FormControl>
-                                {isError && (
-                                    <Alert>
-                                        <AlertIcon />
-                                        <AlertDescription>{error}</AlertDescription>
-                                    </Alert>
-                                )}
+                            <FormControl id="name">
+                                <FormLabel>Ingredient Name</FormLabel>
+                                <Input
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </FormControl>
+                            <FormControl
+                                id="liquid"
+                                mt={3}
+                                as={Flex}
+                                justifyContent="start"
+                                alignItems="center">
+                                <Switch
+                                    mr={1}
+                                    isChecked={isLiquid}
+                                    onChange={() => setIsLiquid(!isLiquid)}
+                                />
+                                <FormLabel>Liquid?</FormLabel>
+                            </FormControl>
+                            {isError && (
+                                <Alert>
+                                    <AlertIcon />
+                                    <AlertDescription>{error}</AlertDescription>
+                                </Alert>
+                            )}
                         </ModalBody>
                         <ModalFooter>
                             <ButtonGroup>

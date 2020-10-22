@@ -2,7 +2,7 @@ import { useQuery, useMutation, queryCache } from "react-query";
 import API from "./API";
 
 export function useAllIngredients() {
-    return useQuery("ingredients-all", () => API.GET<Ingredient[]>("api/v1/ingredients"));
+    return useQuery<Ingredient[], Error>("ingredients-all", () => API.GET<Ingredient[]>("api/v1/ingredients"));
 }
 
 export function useSaveIngredient(onClose?: any) {

@@ -1,18 +1,18 @@
 import React from 'react';
 import { Route } from 'react-router';
-import { Home } from './components/Home';
-import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
-import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
-import Nav from "./components/Nav/Nav";
+import { Home } from '@components/Home';
+import AuthorizeRoute from '@components/api-authorization/AuthorizeRoute';
+import ApiAuthorizationRoutes from '@components/api-authorization/ApiAuthorizationRoutes';
+import { ApplicationPaths } from '@components/api-authorization/ApiAuthorizationConstants';
+import Nav from "@components/Nav/Nav";
 import { ReactQueryConfigProvider, useQuery } from "react-query";
 import { ChakraProvider, CSSReset, Box } from "@chakra-ui/core";
 import theme from "@chakra-ui/theme";
-import { InventoryView } from "./views";
+import { InventoryView } from "@views";
 import './custom.css'
-import authService from './components/api-authorization/AuthorizeService';
+import authService from '@components/api-authorization/AuthorizeService';
 import { Profile } from 'oidc-client';
-import IngredientsManagerView from './views/admin/ingredients/IngredientsManagerView';
+import IngredientsManagerView from '@views/admin/ingredients/IngredientsManagerView';
 
 const queryConfig = {
   queries: {

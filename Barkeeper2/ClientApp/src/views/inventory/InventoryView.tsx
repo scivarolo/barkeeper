@@ -1,15 +1,15 @@
 import { Heading, Spinner } from "@chakra-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
-import API from "../../data/API";
+import { useUserProducts } from "@data/UserProducts";
 
 export default function InventoryView() {
-    const { isLoading, data } = useQuery("user-products", () => API.GET<UserProduct>("api/v1/userProducts"));
+    const { isLoading, data } = useUserProducts();
     return (<>
         <Heading as="h1">Inventory</Heading>
-        {isLoading && (
-            <Spinner />
-        )}
-        {data && "We have data"}
+        {isLoading
+            ? <Spinner />
+            : data?.length > 0
+                ? "We have inventory"
+                : "No products in your inventory"}
     </>)
 }

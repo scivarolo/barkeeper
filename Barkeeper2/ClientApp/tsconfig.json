@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
@@ -11,15 +11,29 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "strictNullChecks": false,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": "src",
+    "paths": {
+      "@components": ["components"],
+      "@components/*": ["components/*"],
+      "@data": ["data"],
+      "@data/*": ["data/*"],
+      "@hooks": ["hooks"],
+      "@hooks/*": ["hooks/*"],
+      "@modules": ["modules"],
+      "@modules/*": ["modules/*"],
+      "@views": ["views"],
+      "@views/*": ["views/*"]
+    }
   },
   "include": [
-    "src"
+    "src/**/*"
   ]
 }

@@ -1,9 +1,9 @@
 import { Box, Flex, Center, Heading } from "@chakra-ui/core";
 import React, { useState } from "react";
-import { LoginMenu } from "../api-authorization/LoginMenu";
+import { LoginMenu } from "@components/api-authorization/LoginMenu";
 import NavButton from "./NavButton";
 import { Link } from "react-router-dom";
-import useIsAuthenticated from "../../hooks/useIsAuthenticated";
+import useIsAuthenticated from "@hooks/useIsAuthenticated";
 
 export default function Nav() {
     const { isAuthenticated } = useIsAuthenticated();
