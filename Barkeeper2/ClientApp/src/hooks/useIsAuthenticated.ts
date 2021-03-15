@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import authService from "@components/api-authorization/AuthorizeService"
+import authService from "../components/api-authorization/AuthorizeService"
 
 /**
  * This hook checks whether a user is authorized

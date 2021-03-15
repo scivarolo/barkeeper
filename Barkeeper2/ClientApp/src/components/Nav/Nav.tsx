@@ -4,6 +4,7 @@ import { LoginMenu } from "@components/api-authorization/LoginMenu";
 import NavButton from "./NavButton";
 import { Link } from "react-router-dom";
 import useIsAuthenticated from "@hooks/useIsAuthenticated";
+import AdminMenu from "./AdminMenu";
 
 export default function Nav() {
     const { isAuthenticated } = useIsAuthenticated();
@@ -52,11 +53,7 @@ export default function Nav() {
                         label="Your Bar"
                         activeOnlyWhenExact
                     />
-                    <NavButton
-                        to="/admin/ingredients"
-                        label="Ingredients"
-                        activeOnlyWhenExact
-                    />
+                    <AdminMenu />
                 </Flex>
             )}
             <Box

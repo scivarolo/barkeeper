@@ -12,7 +12,7 @@ export default function IngredientsManagerView() {
         <Box>
             { isLoading
                 ? <Spinner />
-                : ingredients && ingredients.length > 0
+                : ingredients?.length > 0
                     ? ingredients.map(ingredient => <Box key={ingredient.id}>{ingredient.name}</Box>)
                     : "No Ingredients found"
             }

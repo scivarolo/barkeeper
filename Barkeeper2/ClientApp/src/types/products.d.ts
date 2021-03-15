@@ -1,9 +1,9 @@
 interface Product {
-    Id: number;
-    Name: string;
-    Ingredient: Ingredient;
-    CreatedBy: User;
-    CreatedDate: string;
+    id: number;
+    name: string;
+    ingredient: Ingredient;
+    createdBy: User;
+    createdDate: string;
 }
 
 interface UserProduct {
