@@ -1,11 +1,16 @@
 ﻿using Barkeeper2.Models;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Barkeeper2.Data
 {
-    public class GraphQLDbContext : DbContext
+    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public GraphQLDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(
+            DbContextOptions options,
+            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
 

@@ -27,7 +27,13 @@ namespace Barkeeper2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"]));
+                options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"])
+            );
+            services.AddPooledDbContextFactory<GraphQLDbContext>(options =>
+                options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"])
+            );
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -41,6 +47,11 @@ namespace Barkeeper2
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -48,26 +59,26 @@ namespace Barkeeper2
             });
 
             // Barkeeper2 Repositories DI
-			services.AddScoped<ICocktailIngredientsRepository, CocktailIngredientsRepository>();
-			services.AddScoped<ICocktailsRepository, CocktailsRepository>();
-			services.AddScoped<IIngredientsRepository, IngredientsRepository>();
-			services.AddScoped<IProductsRepository, ProductsRepository>();
-			services.AddScoped<IUserCocktailsRepository, UserCocktailsRepository>();
-			services.AddScoped<IUserHistoriesRepository, UserHistoriesRepository>();
-			services.AddScoped<IUserProductsRepository, UserProductsRepository>();
-			services.AddScoped<IUserShoppingRepository, UserShoppingRepository>();
-			services.AddScoped<IUserTabsRepository, UserTabsRepository>();
+            services.AddScoped<ICocktailIngredientsRepository, CocktailIngredientsRepository>();
+            services.AddScoped<ICocktailsRepository, CocktailsRepository>();
+            services.AddScoped<IIngredientsRepository, IngredientsRepository>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IUserCocktailsRepository, UserCocktailsRepository>();
+            services.AddScoped<IUserHistoriesRepository, UserHistoriesRepository>();
+            services.AddScoped<IUserProductsRepository, UserProductsRepository>();
+            services.AddScoped<IUserShoppingRepository, UserShoppingRepository>();
+            services.AddScoped<IUserTabsRepository, UserTabsRepository>();
 
-			// Barkeeper2 Services DI
-			services.AddScoped<ICocktailIngredientsService, CocktailIngredientsService>();
-			services.AddScoped<ICocktailsService, CocktailsService>();
-			services.AddScoped<IIngredientsService, IngredientsService>();
-			services.AddScoped<IProductsService, ProductsService>();
-			services.AddScoped<IUserCocktailsService, UserCocktailsService>();
-			services.AddScoped<IUserHistoriesService, UserHistoriesService>();
-			services.AddScoped<IUserProductsService, UserProductsService>();
-			services.AddScoped<IUserShoppingService, UserShoppingService>();
-			services.AddScoped<IUserTabsService, UserTabsService>();
+            // Barkeeper2 Services DI
+            services.AddScoped<ICocktailIngredientsService, CocktailIngredientsService>();
+            services.AddScoped<ICocktailsService, CocktailsService>();
+            services.AddScoped<IIngredientsService, IngredientsService>();
+            services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IUserCocktailsService, UserCocktailsService>();
+            services.AddScoped<IUserHistoriesService, UserHistoriesService>();
+            services.AddScoped<IUserProductsService, UserProductsService>();
+            services.AddScoped<IUserShoppingService, UserShoppingService>();
+            services.AddScoped<IUserTabsService, UserTabsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,7 +87,7 @@ namespace Barkeeper2
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
@@ -96,6 +107,7 @@ namespace Barkeeper2
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGraphQL();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
@@ -105,7 +117,6 @@ namespace Barkeeper2
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
                     // spa.UseReactDevelopmentServer(npmScript: "start");
