@@ -27,7 +27,7 @@ export default function AddIngredientModal() {
     const [name, setName] = useState("");
     const [isLiquid, setIsLiquid] = useState(true);
 
-    const [mutate, { isLoading, isError, error }] = useSaveIngredient(onClose);
+    const { isLoading, isError, error, mutate } = useSaveIngredient(onClose);
 
     const onSaveIngredient = async (e: React.MouseEvent) => {
         e.preventDefault();

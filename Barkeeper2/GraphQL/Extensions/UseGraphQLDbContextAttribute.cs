@@ -3,7 +3,7 @@ using Barkeeper2.GraphQL;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
 
-namespace Barkeeper2.Extensions
+namespace Barkeeper2.GraphQL.Extensions
 {
     public class UseGraphQLDbContextAttribute : ObjectFieldDescriptorAttribute
     {

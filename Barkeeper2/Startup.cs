@@ -12,8 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Barkeeper2.Helpers.Exceptions;
-using Barkeeper2.GraphQL.DataLoaders;
+using Barkeeper2.GraphQL.Ingredients.DataLoaders;
 using Barkeeper2.GraphQL.Ingredients;
+using Barkeeper2.GraphQL.Products;
 
 namespace Barkeeper2
 {
@@ -49,10 +50,12 @@ namespace Barkeeper2
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-
+            services.AddHttpContextAccessor();
             services
                 .AddGraphQLServer()
-                .AddQueryType<Query>()
+                .AddQueryType(d => d.Name("Query"))
+                    .AddTypeExtension<IngredientQueries>()
+                    .AddTypeExtension<ProductQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<IngredientMutations>()
                 .AddDataLoader<IngredientByIdDataLoader>();

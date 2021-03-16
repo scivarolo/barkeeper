@@ -9,7 +9,7 @@ using HotChocolate.DataLoader;
 using Microsoft.EntityFrameworkCore;
 using Barkeeper2.GraphQL;
 
-namespace Barkeeper2.GraphQL.DataLoaders
+namespace Barkeeper2.GraphQL.Ingredients.DataLoaders
 {
     public class IngredientByIdDataLoader : BatchDataLoader<int, Ingredient>
     {

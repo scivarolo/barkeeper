@@ -1,17 +1,48 @@
-import { useQuery, useMutation, queryCache } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import API from "./API";
+import { request, gql } from "graphql-request";
 
-export function useAllIngredients() {
+export function useAllIngredientsLegacy() {
     return useQuery<Ingredient[], Error>("ingredients-all", () => API.GET<Ingredient[]>("api/v1/ingredients"));
 }
 
+export function useAllIngredients() {
+    const query = gql`
+        query {
+            ingredients {
+                id,
+                name,
+                liquid,
+                createdById,
+                createdDate
+            }
+        }
+    `;
+    return useQuery<any, Error, Ingredient[]>("ingredients-all", () => API.GraphQLQuery<any>(query), {
+        select: data => data?.ingredients as Ingredient[]
+    })
+}
+
 export function useSaveIngredient(onClose?: any) {
-    return useMutation<Ingredient, string, Partial<Ingredient>>(({ name, liquid }: any) => API.POST<Partial<Ingredient>, Ingredient>("api/v1/ingredients/save-new", {
-        name,
-        liquid
-    }), {
+    const queryClient = useQueryClient();
+
+    const mutation = gql`
+        mutation AddIngredient($input: AddIngredientInput!) {
+            addIngredient(input: $input) {
+                ingredient {
+                    id,
+                    name,
+                    liquid,
+                    createdById,
+                    createdDate
+                }
+            }
+        }
+    `;
+
+    return useMutation<Ingredient, string, Pick<Ingredient, "name" | "liquid">>((input) => API.GraphQLMutation<Ingredient>(mutation, { input }), {
         onSuccess: () => {
-            queryCache.invalidateQueries("ingredients-all");
+            queryClient.invalidateQueries("ingredients-all");
             onClose?.();
         },
     });

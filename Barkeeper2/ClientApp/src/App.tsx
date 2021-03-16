@@ -5,7 +5,6 @@ import AuthorizeRoute from '@components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from '@components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from '@components/api-authorization/ApiAuthorizationConstants';
 import Nav from "@components/Nav/Nav";
-import { ReactQueryConfigProvider } from "react-query";
 import { ChakraProvider, CSSReset, Box } from "@chakra-ui/core";
 import theme from "@chakra-ui/theme";
 import { InventoryView } from "@views";
@@ -14,33 +13,26 @@ import IngredientsManagerView from '@views/admin/ingredients/IngredientsManagerV
 import { useCurrentUser } from '@data/User';
 import ProductsManagerView from '@views/admin/products/ProductsManagerView';
 
-const queryConfig = {
-  queries: {
-    refetchOnWindowFocus: false
-  }
-}
 
 export default function App() {
     const { data: user } = useCurrentUser();
     return (
       <ChakraProvider theme={theme}>
-        <CSSReset />
-        <ReactQueryConfigProvider config={queryConfig}>
-          <Nav />
-          <Box m="1rem" p="1rem">
-            <Route exact path='/' component={Home} />
-            <AuthorizeRoute path="/bar" component={InventoryView} />
-            {user?.name?.startsWith("scivarolo") && (<>
-              <Route exact path="/admin/ingredients">
-                <IngredientsManagerView />
-              </Route>
-              <Route exact path="/admin/products">
-                <ProductsManagerView />
-              </Route>
-            </>)}
-            <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-          </Box>
-        </ReactQueryConfigProvider>
+      <CSSReset />
+        <Nav />
+        <Box m="1rem" p="1rem">
+          <Route exact path='/' component={Home} />
+          <AuthorizeRoute path="/bar" component={InventoryView} />
+          {user?.name?.startsWith("scivarolo") && (<>
+            <Route exact path="/admin/ingredients">
+              <IngredientsManagerView />
+            </Route>
+            <Route exact path="/admin/products">
+              <ProductsManagerView />
+            </Route>
+          </>)}
+          <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+        </Box>
       </ChakraProvider>
     );
 }
