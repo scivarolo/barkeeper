@@ -1,6 +1,5 @@
-﻿using System;
-using System.Reflection;
-using Barkeeper2.Data;
+﻿using System.Reflection;
+using Barkeeper2.GraphQL;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
 

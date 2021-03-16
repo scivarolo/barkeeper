@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Barkeeper2.Data;
+using Barkeeper2.GraphQL;
 using Barkeeper2.Models;
 using Barkeeper2.Interfaces;
 using Barkeeper2.Repositories;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Barkeeper2.Helpers.Exceptions;
+using Barkeeper2.GraphQL.DataLoaders;
+using Barkeeper2.GraphQL.Ingredients;
 
 namespace Barkeeper2
 {
@@ -50,7 +53,9 @@ namespace Barkeeper2
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddMutationType<Mutation>();
+                .AddMutationType(d => d.Name("Mutation"))
+                    .AddTypeExtension<IngredientMutations>()
+                .AddDataLoader<IngredientByIdDataLoader>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

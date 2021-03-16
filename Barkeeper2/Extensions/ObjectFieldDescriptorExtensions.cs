@@ -1,10 +1,8 @@
-﻿using System;
-using Barkeeper2.Data;
-using HotChocolate.Types;
+﻿using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Barkeeper2.Extensions
+namespace Barkeeper2.GraphQL.Extensions
 {
     public static class ObjectFieldDescriptorExtensions
     {
