@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Barkeeper2.Models {
 	public class Ingredient {
-
+		[Key]
 		public int Id { get; set; }
 
 		[Required]
@@ -23,5 +22,6 @@ namespace Barkeeper2.Models {
 
 		public DateTime CreatedDate { get; set; }
 
+		public ICollection<Product> Products { get; set; }
 	}
 }

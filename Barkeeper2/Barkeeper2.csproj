@@ -23,6 +23,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.9" />
     <PackageReference Include="HotChocolate.Data.EntityFramework" Version="11.0.9" />
+    <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
@@ -33,9 +34,8 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Mutations\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Data\DataLoader\" />
+    <Folder Include="GraphQL\Extensions\" />
+    <Folder Include="GraphQL\Ingredients\DataLoaders\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

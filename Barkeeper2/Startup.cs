@@ -15,6 +15,14 @@ using Barkeeper2.Helpers.Exceptions;
 using Barkeeper2.GraphQL.Ingredients.DataLoaders;
 using Barkeeper2.GraphQL.Ingredients;
 using Barkeeper2.GraphQL.Products;
+using GraphQL.Server.Ui.Voyager;
+using System;
+using Barkeeper2.GraphQL.Cocktails;
+using Barkeeper2.GraphQL.UserCocktails;
+using Barkeeper2.GraphQL.UserProducts;
+using Barkeeper2.GraphQL.UserHistories;
+using Barkeeper2.GraphQL.UserShopping;
+using Barkeeper2.GraphQL.UserTabs;
 
 namespace Barkeeper2
 {
@@ -34,7 +42,10 @@ namespace Barkeeper2
                 options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"])
             );
             services.AddPooledDbContextFactory<GraphQLDbContext>(options =>
-                options.UseNpgsql(Configuration["Barkeeper2:ConnectionString"])
+                options
+                    .LogTo(Console.WriteLine)
+                    .EnableSensitiveDataLogging()
+                    .UseNpgsql(Configuration["Barkeeper2:ConnectionString"])
             );
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -56,9 +67,26 @@ namespace Barkeeper2
                 .AddQueryType(d => d.Name("Query"))
                     .AddTypeExtension<IngredientQueries>()
                     .AddTypeExtension<ProductQueries>()
+                    .AddTypeExtension<CocktailQueries>()
+                    .AddTypeExtension<UserCocktailQueries>()
+                    .AddTypeExtension<UserProductQueries>()
+                    .AddTypeExtension<UserHistoryQueries>()
+                    .AddTypeExtension<UserShoppingQueries>()
+                    .AddTypeExtension<UserTabQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<IngredientMutations>()
-                .AddDataLoader<IngredientByIdDataLoader>();
+                .AddType<IngredientType>()
+                .AddType<ProductType>()
+                .AddType<CocktailType>()
+                .AddType<UserCocktailType>()
+                .AddType<UserProductType>()
+                .AddType<UserHistoryType>()
+                .AddType<UserShoppingType>()
+                .AddType<UserTabCocktailType>()
+                .AddDataLoader<IngredientByIdDataLoader>()
+                .AddProjections()
+                .AddFiltering()
+                .AddSorting();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -120,6 +148,11 @@ namespace Barkeeper2
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+            });
+
+            app.UseGraphQLVoyager(new GraphQLVoyagerOptions() {
+                GraphQLEndPoint = "/graphql",
+                Path = "/graphql-voyager"
             });
 
             app.UseSpa(spa =>

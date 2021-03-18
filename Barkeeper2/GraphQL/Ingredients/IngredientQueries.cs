@@ -1,33 +1,27 @@
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Barkeeper2.GraphQL.Extensions;
+using Barkeeper2.GraphQL.Ingredients.DataLoaders;
 using Barkeeper2.Models;
 using HotChocolate;
-using Microsoft.EntityFrameworkCore;
-using Barkeeper2.GraphQL.Ingredients.DataLoaders;
-using System.Threading;
+using HotChocolate.Data;
 using HotChocolate.Types;
-using Barkeeper2.Interfaces;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace Barkeeper2.GraphQL.Ingredients
-{
+namespace Barkeeper2.GraphQL.Ingredients {
     [ExtendObjectType(Name = "Query")]
-    public class IngredientQueries
-    {
+    public class IngredientQueries {
+
         public Task<Ingredient> GetIngredient(
             int id,
             IngredientByIdDataLoader dataLoader,
             CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
 
-        // [UseGraphQLDbContext]
-        // public Task<List<Ingredient>> GetIngredients([ScopedService] GraphQLDbContext context)
-        // {
-        //     return context.Ingredients.ToListAsync();
-        // }
-
-        public async Task<List<Ingredient>> GetIngredients([Service] IIngredientsRepository repo) {
-            return (await repo.GetAllAsync()).ToList();
+        [UseDbContext(typeof(GraphQLDbContext))]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Ingredient> GetIngredients([ScopedService] GraphQLDbContext dbContext) {
+            return dbContext.Ingredients;
         }
     }
 }

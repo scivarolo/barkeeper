@@ -1,12 +1,11 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Barkeeper2.GraphQL.Extensions;
-using Barkeeper2.Interfaces;
+﻿using Barkeeper2.Interfaces;
 using Barkeeper2.Models;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Barkeeper2.GraphQL.Ingredients {
     [ExtendObjectType(Name = "Mutation")]

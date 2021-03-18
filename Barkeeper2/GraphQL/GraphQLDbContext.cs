@@ -17,7 +17,7 @@ namespace Barkeeper2.GraphQL
 		public DbSet<UserCocktail> UserCocktails { get; set; }
 		public DbSet<UserHistory> UserHistories { get; set; }
 		public DbSet<UserProduct> UserProducts { get; set; }
-		public DbSet<UserShopping> UserShopping { get; set; }
+		public DbSet<Models.UserShopping> UserShopping { get; set; }
 		public DbSet<UserTabCocktail> UserTabCocktails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -35,7 +35,7 @@ namespace Barkeeper2.GraphQL
                 .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId);
-            builder.Entity<UserShopping>()
+            builder.Entity<Models.UserShopping>()
                 .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId);
@@ -79,7 +79,7 @@ namespace Barkeeper2.GraphQL
                 .Property(p => p.DateAdded)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .ValueGeneratedOnAdd();
-            builder.Entity<UserShopping>()
+            builder.Entity<Models.UserShopping>()
                 .Property(s => s.DateAdded)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .ValueGeneratedOnAdd();
