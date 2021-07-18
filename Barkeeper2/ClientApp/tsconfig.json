@@ -29,6 +29,8 @@
       "@hooks/*": ["hooks/*"],
       "@modules": ["modules"],
       "@modules/*": ["modules/*"],
+      "@routes": ["routes"],
+      "@routes/*": ["routes/*"],
       "@views": ["views"],
       "@views/*": ["views/*"]
     }

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import API from "./API";
-import { request, gql } from "graphql-request";
+import { gql } from "graphql-request";
 
 export function useAllIngredientsLegacy() {
     return useQuery<Ingredient[], Error>("ingredients-all", () => API.GET<Ingredient[]>("api/v1/ingredients"));
@@ -18,7 +18,7 @@ export function useAllIngredients() {
             }
         }
     `;
-    return useQuery<any, Error, Ingredient[]>("ingredients-all", () => API.GraphQLQuery<any>(query), {
+    return useQuery<any, Error, Ingredient[]>(["ingredients", "all"], () => API.GraphQLQuery<any>(query), {
         select: data => data?.ingredients as Ingredient[]
     })
 }

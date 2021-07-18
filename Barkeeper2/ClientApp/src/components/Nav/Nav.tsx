@@ -5,6 +5,7 @@ import NavButton from "./NavButton";
 import { Link } from "react-router-dom";
 import useIsAuthenticated from "@hooks/useIsAuthenticated";
 import AdminMenu from "./AdminMenu";
+import { Routes } from "routes";
 
 export default function Nav() {
     const { isAuthenticated } = useIsAuthenticated();
@@ -49,11 +50,10 @@ export default function Nav() {
                         activeOnlyWhenExact
                     />
                     <NavButton
-                        to="/bar"
+                        to={Routes.bar.path}
                         label="Your Bar"
                         activeOnlyWhenExact
                     />
-                    <AdminMenu />
                 </Flex>
             )}
             <Box
@@ -63,6 +63,7 @@ export default function Nav() {
                 {/* <Button bg="transparent" border="1px">
                     Create account
                 </Button> */}
+                <AdminMenu />
                 <LoginMenu />
             </Box>
         </Flex>

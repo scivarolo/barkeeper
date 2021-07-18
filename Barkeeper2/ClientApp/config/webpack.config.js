@@ -298,6 +298,7 @@ module.exports = function(webpackEnv) {
         "@data": path.resolve(__dirname, "../src/data/"),
         "@hooks": path.resolve(__dirname, "../src/hooks/"),
         "@modules": path.resolve(__dirname, "../src/modules/"),
+        "@routes": path.resolve(__dirname, "../src/routes/"),
         "@views": path.resolve(__dirname, "../src/views/")
       },
       plugins: [
