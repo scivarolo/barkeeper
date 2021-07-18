@@ -5,7 +5,7 @@ export interface RouteConfig {
     }
 }
 
-export default {
+const Routes = {
     admin: {
         path: '/admin',
         ingredients: {
@@ -19,3 +19,5 @@ export default {
         path: '/bar',
     },
 }
+
+export default Routes;
