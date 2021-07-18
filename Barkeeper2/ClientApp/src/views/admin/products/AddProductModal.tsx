@@ -7,12 +7,14 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
+    ModalFooter,
     ModalHeader,
     ModalOverlay,
     useDisclosure,
 } from '@chakra-ui/react'
 import React from 'react'
 import { Formik, Field, Form } from 'formik'
+import { IngredientSelector } from '@components/forms'
 
 export default function AddProductModal() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -26,6 +28,7 @@ export default function AddProductModal() {
                         <Formik
                             initialValues={{
                                 name: '',
+                                ingredientId: '',
                             }}
                             onSubmit={(values) => console.log(values)}>
                             <Form>
@@ -36,7 +39,11 @@ export default function AddProductModal() {
                                         <FormLabel>Product Name</FormLabel>
                                         <Field as={Input} id="name" name="name" />
                                     </FormControl>
+                                    <IngredientSelector name="ingredientId" label="Ingredient" />
                                 </ModalBody>
+                                <ModalFooter>
+                                    <Button type="submit">Save</Button>
+                                </ModalFooter>
                             </Form>
                         </Formik>
                     </ModalContent>

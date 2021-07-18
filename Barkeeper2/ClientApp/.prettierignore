@@ -3,3 +3,5 @@ node_modules
 public
 scripts
 readme.md
+tsconfig.json
+tsconfig.base.json
