@@ -1,5 +1,3 @@
 declare namespace Params {
-    namespace Ingredients {
-
-    }
+    namespace Ingredients {}
 }

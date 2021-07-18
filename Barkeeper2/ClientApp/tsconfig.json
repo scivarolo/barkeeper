@@ -1,41 +1,35 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "strictNullChecks": false,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "src",
-    "paths": {
-      "@components": ["components"],
-      "@components/*": ["components/*"],
-      "@data": ["data"],
-      "@data/*": ["data/*"],
-      "@hooks": ["hooks"],
-      "@hooks/*": ["hooks/*"],
-      "@modules": ["modules"],
-      "@modules/*": ["modules/*"],
-      "@routes": ["routes"],
-      "@routes/*": ["routes/*"],
-      "@views": ["views"],
-      "@views/*": ["views/*"]
-    }
-  },
-  "include": [
-    "src/**/*"
-  ]
+    "compilerOptions": {
+        "target": "esnext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react",
+        "baseUrl": "src",
+        "paths": {
+            "@components": ["components"],
+            "@components/*": ["components/*"],
+            "@data": ["data"],
+            "@data/*": ["data/*"],
+            "@hooks": ["hooks"],
+            "@hooks/*": ["hooks/*"],
+            "@modules": ["modules"],
+            "@modules/*": ["modules/*"],
+            "@routes": ["routes"],
+            "@routes/*": ["routes/*"],
+            "@views": ["views"],
+            "@views/*": ["views/*"]
+        }
+    },
+    "include": ["src/**/*"]
 }
