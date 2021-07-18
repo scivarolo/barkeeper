@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@chakra-ui/core'
+import { Box, Spinner } from '@chakra-ui/react'
 import React from 'react'
 import AddIngredientModal from './AddIngredientModal'
 import { useAllIngredients } from '@data/Ingredients'

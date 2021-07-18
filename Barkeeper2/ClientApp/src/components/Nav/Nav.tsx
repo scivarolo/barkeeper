@@ -1,4 +1,4 @@
-import { Box, Flex, Center, Heading } from '@chakra-ui/core'
+import { Box, Flex, Center, Heading } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { LoginMenu } from '@components/api-authorization/LoginMenu'
 import NavButton from './NavButton'

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import authService from './AuthorizeService'
 import { ApplicationPaths } from './ApiAuthorizationConstants'
-import { Button } from '@chakra-ui/core'
+import { Button } from '@chakra-ui/react'
 
 export class LoginMenu extends Component {
     constructor(props) {

@@ -1,4 +1,4 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/core'
+import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import React from 'react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { NavLink, useRouteMatch } from 'react-router-dom'

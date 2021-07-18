@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@chakra-ui/core'
+import { Button } from '@chakra-ui/react'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 
 interface NavButtonProps {

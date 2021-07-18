@@ -1,4 +1,4 @@
-import { Heading, Spinner } from '@chakra-ui/core'
+import { Heading, Spinner } from '@chakra-ui/react'
 import React from 'react'
 import { useUserProducts } from '@data/UserProducts'
 

@@ -10,7 +10,7 @@ import {
     ModalHeader,
     ModalOverlay,
     useDisclosure,
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import React from 'react'
 import { Formik, Field, Form } from 'formik'
 

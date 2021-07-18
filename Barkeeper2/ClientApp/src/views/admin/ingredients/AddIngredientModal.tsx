@@ -17,7 +17,7 @@ import {
     AlertDescription,
     AlertIcon,
     Alert,
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useSaveIngredient } from '@data/Ingredients'
 

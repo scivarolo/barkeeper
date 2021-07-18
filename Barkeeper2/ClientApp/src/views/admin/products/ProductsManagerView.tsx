@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAllProducts } from '@data/Products'
-import { Box, Spinner } from '@chakra-ui/core'
+import { Box, Spinner } from '@chakra-ui/react'
 import AddProductModal from './AddProductModal'
 
 export default function ProductsManagerView() {
